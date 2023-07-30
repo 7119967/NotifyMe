@@ -1,3 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+
+using NotifyMe.Core.Interfaces;
+using NotifyMe.Infrastructure.Context;
+using NotifyMe.Infrastructure.Repositories;
+using NotifyMe.Infrastructure.Services;
+
+using RabbitMQ.Client;
+
 namespace NotifyMe.API
 {
     public class Program
@@ -6,16 +15,32 @@ namespace NotifyMe.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.AddDbContext<DatabaseContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            // Services
+            builder.Services.AddScoped<IEventLogger, EventLogger>();
+            builder.Services.AddSingleton<RabbitMQService>();
+            builder.Services.AddTransient<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IEventMonitoringRepository, EventMonitoringRepository>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+
+            // Controllers and Views
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -29,6 +54,9 @@ namespace NotifyMe.API
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            var rabbitMQService = app.Services.GetRequiredService<RabbitMQService>();
+            rabbitMQService.StartListening();
 
             app.Run();
         }
