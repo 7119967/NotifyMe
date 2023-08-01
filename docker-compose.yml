@@ -1,0 +1,74 @@
+version: '3.8'
+name: notifyme-project
+
+services:
+    mssql-server:
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        container_name: mssql-server
+        hostname: mssql-server
+        restart: always
+        environment:
+            SA_PASSWORD: qXz999W7M#
+            ACCEPT_EULA: Y
+            MSSQL_DB_NAME: notifymedb
+        ports:
+            - "1433:1433"
+        volumes:
+            - mssql_data:/var/opt/mssql
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        healthcheck:
+            test: ["CMD", "sqlcmd", "-U", "sa", "-P", "qXz999W7M#", "-Q", "SELECT 1"]
+            interval: 30s
+            timeout: 10s
+            retries: 5
+        networks:
+            - msms-net
+      
+    rabbitmq:
+        image: rabbitmq:management
+        container_name: rabbitmq
+        ports:
+          - "5672:5672"  # RabbitMQ main port for AMQP.
+          - "15672:15672"  # RabbitMQ management plugin port for web UI.
+        environment:
+          RABBITMQ_DEFAULT_USER: guest  # Default user for the RabbitMQ management UI.
+          RABBITMQ_DEFAULT_PASS: guest  # Default password for the RabbitMQ management UI.
+        volumes:
+          - rabbitmq_data:/var/lib/rabbitmq
+        networks:
+            - msms-net
+
+    notifyme.api:
+        image: ${DOCKER_REGISTRY-}notifymeapi
+        build:
+          context: .
+          dockerfile: NotifyMe.API/Dockerfile
+        container_name: notifyme.api
+        hostname: notifyme.api
+        restart: always
+        environment:
+            - ASPNETCORE_ENVIRONMENT=Development
+            - ASPNETCORE_URLS=https://+:443;http://+:80
+        volumes:
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - "63349:80"
+        healthcheck:
+            test: ["CMD-SHELL", "curl -i http://localhost:80 || exit 1"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+            start_period: 10s
+        depends_on: 
+            - mssql-server
+        networks:
+            - msms-net
+
+volumes:
+  mssql_data:
+  rabbitmq_data:
+
+networks:
+   msms-net:
