@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -32,13 +33,13 @@ namespace NotifyMe.Infrastructure.Services
 
             // Create a consumer and bind it to the queue
             var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += HandleMessage;
+            consumer.Received += (sender, e) => HandleMessage(e); // Attach the HandleMessage method to the Received event
 
             // Start consuming messages from the queue
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
         }
 
-        private void HandleMessage(object sender, BasicDeliverEventArgs e)
+        private void HandleMessage(BasicDeliverEventArgs e)
         {
             try
             {
@@ -62,6 +63,7 @@ namespace NotifyMe.Infrastructure.Services
             // Placeholder method for processing the incoming message
             // You should implement the actual message handling logic here
             // For example, you can parse the message, extract data, and call appropriate services for notification processing.
+            Console.WriteLine($"Processing message: {message}");
         }
 
         public void StopListening()

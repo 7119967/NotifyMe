@@ -32,8 +32,8 @@ services:
           - "5672:5672"  # RabbitMQ main port for AMQP.
           - "15672:15672"  # RabbitMQ management plugin port for web UI.
         environment:
-          RABBITMQ_DEFAULT_USER: guest  # Default user for the RabbitMQ management UI.
-          RABBITMQ_DEFAULT_PASS: guest  # Default password for the RabbitMQ management UI.
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
         volumes:
           - rabbitmq_data:/var/lib/rabbitmq
         networks:
@@ -63,6 +63,7 @@ services:
             start_period: 10s
         depends_on: 
             - mssql-server
+            - rabbitmq
         networks:
             - msms-net
 

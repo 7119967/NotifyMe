@@ -22,7 +22,11 @@ namespace NotifyMe.API
 
             // Services
             builder.Services.AddScoped<IEventLogger, EventLogger>();
-            builder.Services.AddSingleton<RabbitMQService>();
+            builder.Services.AddSingleton<RabbitMQService>(sp =>
+            {
+                var rabbitMQHost = builder.Configuration["ConnectionStrings:RabbitMQHost"]; // Make sure you have configured RabbitMQHost in your appsettings.json or other configuration source
+                return new RabbitMQService(rabbitMQHost, "notification_queue"); // Replace "YourQueueName" with the actual queue name
+            });
             builder.Services.AddTransient<INotificationService, NotificationService>();
             builder.Services.AddScoped<IEventMonitoringRepository, EventMonitoringRepository>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
