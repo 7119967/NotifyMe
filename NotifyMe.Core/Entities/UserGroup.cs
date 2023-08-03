@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NotifyMe.Core.Entities
 {
-    public class UserGroup
+    public class UserGroup : BaseEntity
     {
         public int GroupId { get; set; }
         public string GroupName { get; set; }
