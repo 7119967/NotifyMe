@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using NotifyMe.Core.Entities;
+
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace NotifyMe.Infrastructure.Context
 {
@@ -15,8 +18,13 @@ namespace NotifyMe.Infrastructure.Context
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            Database.EnsureCreated();   
+            //Database.EnsureCreated();   
         }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<UserGroupUser>()

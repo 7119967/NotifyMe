@@ -17,7 +17,9 @@ namespace NotifyMe.API
 
             builder.Services.AddDbContext<DatabaseContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"), 
+                    b => b.MigrationsAssembly("NotifyMe.API"));
             });
 
             // Services
