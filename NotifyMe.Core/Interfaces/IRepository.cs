@@ -7,6 +7,5 @@
         void Delete(T entity);
         T GetById(int id);
         IEnumerable<T> GetAll();
-        // Add additional methods as needed based on your requirements
     }
 }

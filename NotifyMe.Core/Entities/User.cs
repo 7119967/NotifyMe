@@ -9,7 +9,7 @@
         public string? PhoneNumber { get; set; }
 
         // Navigation property to UserGroupUsers
-        public ICollection<UserGroupUser> UserGroupUsers { get; set; }
+        public ICollection<UserGroupUser>? UserGroupUsers { get; set; }
     }
    
 }

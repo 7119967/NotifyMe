@@ -12,6 +12,6 @@ namespace NotifyMe.Core.Entities
     {
         public EventType EventType { get; set; }
         public double Threshold { get; set; }
-        public List<User> Recipients { get; set; }
+        public List<User>? Recipients { get; set; }
     }
 }

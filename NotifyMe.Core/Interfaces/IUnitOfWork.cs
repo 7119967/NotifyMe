@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using NotifyMe.Core.Entities;
+﻿using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Core.Interfaces
 {

@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using NotifyMe.Core.Entities;
 
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Infrastructure.Context
 {
