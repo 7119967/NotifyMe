@@ -127,31 +127,25 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<long?>("ConfigurationId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
                     b.HasIndex("ConfigurationId");
 
@@ -160,23 +154,17 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.UserGroup", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("UserGroupId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<int>("GroupId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GroupName")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserGroupId"));
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
+                    b.HasKey("UserGroupId");
 
                     b.ToTable("UserGroups");
                 });
@@ -195,20 +183,17 @@ namespace NotifyMe.API.Migrations
                     b.Property<int>("UserGroupId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UserGroupId1")
-                        .HasColumnType("bigint");
+                    b.Property<int>("UserGroupUserId")
+                        .HasColumnType("int");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<long?>("UserId1")
-                        .HasColumnType("bigint");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserGroupId1");
+                    b.HasIndex("UserGroupId");
 
-                    b.HasIndex("UserId1");
+                    b.HasIndex("UserId");
 
                     b.ToTable("UserGroupUsers");
                 });
@@ -234,12 +219,16 @@ namespace NotifyMe.API.Migrations
             modelBuilder.Entity("NotifyMe.Core.Entities.UserGroupUser", b =>
                 {
                     b.HasOne("NotifyMe.Core.Entities.UserGroup", "UserGroup")
-                        .WithMany("Users")
-                        .HasForeignKey("UserGroupId1");
+                        .WithMany("UserGroupUsers")
+                        .HasForeignKey("UserGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NotifyMe.Core.Entities.User", "User")
-                        .WithMany("Groups")
-                        .HasForeignKey("UserId1");
+                        .WithMany("UserGroupUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
 
@@ -258,12 +247,12 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
                 {
-                    b.Navigation("Groups");
+                    b.Navigation("UserGroupUsers");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.UserGroup", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserGroupUsers");
                 });
 #pragma warning restore 612, 618
         }

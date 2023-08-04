@@ -61,15 +61,13 @@ namespace NotifyMe.API.Migrations
                 name: "UserGroups",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    UserGroupId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
-                    GroupName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroups", x => x.Id);
+                    table.PrimaryKey("PK_UserGroups", x => x.UserGroupId);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,17 +96,16 @@ namespace NotifyMe.API.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ConfigurationId = table.Column<long>(type: "bigint", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfigurationId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
                         name: "FK_Users_Configurations_ConfigurationId",
                         column: x => x.ConfigurationId,
@@ -122,25 +119,26 @@ namespace NotifyMe.API.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserGroupId = table.Column<int>(type: "int", nullable: false),
-                    UserGroupId1 = table.Column<long>(type: "bigint", nullable: true),
+                    UserGroupUserId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    UserId1 = table.Column<long>(type: "bigint", nullable: true),
+                    UserGroupId = table.Column<int>(type: "int", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserGroupUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserGroupUsers_UserGroups_UserGroupId1",
-                        column: x => x.UserGroupId1,
+                        name: "FK_UserGroupUsers_UserGroups_UserGroupId",
+                        column: x => x.UserGroupId,
                         principalTable: "UserGroups",
-                        principalColumn: "Id");
+                        principalColumn: "UserGroupId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserGroupUsers_Users_UserId1",
-                        column: x => x.UserId1,
+                        name: "FK_UserGroupUsers_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "Id");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -149,14 +147,14 @@ namespace NotifyMe.API.Migrations
                 column: "EventMonitoringId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroupUsers_UserGroupId1",
+                name: "IX_UserGroupUsers_UserGroupId",
                 table: "UserGroupUsers",
-                column: "UserGroupId1");
+                column: "UserGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroupUsers_UserId1",
+                name: "IX_UserGroupUsers_UserId",
                 table: "UserGroupUsers",
-                column: "UserId1");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_ConfigurationId",
