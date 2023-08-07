@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Infrastructure.Context;
@@ -20,11 +14,6 @@ namespace NotifyMe.Infrastructure.Repositories
         {
             _dbContext = dbContext;
             _dbSet = dbContext.Set<T>();
-        }
-
-        public T Get(int id)
-        {
-            return _dbSet.Find(id);
         }
         
         public void Add(T entity)
@@ -45,7 +34,7 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public T GetById(int id)
         {
-            return _dbSet.Find(id);
+            return _dbSet.Find(id) ?? throw new NullReferenceException();
         }
 
         public IEnumerable<T> GetAll()

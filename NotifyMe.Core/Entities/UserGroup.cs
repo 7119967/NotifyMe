@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NotifyMe.Core.Entities
+﻿namespace NotifyMe.Core.Entities
 {
-    public class UserGroup : BaseEntity
+    public class UserGroup
     {
-        public int GroupId { get; set; }
-        public string GroupName { get; set; }
-        public List<UserGroupUser> Users { get; set; } = new List<UserGroupUser>();
+        public int UserGroupId { get; set; }
+
+        public string? Name { get; set; }
+
+        // Navigation property to UserGroupUsers
+        public ICollection<UserGroupUser>? UserGroupUsers { get; set; }
     }
 }

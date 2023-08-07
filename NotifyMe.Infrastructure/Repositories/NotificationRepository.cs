@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 
@@ -26,7 +23,7 @@ namespace NotifyMe.Infrastructure.Repositories
             // Serialize the notification content to send as a message
             string message = JsonSerializer.Serialize(notification);
 
-            using (var connection = _connectionFactory.CreateConnection())
+            var connection = _connectionFactory.CreateConnection();
             using (var channel = connection.CreateModel())
             {
                 // Declare a queue for notifications

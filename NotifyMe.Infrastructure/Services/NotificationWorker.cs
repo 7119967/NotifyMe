@@ -13,7 +13,7 @@ namespace NotifyMe.Infrastructure.Services;
 
 public class NotificationWorker : BackgroundService 
 {
-    private IModel _channel;
+    private readonly IModel _channel;
 
     public NotificationWorker(IModel channel) 
     {
@@ -29,9 +29,12 @@ public class NotificationWorker : BackgroundService
         consumer.Received += (sender, e) =>
         {
             var notification = JsonConvert.DeserializeObject<Notification>(Encoding.UTF8.GetString(e.Body.ToArray()));
-            
-            SendEmailNotification(notification);
-            SendSMSNotification(notification);
+
+            if (notification != null)
+            {
+                SendEmailNotification(notification);
+                SendSMSNotification(notification);
+            }
 
             //Acknowledge message
             _channel.BasicAck(e.DeliveryTag, false);
@@ -45,7 +48,7 @@ public class NotificationWorker : BackgroundService
     private void SendEmailNotification(Notification notification)
     {
         var mailMessage = new MailMessage();
-        mailMessage.To.Add(notification.Recipient);
+        mailMessage.To.Add(notification.Recipient ?? throw new InvalidOperationException());
         mailMessage.From = new MailAddress("alerts@example.com");
         mailMessage.Subject = "Alert notification";
         mailMessage.Body = notification.Message;

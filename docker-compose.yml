@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 name: notifyme-project
 
 services:
@@ -23,7 +23,7 @@ services:
             timeout: 10s
             retries: 5
         networks:
-            - msms-net
+            - notifyme-network
       
     rabbitmq:
         image: rabbitmq:management
@@ -37,7 +37,7 @@ services:
         volumes:
           - rabbitmq_data:/var/lib/rabbitmq
         networks:
-            - msms-net
+            - notifyme-network
 
     notifyme.api:
         image: ${DOCKER_REGISTRY-}notifymeapi
@@ -65,11 +65,12 @@ services:
             - mssql-server
             - rabbitmq
         networks:
-            - msms-net
+            - notifyme-network
 
 volumes:
   mssql_data:
   rabbitmq_data:
 
 networks:
-   msms-net:
+    notifyme-network:
+        driver: bridge

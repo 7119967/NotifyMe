@@ -3,40 +3,59 @@ using System.Text;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 
 namespace NotifyMe.Infrastructure.Services
 {
     public class RabbitMQService
     {
         private readonly string _rabbitMQHost;
+        private readonly string _rabbitMQUsername;
+        private readonly string _rabbitMQPassword;
         private readonly string _queueName;
 
-        private IConnection _connection;
-        private IModel _channel;
+        private IConnection? _connection;
+        private IModel? _channel;
 
-        public RabbitMQService(string rabbitMQHost, string queueName)
+        public RabbitMQService(string rabbitMQHost, string rabbitMQUsername, string rabbitMQPassword, string queueName)
         {
             _rabbitMQHost = rabbitMQHost;
+            _rabbitMQUsername = rabbitMQUsername;
+            _rabbitMQPassword = rabbitMQPassword;
             _queueName = queueName;
         }
 
         public void StartListening()
         {
-            var factory = new ConnectionFactory() { HostName = _rabbitMQHost };
+            var factory = new ConnectionFactory()
+            {
+                HostName = _rabbitMQHost,
+                UserName = _rabbitMQUsername,
+                Password = _rabbitMQPassword,
+                //VirtualHost = "rabbitmq",
+                Port = 5672
+            };
 
-            // Create a connection and channel to the RabbitMQ server
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
+            try
+            {
+                _connection = factory.CreateConnection();
+                _channel = _connection.CreateModel();
 
-            // Declare the queue from which we'll consume messages
-            _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+                // Declare the queue from which we'll consume messages
+                _channel.QueueDeclare(queue: _queueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
 
-            // Create a consumer and bind it to the queue
-            var consumer = new EventingBasicConsumer(_channel);
-            consumer.Received += (sender, e) => HandleMessage(e); // Attach the HandleMessage method to the Received event
+                // Create a consumer and bind it to the queue
+                var consumer = new EventingBasicConsumer(_channel);
+                consumer.Received += (sender, e) => HandleMessage(e); // Attach the HandleMessage method to the Received event
 
-            // Start consuming messages from the queue
-            _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+                // Start consuming messages from the queue
+                _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+          
+            }
+            catch (BrokerUnreachableException ex)
+            {
+                Console.WriteLine($"Error connecting to RabbitMQ: {ex.Message}");
+            }
         }
 
         private void HandleMessage(BasicDeliverEventArgs e)

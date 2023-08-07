@@ -4,7 +4,7 @@ namespace NotifyMe.Core.Interfaces
 {
     public interface IEventMonitoringRepository
     {
-        EventMonitoring Get(int id);
+        EventMonitoring GetById(int id);
         void Add(EventMonitoring eventMonitoring);
     }
 }
