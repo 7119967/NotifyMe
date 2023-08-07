@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.9">
       <PrivateAssets>all</PrivateAssets>
@@ -28,6 +29,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NotifyMe.Infrastructure\NotifyMe.Infrastructure.csproj" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

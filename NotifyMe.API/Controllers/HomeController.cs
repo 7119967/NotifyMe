@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 
-using NotifyMe.API.Models;
+using NotifyMe.API.ViewModels;
 
 namespace NotifyMe.API.Controllers
 {

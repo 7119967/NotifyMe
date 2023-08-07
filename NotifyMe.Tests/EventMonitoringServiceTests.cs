@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Moq;
+﻿using Moq;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Infrastructure.Services;
@@ -12,9 +7,9 @@ namespace NotifyMe.Tests
 {
     public class EventMonitoringServiceTests {
 
-        private EventMonitoringService _service;
-        private Mock<IUnitOfWork> _unitOfWorkMock;
-        private Mock<IEventMonitoringRepository> _repositoryMock;
+        private readonly EventMonitoringService _service;
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+        private readonly Mock<IEventMonitoringRepository> _repositoryMock;
 
         public EventMonitoringServiceTests() {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
@@ -41,6 +36,5 @@ namespace NotifyMe.Tests
             )), Times.Once());
 
         }
-
     }
 }

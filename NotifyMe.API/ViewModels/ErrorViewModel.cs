@@ -1,4 +1,4 @@
-namespace NotifyMe.API.Models
+namespace NotifyMe.API.ViewModels
 {
     public class ErrorViewModel
     {

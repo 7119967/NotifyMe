@@ -1,0 +1,40 @@
+﻿@model List<User>
+
+@{
+    Layout = "_Layout";
+}
+<table class="table table-hover">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Login</th>
+        <th scope="col">FirstName</th>
+        <th scope="col">LastName</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col">Info</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <th scope="row">
+                <a asp-controller="Users" asp-action="Profile" asp-route-idUser="@item.Id">@item.UserName</a>
+            </th>
+            <th scope="row">
+                <a asp-controller="Users" asp-action="Profile" asp-route-idUser="@item.Id">@item.FirstName</a>
+            </th>
+            <th scope="row">
+                <a asp-controller="Users" asp-action="Profile" asp-route-idUser="@item.Id">@item.LastName</a>
+            </th>
+            <th scope="row">
+                <a asp-controller="Users" asp-action="Profile" asp-route-idUser="@item.Id">@item.Email</a>
+            </th>
+            <th scope="row">
+                <a asp-controller="Users" asp-action="Profile" asp-route-idUser="@item.Id">@item.PhoneNumber</a>
+            </th>
+            <th scope="row">@item.Info</th>
+        </tr>
+    }
+    </tbody>
+</table>

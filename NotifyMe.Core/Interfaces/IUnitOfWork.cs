@@ -12,6 +12,7 @@ namespace NotifyMe.Core.Interfaces
     {
         IRepository<EventMonitoring> EventMonitoringRepository { get; }
         IRepository<Notification> NotificationRepository { get; }
+        IRepository<User> UserRepository { get; }
 
         void Complete();
     }

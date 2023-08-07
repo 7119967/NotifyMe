@@ -19,18 +19,6 @@ namespace NotifyMe.Infrastructure.Context
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<UserGroupUser>()
-            //    .HasKey(ug => new { ug.UserGroupId, ug.UserId });
-
-            //modelBuilder.Entity<UserGroupUser>()
-            //    .HasOne<UserGroup>(ug => ug.UserGroup)
-            //    .WithMany(ug => ug.Users)
-            //    .HasForeignKey(ug => ug.UserGroupId);
-
-            //modelBuilder.Entity<UserGroupUser>()
-            //    .HasOne<User>(ug => ug.User)
-            //    .WithMany(u => u.Groups)
-            //    .HasForeignKey(ug => ug.UserId);
         }
     }
 }
