@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
+using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Repositories;
@@ -15,22 +17,40 @@ namespace NotifyMe.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddDbContext<DatabaseContext>(options =>
-            {
-                options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection"), 
-                    b => b.MigrationsAssembly("NotifyMe.API"));
-            });
+            builder.Services
+                .AddDbContext<DatabaseContext>(options =>
+                {
+                    options
+                        .UseLazyLoadingProxies()
+                        .UseSqlServer(
+                        builder.Configuration.GetConnectionString("DefaultConnection"), 
+                        b => b.MigrationsAssembly("NotifyMe.API"));
+                })
+                .AddIdentity<User, IdentityRole>(option =>
+                {
+                    option.Password.RequireDigit = false;
+                    option.Password.RequiredLength = 5;
+                    option.Password.RequireLowercase = false;
+                    option.Password.RequireUppercase = false;
+                    option.Password.RequireNonAlphanumeric = false;
+                })
+                .AddEntityFrameworkStores<DatabaseContext>();
 
             // Services
+            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/Account/Login");
+                });
+            builder.Services.AddTransient<UploadFileService>();
             builder.Services.AddScoped<IEventLogger, EventLogger>();
             builder.Services.AddSingleton<RabbitMQService>(sp =>
             {
                 var configuration = sp.GetRequiredService<IConfiguration>();
-                var rabbitMQHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
-                var rabbitMQUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
-                var rabbitMQPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-                return new RabbitMQService(rabbitMQHost, rabbitMQUsername, rabbitMQPassword, "notification_queue");
+                var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
+                var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
+                var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
+                return new RabbitMQService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
             });
             builder.Services.AddTransient<INotificationService, NotificationService>();
             builder.Services.AddScoped<IEventMonitoringRepository, EventMonitoringRepository>();
@@ -64,9 +84,23 @@ namespace NotifyMe.API
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            var rabbitMQService = app.Services.GetRequiredService<RabbitMQService>();
-            rabbitMQService.StartListening();
+            var rabbitMqService = app.Services.GetRequiredService<RabbitMQService>();
+            rabbitMqService.StartListening();
 
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+            try
+            {
+                var userManager = services.GetRequiredService<UserManager<User>>();
+                var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                Task.Run(()=> AdminInitializer.SeedAdminUser(rolesManager, userManager)) ;
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "An error occurred while seeding the database.");
+            }
+            
             app.Run();
         }
     }

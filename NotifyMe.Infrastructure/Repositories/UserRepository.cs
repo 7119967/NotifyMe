@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NotifyMe.Core.Entities;
+using NotifyMe.Core.Interfaces;
+using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.Infrastructure.Repositories
 {
-    public class UserRepository
+    public class UserRepository: Repository<User>, IUserRepository
     {
-        // Implement methods to interact with the Users table in the database
+        public UserRepository(DatabaseContext context) : base(context) { }
     }
 }

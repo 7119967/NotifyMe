@@ -1,0 +1,56 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject RoleManager<IdentityRole> roleManager;
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+@model List<Notification>
+
+@{
+    Layout = "_Layout";
+}
+@{
+    List<User> users = new List<User>();
+    @foreach (User item in ViewBag.Users)
+    {
+        @if (UserManager.GetUserId(User) != item.Id.ToString())
+        {
+            var role = UserManager.GetRolesAsync(item).Result;
+            if (!role.Contains("admin"))
+            {
+                users.Add(item);
+            }
+        }
+    }
+    // await Html.RenderPartialAsync("PartialViews/UsersPartialView", users);
+}
+<div class="row mt-2 mb-5">
+    @foreach (var item in ViewBag.Users)
+    {
+        <div class="col-sm-8 mt-2">
+            <div class="card">
+                <div class="card-header p-0">
+                    @if (User.Identity!.IsAuthenticated)
+                    {
+                        <a class="nav-link" asp-controller="Users" asp-action="Profile" style="color: #000 !important;">
+                            <div class="row align-items-center">
+                                <div class="col-1"><img class="rounded-circle" src="@item.User.Avatar" width="35" alt="@item.User.UserName"></div> 
+                                <div class="col-9">@item.User.UserName</div> 
+                                <div class="col-2"><p class="text-right" style="font-size: 20px;"><b>...</b></p></div>
+                            </div>
+                        </a>
+                    }
+                </div>
+                <img src="@item.Image" class="" alt="@item.Description" style="width: 100%; height: 500px;">
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts
+{
+    <script>
+
+    </script>
+}

@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -17,16 +23,64 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                                <ul class="navbar-nav flex-grow-1 nav-fill">
+                                    <li class="nav-item">
+                                        <a class="navbar-brand" asp-controller="Notifications" asp-action="Index"><img class="" src="/images/logo.png" alt="logo" width="150"></a>
+                                    </li>
+                                    <li class="nav-item">
+                                       <form class="form-inline my-2 my-lg-0" asp-action="Index" asp-controller="Users" method="get">
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <button type="submit" class="input-group-text"><img class="rounded-circle" src="/images/search.png" width="15" alt="search"></button>
+                                                </div>
+                                                <input type="text" class="form-control" placeholder="Поиск" name="search">
+                                            </div>
+                                        </form>
+                                    </li>
+                                    <li class="nav-item">
+                                        <ul class="navbar-nav flex-grow-1 justify-content-end">
+                                            @if (SignInManager.IsSignedIn(User))
+                                            {
+                                                <li class="">
+                                                    <a class="nav-link"
+                                                       asp-controller="Notifications"
+                                                       asp-action="Index">
+                                                        <img src="/images/home.png" width="25" alt="home">
+                                                    </a>
+                                                </li>
+                                                <li class="nav-item">
+                                                    <a class="btn btn-outline-primary" 
+                                                       asp-controller="Notifications" 
+                                                       asp-action="Create"
+                                                       asp-route-idUser="@user!.Id">Создать пост
+                                                        </a>
+                                                </li>
+                                                <li class="">
+                                                    <a class="nav-link" 
+                                                       asp-controller="Users" 
+                                                       asp-action="Profile" 
+                                                       asp-route-idUser="@user!.Id">
+                                                        <img class="rounded-circle" src="@user.Avatar" width="25" alt="avatar">
+                                                    </a>
+                                                </li>
+                                                <li class="">
+                                                    <form method="post" asp-controller="Account" asp-action="Logout">
+                                                        <input class="btn btn-outline-success" type="submit" value="Выход"/>
+                                                    </form>
+                                                </li>
+                                            }
+                                            else
+                                            {
+                                                <li class="nav-item">
+                                                    <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">Вход</a>
+                                                    <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Register">Регистрация</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
             </div>
         </nav>
     </header>

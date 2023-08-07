@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
+using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -10,15 +13,18 @@ public class NotificationsController : Controller
     private readonly ILogger<NotificationsController> _logger;
     private readonly IEventLogger _eventLogger;
     private readonly NotificationService _notificationService;
+    private DatabaseContext _db;
 
     public NotificationsController(
         ILogger<NotificationsController> logger,
         IEventLogger eventLogger,
-        NotificationService notificationService)
+        NotificationService notificationService,
+        DatabaseContext db)
     {
         _logger = logger;
         _eventLogger = eventLogger;
         _notificationService = notificationService;
+        _db = db;
     }
 
     [HttpPost]
@@ -28,5 +34,21 @@ public class NotificationsController : Controller
         _notificationService.SendNotification(notification);
         
         return RedirectToAction("");
+    }
+    
+    [Authorize]
+    public IActionResult Index()
+    {
+        string currentUser = HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        List<Notification> notifications = _db.Notifications.ToList();
+            
+        return View(notifications);
+    }
+    
+    [Authorize]
+    public IActionResult Create(string idUser)
+    {
+            
+        return View();
     }
 }
