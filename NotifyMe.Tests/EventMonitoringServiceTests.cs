@@ -1,6 +1,6 @@
 ﻿using Moq;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.Tests
@@ -22,7 +22,7 @@ namespace NotifyMe.Tests
     
             _service.LogEvent("Test", "Details");
             
-            _repositoryMock.Verify(r => r.Add(It.IsAny<EventMonitoring>()), Times.Once());
+            _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<EventMonitoring>()), Times.Once());
 
         }
  
@@ -31,7 +31,7 @@ namespace NotifyMe.Tests
    
             _service.LogEvent("Test", "Details");
             
-            _repositoryMock.Verify(r => r.Add(It.Is<EventMonitoring>(
+            _repositoryMock.Verify(r => r.CreateAsync(It.Is<EventMonitoring>(
                 e => e.EventName == "Test" && e.EventDescription == "Details"
             )), Times.Once());
 

@@ -1,10 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
-namespace NotifyMe.API.ViewModels;
+namespace NotifyMe.Core.Models;
 
 public class EditProfileViewModel
 {
-    [Display(Name = "Логин")]
+    public string? Id { get; set; }
+
+    [Display(Name = "Login")]
     [DataType(DataType.Text)]
     public string? UserName { get; set; }
         
@@ -16,27 +19,27 @@ public class EditProfileViewModel
     [DataType(DataType.Text)]
     public string? LastName { get; set; }
         
-    [Display(Name = "Электронная почта")]
+    [Display(Name = "Email address")]
     [DataType(DataType.EmailAddress)]
     public string? Email { get; set; }    
     
-    [Display(Name = "PhoneNumber")]
+    [Display(Name = "Phone number")]
     [DataType(DataType.PhoneNumber)]
     public string? PhoneNumber { get; set; }
         
-    [Display(Name = "Загрузите изображение для аватара")]
+    [Display(Name = "Upload an avatar image")]
     [DataType(DataType.Text)]
     public IFormFile? File { get; set; }
         
-    [Display(Name = "Пароль")]
+    [Display(Name = "Password")]
     [DataType(DataType.Password)]
     public string? Password { get; set; }
         
-    [Display(Name = "Аватар")]
+    [Display(Name = "Avatar")]
     [DataType(DataType.Text)]
     public string? Avatar { get; set; }
              
-    [Display(Name = "Информация о себе")]
+    [Display(Name = "Information about yourself")]
     [DataType(DataType.Text)]
     public string? Info { get; set; }
 }

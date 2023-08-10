@@ -1,61 +1,21 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
-using NotifyMe.Infrastructure.Context;
-using NotifyMe.Infrastructure.Repositories;
 using NotifyMe.Infrastructure.Services;
-
-using RabbitMQ.Client;
+using NotifyMe.IoC.Configuration.DI;
 
 namespace NotifyMe.API
 {
     public class Program
     {
+        private static readonly IConfiguration _configuration; 
+        private static readonly ILogger _logger;
+        
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-            builder.Services
-                .AddDbContext<DatabaseContext>(options =>
-                {
-                    options
-                        .UseLazyLoadingProxies()
-                        .UseSqlServer(
-                        builder.Configuration.GetConnectionString("DefaultConnection"), 
-                        b => b.MigrationsAssembly("NotifyMe.API"));
-                })
-                .AddIdentity<User, IdentityRole>(option =>
-                {
-                    option.Password.RequireDigit = false;
-                    option.Password.RequiredLength = 5;
-                    option.Password.RequireLowercase = false;
-                    option.Password.RequireUppercase = false;
-                    option.Password.RequireNonAlphanumeric = false;
-                })
-                .AddEntityFrameworkStores<DatabaseContext>();
-
+            
             // Services
-            builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new PathString("/Account/Login");
-                });
-            builder.Services.AddTransient<UploadFileService>();
-            builder.Services.AddScoped<IEventLogger, EventLogger>();
-            builder.Services.AddSingleton<RabbitMQService>(sp =>
-            {
-                var configuration = sp.GetRequiredService<IConfiguration>();
-                var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
-                var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
-                var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-                return new RabbitMQService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
-            });
-            builder.Services.AddTransient<INotificationService, NotificationService>();
-            builder.Services.AddScoped<IEventMonitoringRepository, EventMonitoringRepository>();
-            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
-            builder.Services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+            builder.Services.ConfigureBusinessServices(builder.Configuration, _logger);
 
             // Controllers and Views
             builder.Services.AddControllersWithViews();
@@ -78,6 +38,7 @@ namespace NotifyMe.API
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

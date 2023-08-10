@@ -2,8 +2,9 @@
 {
     public enum EventType
     {
-        Creation,
-        Update,
-        Deletion
+        Creation = 1,
+        Update = 2,
+        Deletion = 3,
+        View = 4
     }
 }

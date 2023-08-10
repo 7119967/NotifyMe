@@ -5,18 +5,18 @@ namespace NotifyMe.API.ViewModels;
 
 public class LoginViewModel
 {
-    [Required(ErrorMessage = "Не верно указан логин")]
-    [Remote("IsExist", "Validation", ErrorMessage = "Такой логин не зарегистрирован")]
-    [Display(Name = "Логин")]
+    [Required(ErrorMessage = "The username is specified incorrectly")]
+    [Remote("IsExist", "Validation", ErrorMessage = "This login is not registered")]
+    [Display(Name = "Login")]
     [DataType(DataType.Text)]
     public string? UserName { get; set; }
                         
-    [Required(ErrorMessage = "Не указан пароль")]
+    [Required(ErrorMessage = "No password specified")]
     [DataType(DataType.Password)]
-    [Display(Name = "Пароль")]
+    [Display(Name = "Password")]
     public string? Password { get; set; }
         
-    [Display(Name = "Запомнить меня")]
+    [Display(Name = "Remember me")]
     public bool RememberMe { get; set; }
         
     public string? ReturnUrl { get; set; }

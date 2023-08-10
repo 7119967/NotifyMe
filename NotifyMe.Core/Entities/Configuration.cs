@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using NotifyMe.Core.Enums;
+﻿using NotifyMe.Core.Enums;
 
 namespace NotifyMe.Core.Entities
 {
@@ -12,6 +6,6 @@ namespace NotifyMe.Core.Entities
     {
         public EventType EventType { get; set; }
         public double Threshold { get; set; }
-        public List<User>? Recipients { get; set; }
+        public virtual List<User>? Recipients { get; set; }
     }
 }

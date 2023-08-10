@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotifyMe.API.ViewModels;
+using NotifyMe.Core.Models;
 using NotifyMe.Core.Entities;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
- public class AccountController : Controller
+public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -15,11 +17,14 @@ namespace NotifyMe.API.Controllers;
         private DatabaseContext _db;
         private readonly IHostEnvironment _environment; 
         private readonly UploadFileService _uploadFileService; 
+        private readonly IMapper _mapper;
         
         public AccountController(UserManager<User> userManager, 
             RoleManager<IdentityRole> roleManager, 
-            SignInManager<User> signInManager, DatabaseContext db, 
-            IHostEnvironment environment, 
+            SignInManager<User> signInManager, 
+            DatabaseContext db, 
+            IHostEnvironment environment,
+            IMapper mapper,
             UploadFileService uploadFileService)
         {
             _userManager = userManager;
@@ -27,6 +32,7 @@ namespace NotifyMe.API.Controllers;
             _signInManager = signInManager;
             _db = db;
             _environment = environment;
+            _mapper = mapper;
             _uploadFileService = uploadFileService;
         }
 
@@ -68,6 +74,7 @@ namespace NotifyMe.API.Controllers;
 
             return View(model);
         }
+        
         [HttpGet]
         public IActionResult Login(string? returnUrl = null)
         {
@@ -81,7 +88,7 @@ namespace NotifyMe.API.Controllers;
             {
                 if (model != null)
                 {
-                    var user = await _userManager.FindByNameAsync(model.UserName!);
+                    var user = await _userManager.FindByNameAsync(model.UserName!) ?? throw new NullReferenceException();
                     var result = await _signInManager.PasswordSignInAsync(
                         user!,
                         model.Password!,
@@ -95,12 +102,14 @@ namespace NotifyMe.API.Controllers;
                         {
                             return Redirect(model.ReturnUrl);
                         }
-                        return View();
+                        
+                        return RedirectToAction("Index", "Notifications");
                     }
                 }
 
-                ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+                ModelState.AddModelError("", "Incorrect login and/or password");
             }
+
             return View(model);
         }
         

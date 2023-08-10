@@ -1,5 +1,5 @@
 ﻿using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Repositories;
 
 namespace NotifyMe.Infrastructure.Services
 {
@@ -21,8 +21,8 @@ namespace NotifyMe.Infrastructure.Services
                 EventName = name, 
                 EventDescription = description
             };
-            _repository.Add(eventItem);
-            _unitOfWork.Complete();
+            _repository.CreateAsync(eventItem);
+            _unitOfWork.CommitAsync();
         }
     }
 }

@@ -1,14 +1,19 @@
-﻿namespace NotifyMe.Core.Entities
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace NotifyMe.Core.Entities
 {
-    public class User : BaseEntity
+    public class User : IdentityUser
     {
-        public string? UserName { get; set; }
+        public override string?  UserName { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
-        public string? Email { get; set; }
-        public string? PhoneNumber { get; set; }
+        public override string? Email { get; set; }
+        public override string? PhoneNumber { get; set; }
         public string? Info { get; set; }
         public string? Avatar { get; set; }
-        public List<UserGroupUser> Groups { get; set; } = new List<UserGroupUser>();
+        
+        //public virtual List<UserGroupUser> UserGroupUser { get; set; } = new List<UserGroupUser>();
+        
+        public virtual List<Group> Groups { get; set; } = new();
     }
 }

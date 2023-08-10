@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
-using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.Infrastructure.Repositories
@@ -15,31 +16,42 @@ namespace NotifyMe.Infrastructure.Repositories
             _dbContext = dbContext;
             _dbSet = dbContext.Set<T>();
         }
-        
-        public void Add(T entity)
+
+        public async Task<ICollection<T>> GetListEntitiesAsync(Expression<Func<T, bool>> filter)
         {
-            _dbSet.Add(entity);
+            return await _dbSet.AsQueryable().Where(filter).ToListAsync() ?? throw new NullReferenceException();
         }
 
-        public void Update(T entity)
+        public async Task<ICollection<T>> GetAllAsync()
         {
-            _dbSet.Attach(entity);
+            return await _dbSet.AsQueryable().ToListAsync() ?? throw new NullReferenceException();
+        }
+
+        public async Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _dbSet.FirstOrDefaultAsync(filter);
+        }
+
+        public async Task<T> GetByIdAsync(int id)
+        {
+            return await _dbSet.FindAsync(id) ?? throw new NullReferenceException();
+        }
+
+        public async Task CreateAsync(T entity)
+        {
+            await _dbSet.AddAsync(entity);
+        }
+
+        public async Task UpdateAsync(T entity)
+        {
+            await Task.Run(() => _dbSet.Update(entity));
             _dbContext.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Delete(T entity)
+        public async Task DeleteAsync(int id)
         {
-            _dbSet.Remove(entity);
-        }
-
-        public T GetById(int id)
-        {
-            return _dbSet.Find(id) ?? throw new NullReferenceException();
-        }
-
-        public IEnumerable<T> GetAll()
-        {
-            return _dbSet.ToList();
+            var entity = await _dbSet.FindAsync(id);
+            await Task.Run(() => _dbSet.Remove(entity!));
         }
     }
 }

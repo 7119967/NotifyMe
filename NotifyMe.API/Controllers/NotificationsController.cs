@@ -12,13 +12,13 @@ public class NotificationsController : Controller
 {
     private readonly ILogger<NotificationsController> _logger;
     private readonly IEventLogger _eventLogger;
-    private readonly NotificationService _notificationService;
+    private readonly INotificationService _notificationService;
     private DatabaseContext _db;
 
     public NotificationsController(
         ILogger<NotificationsController> logger,
         IEventLogger eventLogger,
-        NotificationService notificationService,
+        INotificationService notificationService,
         DatabaseContext db)
     {
         _logger = logger;
@@ -39,9 +39,9 @@ public class NotificationsController : Controller
     [Authorize]
     public IActionResult Index()
     {
-        string currentUser = HttpContext.User?.FindFirst(ClaimTypes.NameIdentifier).Value;
+        string currentUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         List<Notification> notifications = _db.Notifications.ToList();
-            
+        ViewBag.Notifications = notifications;    
         return View(notifications);
     }
     

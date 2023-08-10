@@ -10,43 +10,30 @@
 @{
     Layout = "_Layout";
 }
-@{
-    List<User> users = new List<User>();
-    @foreach (User item in ViewBag.Users)
+
+<table class="table table-hover">
+    <thead class="thead-light">
+    <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Recipient</th>
+        <th scope="col">Message</th>
+        <th scope="col">ChangedElements</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
     {
-        @if (UserManager.GetUserId(User) != item.Id.ToString())
-        {
-            var role = UserManager.GetRolesAsync(item).Result;
-            if (!role.Contains("admin"))
-            {
-                users.Add(item);
-            }
-        }
+        <tr>
+            <th scope="row">
+                @item.Id
+            </th>
+            <td>@item.Recipient</td>
+            <td>@item.Message</td>
+            <td>@item.ChangedElements</td>
+        </tr>
     }
-    // await Html.RenderPartialAsync("PartialViews/UsersPartialView", users);
-}
-<div class="row mt-2 mb-5">
-    @foreach (var item in ViewBag.Users)
-    {
-        <div class="col-sm-8 mt-2">
-            <div class="card">
-                <div class="card-header p-0">
-                    @if (User.Identity!.IsAuthenticated)
-                    {
-                        <a class="nav-link" asp-controller="Users" asp-action="Profile" style="color: #000 !important;">
-                            <div class="row align-items-center">
-                                <div class="col-1"><img class="rounded-circle" src="@item.User.Avatar" width="35" alt="@item.User.UserName"></div> 
-                                <div class="col-9">@item.User.UserName</div> 
-                                <div class="col-2"><p class="text-right" style="font-size: 20px;"><b>...</b></p></div>
-                            </div>
-                        </a>
-                    }
-                </div>
-                <img src="@item.Image" class="" alt="@item.Description" style="width: 100%; height: 500px;">
-            </div>
-        </div>
-    }
-</div>
+    </tbody>
+</table>
 
 @section Scripts
 {
