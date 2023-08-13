@@ -16,7 +16,7 @@ public class GroupService: IGroupService
 
     public async Task<ICollection<Group>> GetListEntitiesAsync(Expression<Func<Group, bool>> filter)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.GroupRepository.GetAllAsync();
     }
 
     public async Task<ICollection<Group>> GetAllAsync()
@@ -26,7 +26,7 @@ public class GroupService: IGroupService
 
     public async Task<Group> GetEntityAsync(Expression<Func<Group, bool>> filter)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.GroupRepository.GetEntityAsync(filter) ?? throw new Exception();
     }
 
     public async Task<Group?> GetByIdAsync(int id)

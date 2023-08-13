@@ -8,7 +8,7 @@ public interface IGroupService
     Task<ICollection<Group>> GetListEntitiesAsync(Expression<Func<Group, bool>> filter);        
     Task<ICollection<Group>> GetAllAsync();
     Task<Group> GetEntityAsync(Expression<Func<Group, bool>> filter);
-    Task<Group> GetByIdAsync(int id); 
+    Task<Group?> GetByIdAsync(int id); 
     Task CreateAsync(Group entity);
     Task UpdateAsync(Group entity);
     Task DeleteAsync(int id);

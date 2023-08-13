@@ -14,25 +14,25 @@ public class UserService: IUserService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ICollection<User>> GetListEntitiesAsync(Expression<Func<User, bool>> filter)
+    public Task<ICollection<User>> GetListEntitiesAsync(Expression<Func<User, bool>> filter)
     {
-        throw new NotImplementedException();
+        return _unitOfWork.UserRepository.GetAllAsync();
     }
 
-    public async Task<ICollection<User>> GetAllAsync()
+    public Task<ICollection<User>> GetAllAsync()
     {
-        return await _unitOfWork.UserRepository.GetAllAsync();
+        return _unitOfWork.UserRepository.GetAllAsync();
     }
 
     public async Task<User> GetEntityAsync(Expression<Func<User, bool>> filter)
     {
-        throw new NotImplementedException();
+        return await _unitOfWork.UserRepository.GetEntityAsync(filter) ?? throw new NullReferenceException();
     }
 
-    public async Task<User?> GetByIdAsync(int id)
+    public Task<User?> GetByIdAsync(int id)
     {
         Expression<Func<User, bool>> filter = i => i.Id == id.ToString();
-        return await _unitOfWork.UserRepository.GetEntityAsync(filter);
+        return _unitOfWork.UserRepository.GetEntityAsync(filter);
     }
 
     public async Task CreateAsync(User entity)
@@ -41,15 +41,28 @@ public class UserService: IUserService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task UpdateAsync(User entity)
+    public Task UpdateAsync(User entity)
     {
-        await _unitOfWork.UserRepository.UpdateAsync(entity);
-        await _unitOfWork.CommitAsync();
+        _unitOfWork.UserRepository.UpdateAsync(entity);
+        _unitOfWork.CommitAsync();
+        
+        return Task.CompletedTask;
+    }    
+    
+    public void Update(User entity)
+    {
+        _unitOfWork.UserRepository.Update(entity);
+        _unitOfWork.Commit();
     }
 
     public async Task DeleteAsync(int id)
     {
         await _unitOfWork.UserRepository.DeleteAsync(id);
         await _unitOfWork.CommitAsync();
+    }
+    
+    public void Save()
+    {
+        _unitOfWork.Commit();
     }
 }

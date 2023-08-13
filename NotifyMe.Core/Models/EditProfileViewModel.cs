@@ -42,4 +42,5 @@ public class EditProfileViewModel
     [Display(Name = "Information about yourself")]
     [DataType(DataType.Text)]
     public string? Info { get; set; }
+    public string? ConcurrencyStamp { get; set; }
 }

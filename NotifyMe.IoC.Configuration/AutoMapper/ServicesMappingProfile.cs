@@ -26,7 +26,8 @@ public class ServicesMappingProfile: Profile
             .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
             .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber))
             .ForMember(d => d.Avatar, s => s.MapFrom(o => o.Avatar))
-            .ForMember(d => d.Info, s => s.MapFrom(o => o.Info));
+            .ForMember(d => d.Info, s => s.MapFrom(o => o.Info))
+            .ForMember(d => d.ConcurrencyStamp, s => s.MapFrom(o => o.ConcurrencyStamp));
 
         CreateMap<User, IndexUserViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -37,13 +38,14 @@ public class ServicesMappingProfile: Profile
             .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber));
        
         CreateMap<EditProfileViewModel, User>()
-            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            // .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
             .ForMember(d => d.LastName, s => s.MapFrom(o => o.LastName))
             .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
             .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber))
             .ForMember(d => d.Avatar, s => s.MapFrom(o => o.Avatar))
-            .ForMember(d => d.Info, s => s.MapFrom(o => o.Info));
+            .ForMember(d => d.Info, s => s.MapFrom(o => o.Info))
+            .ForMember(d => d.ConcurrencyStamp, s => s.MapFrom(o => o.ConcurrencyStamp));
     }
 }

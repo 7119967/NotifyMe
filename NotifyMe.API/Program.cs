@@ -7,15 +7,16 @@ namespace NotifyMe.API
 {
     public class Program
     {
-        private static readonly IConfiguration _configuration; 
-        private static readonly ILogger _logger;
+        private static IConfiguration? _configuration; 
+        // private static readonly ILogger? _logger;
         
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+            _configuration = builder.Configuration;
+
             // Services
-            builder.Services.ConfigureBusinessServices(builder.Configuration, _logger);
+            builder.Services.ConfigureBusinessServices(_configuration);
 
             // Controllers and Views
             builder.Services.AddControllersWithViews();
@@ -43,7 +44,7 @@ namespace NotifyMe.API
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Users}/{action=Index}/{id?}");
 
             var rabbitMqService = app.Services.GetRequiredService<RabbitMQService>();
             rabbitMqService.StartListening();
@@ -54,7 +55,7 @@ namespace NotifyMe.API
             {
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                Task.Run(()=> AdminInitializer.SeedAdminUser(rolesManager, userManager)) ;
+                Task.Run(() => AdminInitializer.SeedAdminUser(rolesManager, userManager));
             }
             catch (Exception ex)
             {

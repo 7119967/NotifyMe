@@ -88,9 +88,9 @@ public class AccountController : Controller
             {
                 if (model != null)
                 {
-                    var user = await _userManager.FindByNameAsync(model.UserName!) ?? throw new NullReferenceException();
+                    var user = await _userManager.FindByNameAsync(model.UserName) ?? throw new NullReferenceException();
                     var result = await _signInManager.PasswordSignInAsync(
-                        user!,
+                        user,
                         model.Password!,
                         model.RememberMe,
                         false
@@ -103,7 +103,7 @@ public class AccountController : Controller
                             return Redirect(model.ReturnUrl);
                         }
                         
-                        return RedirectToAction("Index", "Notifications");
+                        return RedirectToAction("Index", "Users");
                     }
                 }
 

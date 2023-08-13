@@ -29,7 +29,7 @@ public class AdminInitializer
         {
             User admin = new User 
             {
-                UserName = adminLogin ,
+                UserName = adminLogin,
                 Email = adminEmail
             };
 

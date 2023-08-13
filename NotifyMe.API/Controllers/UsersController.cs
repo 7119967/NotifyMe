@@ -3,8 +3,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
-using NotifyMe.API.ViewModels;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
@@ -18,7 +16,6 @@ public class UsersController : Controller
     private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly SignInManager<User> _signInManager;
-    private DatabaseContext _db;
     private readonly IHostEnvironment _environment;
     private readonly UploadFileService _uploadFileService;
     private readonly IMapper _mapper;
@@ -27,7 +24,6 @@ public class UsersController : Controller
     public UsersController(UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
         SignInManager<User> signInManager,
-        DatabaseContext db,
         IHostEnvironment environment,
         IMapper mapper,
         IUserService userService,
@@ -36,7 +32,6 @@ public class UsersController : Controller
         _userManager = userManager;
         _roleManager = roleManager;
         _signInManager = signInManager;
-        _db = db;
         _environment = environment;
         _mapper = mapper;
         _userService = userService;
@@ -45,17 +40,28 @@ public class UsersController : Controller
 
     [Authorize]
     [HttpGet]
-    public IActionResult Index(string search)
+    public IActionResult Index()
     {
-        List<User> users = _userService.GetAllAsync().Result.Where(t =>
+        var users = _mapper.Map<List<IndexUserViewModel>>(_userService.GetAllAsync().Result);
+        
+        return View(users);
+    } 
+    
+    [Authorize]
+    [HttpGet]
+    public IActionResult Search(string search)
+    {
+        List<User> searchUsers = _userService.GetAllAsync().Result.Where(t =>
             t.UserName!.Contains(search)
             || t.FirstName!.Contains(search)
             || t.LastName!.Contains(search)
             || t.Email!.Contains(search)
             || t.PhoneNumber!.Contains(search)
-            || t.Info!.Contains(search)).ToList(); ;
+            || t.Info!.Contains(search)).ToList();
 
-        return View(users);
+        var users = _mapper.Map<List<IndexUserViewModel>>(searchUsers);
+        
+        return RedirectToAction("Index", users);
     }
 
     [HttpGet]
@@ -79,6 +85,11 @@ public class UsersController : Controller
     public IActionResult Edit(string idCurrentUser)
     {
         var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idCurrentUser);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
         var model = _mapper.Map<User, EditProfileViewModel>(user);
 
         return View(model);
@@ -86,23 +97,55 @@ public class UsersController : Controller
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(EditProfileViewModel model)
+    public IActionResult Edit(EditProfileViewModel model)
     {
         if (ModelState.IsValid)
         {
             if (model.UserName != null)
             {
-                var user = await _userManager.FindByNameAsync(model.UserName);
-                var editUser = _mapper.Map<EditProfileViewModel, User>(model);
-
-                var result = await _userManager.UpdateAsync(editUser);
-                if (result.Succeeded)
+                var user = _userManager.FindByNameAsync(model.UserName).Result;
+                if (user == null)
                 {
-                    return RedirectToAction("Profile", "Users");
+                    return NotFound();
                 }
+                
+                var editUser = _mapper.Map<EditProfileViewModel, User>(model);
+                editUser.ConcurrencyStamp = user.ConcurrencyStamp;
+                
+                // var result = _userManager.UpdateAsync(user).ConfigureAwait(false);
+                // if (result)
+                // {
+                //     return RedirectToAction("Index", "Users");
+                // }
+                try
+                {
+                    _userService.Update(editUser);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest();
+                }
+
+                // var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == editUser.Id);
+                // if (user == null)
+                // {
+                //     return NotFound();
+                // }
+                // try
+                // {
+                //     await Task.Run(() => _userService.Update(editUser));
+                // }
+                // catch (Exception e)
+                // {
+                //     Console.WriteLine(e.Message);
+                //     return RedirectToAction("Profile", "Users");
+                // }
             }
         }
 
         return View(model);
+        // return RedirectToAction("Index");
     }
 }

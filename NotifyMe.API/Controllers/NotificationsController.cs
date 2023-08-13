@@ -39,7 +39,7 @@ public class NotificationsController : Controller
     [Authorize]
     public IActionResult Index()
     {
-        string currentUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+        // string currentUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         List<Notification> notifications = _db.Notifications.ToList();
         ViewBag.Notifications = notifications;    
         return View(notifications);

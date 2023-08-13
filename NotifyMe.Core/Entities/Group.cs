@@ -7,6 +7,6 @@
 
         //public virtual List<UserGroupUser> UserGroupUser { get; set; } = new List<UserGroupUser>();
         
-        public virtual List<User> Users { get; set; } = new();
+        // public virtual List<User> Users { get; set; } = new();
     }
 }

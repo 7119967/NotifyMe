@@ -7,16 +7,16 @@
 @model EditProfileViewModel
 
 @{
-    ViewBag.Title = "Profile";
+    ViewBag.Title = "Edit";
     Layout = "_Layout";
 }
 
-<h2>Профиль @user!.UserName</h2>
-<hr />
+<h2>Editing @user!.UserName</h2>
+<hr/>
 <div class="row">
     <div class="col-md-6">
         <form asp-action="Edit" asp-controller="Users" asp-antiforgery="true" method="post" enctype="multipart/form-data">
-           
+
             <div class="form-group">
                 <label asp-for="UserName" class="control-label"></label>
                 <input asp-for="UserName" class="form-control" value="@user.UserName">
@@ -24,19 +24,19 @@
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
                 <input asp-for="FirstName" class="form-control" value="@user.FirstName">
-            </div>         
+            </div>
             <div class="form-group">
                 <label asp-for="LastName" class="control-label"></label>
                 <input asp-for="LastName" class="form-control" value="@user.LastName">
-            </div>         
+            </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" value="@user.Email">
-            </div>         
+            </div>
             <div class="form-group">
                 <label asp-for="PhoneNumber" class="control-label"></label>
                 <input asp-for="PhoneNumber" class="form-control" value="@user.PhoneNumber">
-            </div>         
+            </div>
             <div class="form-group">
                 <label asp-for="Info" class="control-label"></label>
                 <input asp-for="Info" class="form-control" value="@user.Info">
@@ -47,7 +47,7 @@
             </div>
             <div class="form-group mb-3">
                 <label asp-for="File" class="control-label">Upload an image file</label>
-                <input asp-for="File" type="file" class="form-control-file" style="border: none; margin-top: 10px;" />
+                <input asp-for="File" type="file" class="form-control-file" style="border: none; margin-top: 10px;"/>
                 <span asp-validation-for="File" class="text-danger"></span>
             </div>
             @* <div class="form-group"> *@
@@ -71,11 +71,15 @@
             @*         } *@
             @*     </select> *@
             @* </div> *@
-       @*      <div class="form-group">
-                <input type="hidden" asp-for="Avatar" class="form-control" value="@user.Avatar">
-            </div> *@
+            <div class="form-group">
+                <input type="hidden" asp-for="Id" class="form-control" value="@user.Id">
+            </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary"/>
+                @* <input asp-for="@user.Id" type="hidden"> *@
+                @* <button type="submit" class="btn btn-primary">Update</button> *@
+                @* <a asp-page="Index" class="btn btn-success">Back To List</a> *@
+                <a class="btn btn-secondary" asp-controller="Users" asp-action="Index">Back to list</a>
             </div>
         </form>
     </div>
