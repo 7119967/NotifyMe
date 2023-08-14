@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230813051159_InitialCreate")]
+    [Migration("20230813165519_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -365,7 +365,6 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsConcurrencyToken()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+
 using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
@@ -18,25 +19,25 @@ public class ValidationController : Controller
     {
         if (id is null || id == 0)
         {
-            return !_db.Users.Any(p=> p.UserName == userName);
+            return !_db.Users.Any(p => p.UserName == userName);
         }
-        return _db.Users.Any(p=> p.UserName == userName);
+        return _db.Users.Any(p => p.UserName == userName);
     }
-        
+
     [HttpGet]
     public bool IsExist(string userName)
     {
-        return _db.Users.Any(p=> p.UserName == userName);
+        return _db.Users.Any(p => p.UserName == userName);
     }
-        
+
     [HttpGet]
     public bool CheckEmailAddress(string email)
     {
         if (!email.IsNullOrEmpty())
         {
-            return !_db.Users.Any(p=> p.Email == email);
+            return !_db.Users.Any(p => p.Email == email);
         }
-        return _db.Users.Any(p=> p.Email == email);
+        return _db.Users.Any(p => p.Email == email);
     }
-        
+
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Infrastructure.Services;
@@ -12,10 +13,10 @@ public class AdminInitializer
         string adminLogin = "admin";
         string adminEmail = "admin@admin.com";
         string adminPassword = "pass";
-  
-        var roles = new []
+
+        var roles = new[]
         {
-            "admin", 
+            "admin",
             "user"
         };
 
@@ -24,10 +25,10 @@ public class AdminInitializer
             if (await roleManager.FindByNameAsync(role) is null)
                 await roleManager.CreateAsync(new IdentityRole(role));
         }
-        
+
         if (await userManager.FindByNameAsync(adminEmail) == null)
         {
-            User admin = new User 
+            User admin = new User
             {
                 UserName = adminLogin,
                 Email = adminEmail

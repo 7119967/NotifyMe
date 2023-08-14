@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+
 using NotifyMe.Core.Interfaces;
 
 namespace NotifyMe.Infrastructure.Services

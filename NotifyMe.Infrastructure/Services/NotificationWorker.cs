@@ -1,24 +1,28 @@
 ﻿using System.Text;
+
 using Microsoft.Extensions.Hosting;
+
 using Newtonsoft.Json;
+
 using NotifyMe.Core.Entities;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace NotifyMe.Infrastructure.Services;
 
-public class NotificationWorker : BackgroundService 
+public class NotificationWorker : BackgroundService
 {
     private readonly IModel _channel;
     private readonly EmailService _emailService;
 
-    public NotificationWorker(IModel channel, EmailService emailService) 
+    public NotificationWorker(IModel channel, EmailService emailService)
     {
         _channel = channel;
         _emailService = emailService;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken) 
+    protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
         stoppingToken.ThrowIfCancellationRequested();
 
@@ -33,7 +37,7 @@ public class NotificationWorker : BackgroundService
                 Task.Run(() => _emailService.SendEmailNotification(notification));
                 Task.Run(() => _emailService.SendSmsNotification(notification));
             }
-            
+
             _channel.BasicAck(e.DeliveryTag, false);
         };
 

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Infrastructure.Services;
 using NotifyMe.IoC.Configuration.DI;
@@ -7,9 +8,9 @@ namespace NotifyMe.API
 {
     public class Program
     {
-        private static IConfiguration? _configuration; 
+        private static IConfiguration? _configuration;
         // private static readonly ILogger? _logger;
-        
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -62,7 +63,7 @@ namespace NotifyMe.API
                 var logger = services.GetRequiredService<ILogger<Program>>();
                 logger.LogError(ex, "An error occurred while seeding the database.");
             }
-            
+
             app.Run();
         }
     }

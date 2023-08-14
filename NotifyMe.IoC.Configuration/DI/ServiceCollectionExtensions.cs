@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
@@ -13,6 +14,7 @@ using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Repositories;
 using NotifyMe.Infrastructure.Services;
+
 using RabbitMQ.Client;
 
 namespace NotifyMe.IoC.Configuration.DI;
@@ -31,7 +33,7 @@ public static class ServiceCollectionExtensions
                 .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         });
-        
+
         services.AddIdentity<User, IdentityRole>(option =>
             {
                 option.Password.RequireDigit = false;
@@ -41,7 +43,7 @@ public static class ServiceCollectionExtensions
                 option.Password.RequireNonAlphanumeric = false;
             })
             .AddEntityFrameworkStores<DatabaseContext>();
-        
+
         services
             .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
@@ -53,15 +55,15 @@ public static class ServiceCollectionExtensions
         // services.AddTransient<INotificationRepository, NotificationRepository>();
         // services.AddTransient<IGroupRepository, GroupRepository>();
         // services.AddTransient<IUserRepository, UserRepository>();
-        
+
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
+
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
-        
+
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddSingleton<RabbitMQService>(sp =>
         {
@@ -70,10 +72,10 @@ public static class ServiceCollectionExtensions
             var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
             return new RabbitMQService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
         });
-        
+
         services.AddTransient<EmailService>();
         services.AddTransient<UploadFileService>();
-        
+
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
     }
 }

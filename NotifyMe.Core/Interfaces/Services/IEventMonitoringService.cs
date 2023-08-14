@@ -1,6 +1,4 @@
-﻿using NotifyMe.Core.Entities;
-
-namespace NotifyMe.Core.Interfaces
+﻿namespace NotifyMe.Core.Interfaces
 {
     public interface IEventMonitoringService
     {

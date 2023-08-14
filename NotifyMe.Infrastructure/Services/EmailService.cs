@@ -1,5 +1,7 @@
 ﻿using System.Net.Mail;
+
 using NotifyMe.Core.Entities;
+
 using Twilio;
 using Twilio.Exceptions;
 using Twilio.Rest.Api.V2010.Account;
@@ -15,17 +17,17 @@ public class EmailService
         message.From = new MailAddress("alerts@example.com");
         message.Subject = "Alert notification";
         message.Body = notification.Message;
-        
-        using(var smtp = new SmtpClient())
+
+        using (var smtp = new SmtpClient())
         {
             smtp.Host = "smtp.example.com";
             smtp.SendMailAsync(message);
             smtp.Dispose();
         }
-        
+
         return Task.CompletedTask;
     }
-    
+
     public Task SendSmsNotification(Notification notification)
     {
         const string accountSid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
@@ -51,7 +53,7 @@ public class EmailService
 
         Console.Write("Press any key to continue.");
         Console.ReadKey();
-        
+
         return Task.CompletedTask;
     }
 }

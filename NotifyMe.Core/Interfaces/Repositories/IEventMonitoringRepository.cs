@@ -2,7 +2,7 @@
 
 namespace NotifyMe.Core.Interfaces.Repositories
 {
-    public interface IEventMonitoringRepository: IRepository<EventMonitoring>
+    public interface IEventMonitoringRepository : IRepository<EventMonitoring>
     {
     }
 }

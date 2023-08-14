@@ -1,6 +1,6 @@
 ﻿namespace NotifyMe.Core.Entities
 {
-    public class GroupUser: BaseEntity
+    public class GroupUser : BaseEntity
     {
         public string? UserId { get; set; }
         // public virtual User User { get; set; }

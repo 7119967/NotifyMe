@@ -1,14 +1,15 @@
 ﻿using System.Linq.Expressions;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
 
 namespace NotifyMe.Infrastructure.Services;
 
-public class GroupService: IGroupService
+public class GroupService : IGroupService
 {
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public GroupService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;

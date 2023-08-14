@@ -1,14 +1,15 @@
 ﻿using System.Linq.Expressions;
+using System.Reflection;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
 
 namespace NotifyMe.Infrastructure.Services;
 
-public class UserService: IUserService
+public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
-    
+
     public UserService(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
@@ -45,10 +46,10 @@ public class UserService: IUserService
     {
         _unitOfWork.UserRepository.UpdateAsync(entity);
         _unitOfWork.CommitAsync();
-        
+
         return Task.CompletedTask;
-    }    
-    
+    }
+
     public void Update(User entity)
     {
         _unitOfWork.UserRepository.Update(entity);
@@ -60,9 +61,33 @@ public class UserService: IUserService
         await _unitOfWork.UserRepository.DeleteAsync(id);
         await _unitOfWork.CommitAsync();
     }
-    
-    public void Save()
+
+    public void ApplyChanges(Object source, Object target)
     {
-        _unitOfWork.Commit();
+        PropertyInfo[] properties = typeof(User).GetProperties();
+
+        foreach (PropertyInfo property in properties)
+        {
+            var sourceValue = property.GetValue(source);
+            var targetValue = property.GetValue(target);
+            
+            if (sourceValue == null && targetValue == null)
+            {
+                continue;
+            }
+            
+            switch (property.Name)
+            {
+                case "UserName":
+                case "FirstName":
+                case "LastName":
+                case "Email":
+                case "PhoneNumber":
+                case "Avatar":
+                case "Info":
+                    property.SetValue(target, sourceValue);
+                    break;
+            }
+        }
     }
 }

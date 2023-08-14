@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Infrastructure.Context
@@ -12,18 +13,18 @@ namespace NotifyMe.Infrastructure.Context
         public override DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;
         public DbSet<GroupUser> GroupUsers { get; set; } = null!;
-        
+
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
             // Database.EnsureCreated();
         }
-        
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-       
+
         }
-        
+
         // protected override void OnModelCreating(ModelBuilder modelBuilder)
         // {
         // }

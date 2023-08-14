@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -50,7 +49,7 @@ namespace NotifyMe.Infrastructure.Services
 
                 // Start consuming messages from the queue
                 _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
-          
+
             }
             catch (BrokerUnreachableException ex)
             {

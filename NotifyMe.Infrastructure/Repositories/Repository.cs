@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
+
 using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Infrastructure.Context;
 
@@ -44,35 +46,13 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public Task UpdateAsync(T entity)
         {
-            // _entities.Entry(entity).State = EntityState.Modified;
             _entities.Update(entity);
 
             return Task.CompletedTask;
         }
-        
+
         public void Update(T entity)
         {
-            // _context.Attach(entity);
-            // entity.ConcurrencyStamp = Guid.NewGuid().ToString();
-            //
-            // var entityEntry = _entities.Entry(entity);
-            //
-            // if (entity.GetType() == typeof(User))
-            // {
-            //     var user = _mapper.Map<User>(entity);
-            //     var track = _entities.Attach(user);
-            //     track.ConcurrencyStamp = Guid.NewGuid().ToString();
-            //     track.State = EntityState.Modified;
-            // }
-  
-            
-            // _context.SaveChanges();
-
-            // var entityEntry = _entities.Entry(entity);
-            // if (entityEntry.State != EntityState.Detached)
-            // {
-            //     entityEntry.State = EntityState.Detached;
-            // }
             _entities.Update(entity);
         }
 
@@ -86,11 +66,6 @@ namespace NotifyMe.Infrastructure.Repositories
 
             _entities.Entry(entity).State = EntityState.Deleted;
             await Task.Run(() => _entities.Remove(entity));
-        }
-        
-        public void Commit()
-        {
-            _context.SaveChanges();
         }
     }
 }

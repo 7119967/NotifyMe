@@ -1,10 +1,9 @@
-﻿using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Infrastructure.Context;
-using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
@@ -32,23 +31,23 @@ public class NotificationsController : Controller
     {
         _eventLogger.LogEvent(notification);
         _notificationService.SendNotification(notification);
-        
+
         return RedirectToAction("");
     }
-    
+
     [Authorize]
     public IActionResult Index()
     {
         // string currentUser = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         List<Notification> notifications = _db.Notifications.ToList();
-        ViewBag.Notifications = notifications;    
+        ViewBag.Notifications = notifications;
         return View(notifications);
     }
-    
+
     [Authorize]
     public IActionResult Create(string idUser)
     {
-            
+
         return View();
     }
 }

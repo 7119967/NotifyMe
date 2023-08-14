@@ -1,12 +1,11 @@
-﻿using AutoMapper;
-
+﻿using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
-using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -43,15 +42,15 @@ public class UsersController : Controller
     public IActionResult Index()
     {
         var users = _mapper.Map<List<IndexUserViewModel>>(_userService.GetAllAsync().Result);
-        
+
         return View(users);
-    } 
-    
+    }
+
     [Authorize]
     [HttpGet]
     public IActionResult Search(string search)
     {
-        List<User> searchUsers = _userService.GetAllAsync().Result.Where(t =>
+        var searchUsers = _userService.GetAllAsync().Result.Where(t =>
             t.UserName!.Contains(search)
             || t.FirstName!.Contains(search)
             || t.LastName!.Contains(search)
@@ -60,7 +59,7 @@ public class UsersController : Controller
             || t.Info!.Contains(search)).ToList();
 
         var users = _mapper.Map<List<IndexUserViewModel>>(searchUsers);
-        
+
         return RedirectToAction("Index", users);
     }
 
@@ -108,18 +107,16 @@ public class UsersController : Controller
                 {
                     return NotFound();
                 }
-                
-                var editUser = _mapper.Map<EditProfileViewModel, User>(model);
-                editUser.ConcurrencyStamp = user.ConcurrencyStamp;
-                
-                // var result = _userManager.UpdateAsync(user).ConfigureAwait(false);
-                // if (result)
-                // {
-                //     return RedirectToAction("Index", "Users");
-                // }
+
+                var editUser = _mapper.Map<User, EditProfileViewModel>(user);
+                var target = _mapper.Map<EditProfileViewModel, User>(editUser);
+                var source = _mapper.Map<EditProfileViewModel, User>(model);
+
+                _userService.ApplyChanges(source, target);
+
                 try
                 {
-                    _userService.Update(editUser);
+                    _userService.Update(target);
                     return RedirectToAction("Index");
                 }
                 catch (Exception e)
@@ -127,25 +124,9 @@ public class UsersController : Controller
                     Console.WriteLine(e.Message);
                     return BadRequest();
                 }
-
-                // var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == editUser.Id);
-                // if (user == null)
-                // {
-                //     return NotFound();
-                // }
-                // try
-                // {
-                //     await Task.Run(() => _userService.Update(editUser));
-                // }
-                // catch (Exception e)
-                // {
-                //     Console.WriteLine(e.Message);
-                //     return RedirectToAction("Profile", "Users");
-                // }
             }
         }
 
         return View(model);
-        // return RedirectToAction("Index");
     }
 }

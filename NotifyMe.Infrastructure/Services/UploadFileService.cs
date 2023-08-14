@@ -8,5 +8,5 @@ public class UploadFileService
     {
         await using var stream = new FileStream(Path.Combine(path, fileName), FileMode.Create);
         await file.CopyToAsync(stream);
-    } 
+    }
 }

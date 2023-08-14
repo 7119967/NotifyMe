@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Infrastructure.Context;
 
@@ -8,12 +9,12 @@ namespace NotifyMe.Infrastructure.Repositories
     {
         private bool disposed = false;
         private readonly DatabaseContext _dbContext;
-        
+
         private readonly IEventMonitoringRepository _eventMonitoringRepository = null!;
         private readonly INotificationRepository _notificationRepository = null!;
         private readonly IGroupRepository _groupRepository = null!;
         private readonly IUserRepository _userRepository = null!;
-        
+
         public IEventMonitoringRepository EventMonitoringRepository => _eventMonitoringRepository ?? new EventMonitoringRepository(_dbContext);
         public INotificationRepository NotificationRepository => _notificationRepository ?? new NotificationRepository(_dbContext);
         public IGroupRepository GroupRepository => _groupRepository ?? new GroupRepository(_dbContext);
@@ -34,18 +35,18 @@ namespace NotifyMe.Infrastructure.Repositories
             {
                 Console.WriteLine($"{e.GetType().FullName}: {e.Message}");
             }
-            
+
             return Task.CompletedTask;
         }
-        
+
         public void Commit()
         {
             try
             {
                 _dbContext.SaveChanges();
             }
-            
-            catch (DbUpdateConcurrencyException  e)
+
+            catch (DbUpdateConcurrencyException e)
             {
                 Console.WriteLine($"{e.GetType().FullName}: {e.Message}");
             }
@@ -62,7 +63,7 @@ namespace NotifyMe.Infrastructure.Repositories
                 this.disposed = true;
             }
         }
-        
+
         public void Dispose()
         {
             Dispose(true);

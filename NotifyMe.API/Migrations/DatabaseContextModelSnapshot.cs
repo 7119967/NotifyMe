@@ -362,7 +362,6 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .IsConcurrencyToken()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
