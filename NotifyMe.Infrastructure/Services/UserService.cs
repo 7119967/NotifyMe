@@ -30,9 +30,9 @@ public class UserService : IUserService
         return await _unitOfWork.UserRepository.GetEntityAsync(filter) ?? throw new NullReferenceException();
     }
 
-    public Task<User?> GetByIdAsync(int id)
+    public Task<User?> GetByIdAsync(string entityId)
     {
-        Expression<Func<User, bool>> filter = i => i.Id == id.ToString();
+        Expression<Func<User, bool>> filter = i => i.Id == entityId;
         return _unitOfWork.UserRepository.GetEntityAsync(filter);
     }
 
@@ -56,9 +56,9 @@ public class UserService : IUserService
         _unitOfWork.Commit();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(string entityId)
     {
-        await _unitOfWork.UserRepository.DeleteAsync(id);
+        await _unitOfWork.UserRepository.DeleteAsync(entityId);
         await _unitOfWork.CommitAsync();
     }
 

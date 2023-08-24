@@ -1,0 +1,74 @@
+﻿@model List<Group>
+
+@{
+    Layout = "_Layout";
+    int Count = 1;
+}
+
+<div class="card">
+    <h5 class="card-header">
+        @{
+            await Html.RenderPartialAsync("PartialViews/PanelIndexPartialView");
+        }
+    </h5>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-row=">@item.Id">
+                        <th scope="row">@Count</th>
+                        <td>@item.Name</td>
+                        <td>@item.Description</td>
+                        <td>
+                            <a class="btn btn-outline-primary"
+                               asp-action="Details"
+                               asp-controller="Users"
+                               asp-route-idUser="@item.Id">View</a>
+        
+                            <button class="btn btn-outline-primary"
+                                    type="submit"
+                                    id="editing"
+                                    onclick="editing('@item.Id')"
+                                    style="outline:none;">
+                                Edit
+                            </button>
+                        </td>
+                    </tr>
+                    Count++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <script>
+        function editing(idCurrentUser) {
+            $.ajax({
+                url: '@Url.Action("Details", "Users")',
+                type: 'GET',
+                data: { 'idCurrentUser': idCurrentUser },
+            });
+        }
+        
+        function creating() {
+            alert("Add new item")
+            // $.ajax({
+            //     url: '@Url.Action("Details", "Users")',
+            //     type: 'GET',
+            //     data: { 'idCurrentUser': idCurrentUser },
+            // });
+        }
+    </script>
+}

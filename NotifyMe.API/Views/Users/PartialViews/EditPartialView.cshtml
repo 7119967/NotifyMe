@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+@model EditProfileViewModel
+@{
+    ViewBag.Title = "Edit";
+    Layout = "_Layout";
+}
+
+<div class="modal-dialog modal-lg p-5">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalEdit">@ViewBag.Title</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form asp-action="Edit" asp-controller="Users" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" class="form-control" id="Id" value="@Model.Id">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="UserName" class="control-label"></label>
+                            <input asp-for="UserName" class="form-control" id="UserName" value="@Model.UserName">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" id="FirstName" value="@Model.FirstName">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="LastName" class="control-label"></label>
+                            <input asp-for="LastName" class="form-control" id="LastName" value="@Model.LastName">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" id="Email" value="@Model.Email">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="PhoneNumber" class="control-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber" value="@Model.PhoneNumber">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="form-group">
+                        <label asp-for="Info" class="control-label"></label>
+                        <textarea asp-for="Info" class="form-control" id="Info" value="@Model.Info"></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Avatar" class="control-label"></label>
+                            <input asp-for="Avatar" class="form-control" id="Avatar" value="@Model.Avatar">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="File" class="control-label">Upload an image file</label>
+                            <input asp-for="File" type="file" class="form-control-file" style="border: none; margin-top: 10px;"/>
+                            <span asp-validation-for="File" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abort</button>
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

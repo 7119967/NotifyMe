@@ -30,9 +30,9 @@ public class GroupService : IGroupService
         return await _unitOfWork.GroupRepository.GetEntityAsync(filter) ?? throw new Exception();
     }
 
-    public async Task<Group?> GetByIdAsync(int id)
+    public async Task<Group?> GetByIdAsync(string entityId)
     {
-        Expression<Func<Group, bool>> filter = i => i.Id == id;
+        Expression<Func<Group, bool>> filter = i => i.Id.ToString() == entityId;
         return await _unitOfWork.GroupRepository.GetEntityAsync(filter);
     }
 
@@ -48,9 +48,9 @@ public class GroupService : IGroupService
         await _unitOfWork.CommitAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(string entityId)
     {
-        await _unitOfWork.GroupRepository.DeleteAsync(id);
+        await _unitOfWork.GroupRepository.DeleteAsync(entityId);
         await _unitOfWork.CommitAsync();
     }
 }

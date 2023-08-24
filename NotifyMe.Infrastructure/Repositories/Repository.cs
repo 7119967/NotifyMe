@@ -33,9 +33,9 @@ namespace NotifyMe.Infrastructure.Repositories
             return await _entities.FirstOrDefaultAsync(filter);
         }
 
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(string entityId)
         {
-            return await _entities.FindAsync(id) ?? throw new NullReferenceException();
+            return await _entities.FindAsync(entityId) ?? throw new NullReferenceException();
         }
 
         public async Task CreateAsync(T entity)
@@ -56,9 +56,9 @@ namespace NotifyMe.Infrastructure.Repositories
             _entities.Update(entity);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(string entityId)
         {
-            var entity = await _entities.FindAsync(id);
+            var entity = await _entities.FindAsync(entityId);
             if (entity == null)
             {
                 throw new NullReferenceException();

@@ -39,5 +39,15 @@ public class ValidationController : Controller
         }
         return _db.Users.Any(p => p.Email == email);
     }
+    
+    [HttpGet]
+    public bool CheckPhoneNumber(string phoneNumber)
+    {
+        if (!phoneNumber.IsNullOrEmpty())
+        {
+            return !_db.Users.Any(p => p.PhoneNumber == phoneNumber);
+        }
+        return _db.Users.Any(p => p.PhoneNumber == phoneNumber);
+    }
 
 }

@@ -1,34 +1,48 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewBag.Title = "The entry point";
+    ViewBag.Title = "Login form";
     Layout = "_Layout";
 }
-
-<h2>Fill out the login form</h2>
-<hr />
-<div class="row align-items-center">
-    <div class="col-md-6">
-        <form asp-action="Login" asp-controller="Account" asp-antiforgery="true" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group mb-3">
-                <label asp-for="UserName" class="control-label"></label>
-                <input asp-for="UserName" class="form-control"/>
-                <span asp-validation-for="UserName" class="text-danger"></span>
+<div class="row p-5">
+    <div class="col">
+    </div>
+    <div class="col-6">
+        <!-- form card login -->
+        <div class="card rounded-0">
+            <div class="card-header">
+                <h3 class="mb-0">@ViewBag.Title</h3>
             </div>
-            <div class="form-group mb-3">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control"/>
-                <span asp-validation-for="Password" class="text-danger"></span>
+            <div class="card-body">
+                <form asp-action="Login" asp-controller="Account" asp-antiforgery="true" method="post" class="form" role="form" autocomplete="off" id="formLogin">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group mb-3">
+                        <label asp-for="UserName" class="control-label"></label>
+                        <input asp-for="UserName" class="form-control"/>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password" class="control-label"></label>
+                        <input asp-for="Password" class="form-control"/>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3 form-check">
+                        <label class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input">
+                            <span class="custom-control-indicator"></span>
+                            <span class="custom-control-description small text-dark">Remember me on this computer</span>
+                        </label>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input type="submit" value="Sign in" class="btn btn-primary" id="btnLogin"/>
+                    </div>
+                </form>
             </div>
-            <div class="form-group mb-3 form-check">
-                <input asp-for="RememberMe" type="checkbox" class="form-check-input">
-                <label asp-for="RememberMe" class="form-check-label"></label>
-              </div>
-            <div class="form-group mb-3">
-                <input type="submit" value="Sign in" class="btn btn-primary"/>
-            </div>
-        </form>
+            <!--/card-block-->
+        </div>
+        <!-- /form card login -->
+    </div>
+    <div class="col">
     </div>
 </div>
 

@@ -48,9 +48,9 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\images\\");
+            string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
             _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
-            string pathImage = $"/images/{model.Email}.jpg";
+            string pathImage = $"/img/{model.Email}.jpg";
 
             User user = new User
             {

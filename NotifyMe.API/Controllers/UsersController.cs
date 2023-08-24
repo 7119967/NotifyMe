@@ -1,11 +1,11 @@
-﻿using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
+using NotifyMe.Core.Models.User;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -63,9 +63,49 @@ public class UsersController : Controller
         return RedirectToAction("Index", users);
     }
 
-    [HttpGet]
     [Authorize]
-    public IActionResult Profile(string idUser)
+    [HttpGet]
+    public IActionResult Create(string idUser)
+    {
+        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idUser);
+        if (user is null)
+        {
+            NotFound();
+            return RedirectToAction("Index");
+        }
+        
+        var model = new CreateViewModel
+        {
+            
+        };
+
+        return Json(model);
+    }
+    
+    [Authorize]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(CreateViewModel model)
+    {
+        try
+        {
+            if (model != null)
+            {
+                var entity = _mapper.Map<CreateViewModel, User>(model);
+                _userService.CreateAsync(entity);
+            }
+            var data = _mapper.Map<List<IndexUserViewModel>>(_userService.GetAllAsync().Result);
+            return View("Index", data);
+        }
+        catch
+        {
+            return Json(model);
+        }
+    }
+    
+    [Authorize]
+    [HttpGet]
+    public IActionResult Details(string idUser)
     {
         var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idUser);
         if (user is null)
@@ -74,7 +114,7 @@ public class UsersController : Controller
             return RedirectToAction("Index");
         }
 
-        var model = _mapper.Map<User, ProfileViewModel>(user);
+        var model = _mapper.Map<User, DetailsViewModel>(user);
 
         return View(model);
     }
@@ -91,13 +131,15 @@ public class UsersController : Controller
 
         var model = _mapper.Map<User, EditProfileViewModel>(user);
 
-        return View(model);
+        return View("PartialViews/EditPartialView", model);
     }
 
     [HttpPost]
     [Authorize]
     public IActionResult Edit(EditProfileViewModel model)
     {
+        var source = new User{};
+        
         if (ModelState.IsValid)
         {
             if (model.UserName != null)
@@ -110,7 +152,7 @@ public class UsersController : Controller
 
                 var editUser = _mapper.Map<User, EditProfileViewModel>(user);
                 var target = _mapper.Map<EditProfileViewModel, User>(editUser);
-                var source = _mapper.Map<EditProfileViewModel, User>(model);
+                source = _mapper.Map<EditProfileViewModel, User>(model);
 
                 _userService.ApplyChanges(source, target);
 
@@ -126,7 +168,31 @@ public class UsersController : Controller
                 }
             }
         }
+        
+        var obj = _mapper.Map<User, EditProfileViewModel>(source);
+        return View("PartialViews/EditPartialView", obj);
+    }
+    
 
-        return View(model);
+    [Authorize]
+    [HttpDelete]
+    public IActionResult Delete(string entityId)
+    {
+        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
+        if (user == null)
+        {
+            return NotFound();
+        }
+
+        try
+        {
+            _userService.DeleteAsync(entityId);
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return BadRequest();
+        }
     }
 }
