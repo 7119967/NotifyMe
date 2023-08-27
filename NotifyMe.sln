@@ -13,7 +13,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.IoC.Configuration", "NotifyMe.IoC.Configuration\NotifyMe.IoC.Configuration.csproj", "{D92A4B67-5A11-4094-ABD1-BD091136C112}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyMe.Core", "NotifyMe.Core\NotifyMe.Core.csproj", "{5EDE1A88-0A9E-4026-8573-C71044C9062A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.Core", "NotifyMe.Core\NotifyMe.Core.csproj", "{5EDE1A88-0A9E-4026-8573-C71044C9062A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
-using NotifyMe.Core.Models.User;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -41,7 +40,7 @@ public class UsersController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var users = _mapper.Map<List<IndexUserViewModel>>(_userService.GetAllAsync().Result);
+        var users = _mapper.Map<List<UserIndexViewModel>>(_userService.GetAllAsync().Result);
 
         return View(users);
     }
@@ -58,23 +57,23 @@ public class UsersController : Controller
             || t.PhoneNumber!.Contains(search)
             || t.Info!.Contains(search)).ToList();
 
-        var users = _mapper.Map<List<IndexUserViewModel>>(searchUsers);
+        var users = _mapper.Map<List<UserIndexViewModel>>(searchUsers);
 
         return RedirectToAction("Index", users);
     }
 
     [Authorize]
     [HttpGet]
-    public IActionResult Create(string idUser)
+    public IActionResult Create(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idUser);
+        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
         if (user is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
         
-        var model = new CreateViewModel
+        var model = new UserCreateViewModel
         {
             
         };
@@ -85,16 +84,16 @@ public class UsersController : Controller
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(CreateViewModel model)
+    public IActionResult Create(UserCreateViewModel model)
     {
         try
         {
             if (model != null)
             {
-                var entity = _mapper.Map<CreateViewModel, User>(model);
+                var entity = _mapper.Map<UserCreateViewModel, User>(model);
                 _userService.CreateAsync(entity);
             }
-            var data = _mapper.Map<List<IndexUserViewModel>>(_userService.GetAllAsync().Result);
+            var data = _mapper.Map<List<UserIndexViewModel>>(_userService.GetAllAsync().Result);
             return View("Index", data);
         }
         catch
@@ -105,25 +104,25 @@ public class UsersController : Controller
     
     [Authorize]
     [HttpGet]
-    public IActionResult Details(string idUser)
+    public IActionResult Details(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idUser);
+        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
         if (user is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        var model = _mapper.Map<User, DetailsViewModel>(user);
+        var model = _mapper.Map<User, UserDetailsViewModel>(user);
 
         return View(model);
     }
 
     [HttpGet]
     [Authorize]
-    public IActionResult Edit(string idCurrentUser)
+    public IActionResult Edit(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == idCurrentUser);
+        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
         if (user == null)
         {
             return NotFound();

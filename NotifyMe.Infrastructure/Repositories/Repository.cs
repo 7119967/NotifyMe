@@ -25,7 +25,8 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task<ICollection<T>> GetAllAsync()
         {
-            return await _entities.AsQueryable().ToListAsync() ?? throw new NullReferenceException();
+            // return await _entities.AsQueryable().ToListAsync() ?? throw new NullReferenceException();
+            return await _entities.ToListAsync();
         }
 
         public async Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)
@@ -40,15 +41,14 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task CreateAsync(T entity)
         {
-            _entities.Entry(entity).State = EntityState.Added;
             await _entities.AddAsync(entity);
         }
 
-        public Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
-            _entities.Update(entity);
-
-            return Task.CompletedTask;
+            await Task.Run(() => _entities.Update(entity));
+            // _entities.Update(entity);
+            // await Task.Yield();
         }
 
         public void Update(T entity)

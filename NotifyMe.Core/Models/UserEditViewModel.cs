@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace NotifyMe.Core.Models.User;
+namespace NotifyMe.Core.Models;
 
-public class CreateViewModel
+public class UserEditViewModel
 {
     public string? Id { get; set; }
 

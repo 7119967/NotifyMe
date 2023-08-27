@@ -25,18 +25,16 @@ namespace NotifyMe.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
-        public Task CommitAsync()
+        public async Task CommitAsync()
         {
             try
             {
-                _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 Console.WriteLine($"{e.GetType().FullName}: {e.Message}");
             }
-
-            return Task.CompletedTask;
         }
 
         public void Commit()

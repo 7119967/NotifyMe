@@ -1,6 +1,6 @@
 ﻿namespace NotifyMe.Core.Models
 {
-    public class IndexUserViewModel
+    public class UserIndexViewModel
     {
         public string? Id { get; set; }
         public string? UserName { get; set; }

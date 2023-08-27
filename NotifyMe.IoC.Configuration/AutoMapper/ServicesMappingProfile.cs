@@ -2,7 +2,6 @@
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Models;
-using NotifyMe.Core.Models.User;
 
 namespace NotifyMe.IoC.Configuration.AutoMapper;
 
@@ -36,7 +35,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
 
-        CreateMap<User, IndexUserViewModel>()
+        CreateMap<User, UserIndexViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -68,7 +67,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
         
-        CreateMap<CreateViewModel, User>()
+        CreateMap<UserCreateViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -84,7 +83,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
         
-        CreateMap<EditViewModel, User>()
+        CreateMap<UserEditViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -100,7 +99,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));  
         
-        CreateMap<DetailsViewModel, User>()
+        CreateMap<UserDetailsViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -116,7 +115,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
         
-        CreateMap<User, DetailsViewModel>()
+        CreateMap<User, UserDetailsViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -132,7 +131,7 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
             .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
 
-        CreateMap<IndexUserViewModel, DetailsViewModel>()
+        CreateMap<UserIndexViewModel, UserDetailsViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
@@ -148,7 +147,27 @@ public class ServicesMappingProfile : Profile
         // .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
         // .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
         
-        CreateMap<User, DeleteViewModel>()
+        CreateMap<User, UserDeleteViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id));
+
+        CreateMap<GroupCreateViewModel, Group>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
+        
+        CreateMap<Group, GroupDetailsViewModel>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
+        
+        CreateMap<Group, GroupEditViewModel>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
+        
+        CreateMap<Group, GroupIndexViewModel>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
     }
 }

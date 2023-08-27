@@ -1,8 +1,12 @@
-﻿@model List<Group>
+﻿@using AutoMapper
+@using NotifyMe.Core.Interfaces.Services;
+@inject IMapper Mapper;
+@inject IGroupService GroupService;
+@model List<GroupIndexViewModel>
 
 @{
     Layout = "_Layout";
-    int Count = 1;
+    int count = 1;
 }
 
 <div class="card">
@@ -14,61 +18,142 @@
     <div class="card-body">
         <table class="table table-hover">
             <thead class="thead-light">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Actions</th>
-                </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr data-row=">@item.Id">
-                        <th scope="row">@Count</th>
-                        <td>@item.Name</td>
-                        <td>@item.Description</td>
-                        <td>
-                            <a class="btn btn-outline-primary"
-                               asp-action="Details"
-                               asp-controller="Users"
-                               asp-route-idUser="@item.Id">View</a>
-        
-                            <button class="btn btn-outline-primary"
-                                    type="submit"
-                                    id="editing"
-                                    onclick="editing('@item.Id')"
-                                    style="outline:none;">
-                                Edit
-                            </button>
-                        </td>
-                    </tr>
-                    Count++;
-                }
+            @foreach (var item in Model)
+            {
+                <tr data-row=">@item.Id">
+                    <th scope="row">@count</th>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>
+                        @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
+                    </td>
+                </tr>
+                count++;
+
+                <!-- The previewing modal -->
+                <div class="modal fade" id="modalDetails" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
+                    @* @{ *@
+                    @*     var groupDetails = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
+                    @*     if (groupDetails != null) *@
+                    @*     { *@
+                    @*         var model = Mapper.Map<Group, GroupDetailsViewModel>(groupDetails); *@
+                    @*         @Html.PartialAsync("Details", model) *@
+                    @*     } *@
+                    @* } *@
+                </div>
+
+
+                <!-- The deleting modal -->
+                <div class="modal fade" id="modalDelete" tabindex="999" aria-labelledby="modalDelete" aria-hidden="true">
+                    @* @{ *@
+                    @*     var groupDelete = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
+                    @*     if (groupDelete != null) *@
+                    @*     { *@
+                    @*         var model = Mapper.Map<Group, GroupDeleteViewModel>(groupDelete); *@
+                    @*         @Html.PartialAsync("Delete", model) *@
+                    @*     } *@
+                    @* } *@
+                </div>
+            }
             </tbody>
         </table>
     </div>
 </div>
 
+<!-- The editing modal -->
+@* <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true"> *@
+    <div id="placeholder-modal-edit"></div>
+@* </div> *@
+@* <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true"> *@
+@* @{ *@
+@*     var groupEdit = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
+@*     if (groupEdit != null) *@
+@*     { *@
+@*         var model = Mapper.Map<Group, GroupEditViewModel>(groupEdit); *@
+@*         @Html.PartialAsync("Edit", model) *@
+@*     } *@
+@* } *@
+@* // </div> *@
 
 @section Scripts
-    {
-    <script>
-        function editing(idCurrentUser) {
+{
+    <script type="text/javascript">
+        
+        function editing(entityId) {
             $.ajax({
-                url: '@Url.Action("Details", "Users")',
+                url: '@Url.Action("Edit", "Groups")',
                 type: 'GET',
-                data: { 'idCurrentUser': idCurrentUser },
+                data: { 'entityId': entityId },
+                success: function(data){
+                    $('#placeholder-modal-edit').html(data);
+                    // $('#placeholder-modal-edit > .modal-edit', data).modal('show');
+                    $('#modal-edit').modal('show');
+                    console.log(data);
+                    // $('#modal-edit').html(output);
+                    // $('#modal-edit').modal('show');
+                    // $('#modal-edit').show();
+                    // $("#modal-edit").css("overflow", "auto");
+                    // $("body").css("overflow", "hidden");
+                },
+                error: function(){
+                    console.log("Something went wrong");  
+                }
+            });
+        // $.ajax({
+        //         url: '@Url.Action("Edit", "Groups")',
+        //         type: 'GET',
+        //         data: { 'entityId': entityId },
+        //         success: function(result){
+        //             $('#modal-edit').show();
+        //         },
+        //         error: function(){
+        //         console.log("Something went wrong");
+        //         }
+        //     });
+        }
+
+        // function editing(id) {
+        //    $.get(`@Url.Action("Edit")/?entityId=${id}`, function(data) {
+        //        $('#details-modal').html(data);
+        //        $("#modalEdit").show();
+        //        $("#modalEdit").css("overflow", "auto");
+        //        $("body").css("overflow", "hidden");
+        //    })
+        // }
+
+        function creating() {
+            $.ajax({
+                url: '@Url.Action("Create", "Groups")',
+                type: 'POST',
+                data:  $("#form-GroupCreate").serialize(),
             });
         }
-        
-        function creating() {
-            alert("Add new item")
-            // $.ajax({
-            //     url: '@Url.Action("Details", "Users")',
-            //     type: 'GET',
-            //     data: { 'idCurrentUser': idCurrentUser },
-            // });
+
+        function previewing(entityId) {
+            $.ajax({
+                url: '@Url.Action("Details", "Groups")',
+                type: 'GET',
+                data: { 'idUser': entityId },
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                success: function (data) {
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                    alert(error.status + '\n' + error.message);
+                }
+            });
         }
+
     </script>
 }

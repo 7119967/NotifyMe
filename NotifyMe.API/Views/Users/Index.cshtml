@@ -3,7 +3,7 @@
 @inject IMapper Mapper;
 @inject IUserService UserService;
 
-@model List<IndexUserViewModel>
+@model List<UserIndexViewModel>
 
 @{
     Layout = "_Layout";
@@ -44,7 +44,7 @@
                         <td>@item.Email</td>
                         <td>@item.PhoneNumber</td>
                         <td>
-                            @{ await Html.RenderPartialAsync("PartialViews/ExpandPartialView", item); }
+                            @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>
                     </tr>
                     count++;
@@ -55,7 +55,7 @@
                             var userDetails = UserService.GetAllAsync().Result.FirstOrDefault(u => u.Id == item.Id);
                             if (userDetails != null)
                             {
-                                var model = Mapper.Map<User, DetailsViewModel>(userDetails);
+                                var model = Mapper.Map<User, UserDetailsViewModel>(userDetails);
                                 @Html.Partial("PartialViews/DetailsPartialView", model)
                             }
                         }
@@ -75,7 +75,7 @@
 
                     <!-- The creating modal -->
                     <div class="modal fade" id="modalCreate" tabindex="-1" aria-labelledby="modalCreate" aria-hidden="true">
-                        @Html.Partial("PartialViews/CreatePartialView", new CreateViewModel())
+                        @Html.Partial("PartialViews/CreatePartialView", new UserCreateViewModel())
                     </div>
                     
                     <!-- The deleting modal -->
@@ -84,7 +84,7 @@
                             var useDelete = UserService.GetAllAsync().Result.FirstOrDefault(u => u.Id == item.Id);
                             if (useDelete != null)
                             {
-                                var model = Mapper.Map<User,DeleteViewModel>(useDelete);
+                                var model = Mapper.Map<User,UserDeleteViewModel>(useDelete);
                                 @Html.Partial("PartialViews/DeletePartialView", model)
                             }
                         }
