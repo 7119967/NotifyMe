@@ -24,7 +24,14 @@
              <i class='bx bx-menu' id="header-toggle"></i>
          </div>
          <div class="header_img">
-             <img src="@user.Avatar" alt="@user.UserName">
+             @if (user!.Avatar != "")
+             {
+                 <img src="@user.Avatar" alt="@user.UserName">
+             }
+             else
+             {
+                <img src="" alt="@user.UserName"> 
+             }
          </div>
      </header>
      <div class="l-navbar" id="nav-bar">

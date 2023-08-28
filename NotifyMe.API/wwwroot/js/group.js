@@ -1,54 +1,67 @@
 ﻿function editing(entityId) {
+    const url = '/Groups/Edit';
     $.ajax({
-        url: '@Url.Action("Edit", "Groups")',
+        url: url,
         type: 'GET',
         headers: {
             "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "X-Frame-Options": "SAMEORIGIN",
         },
         data: { 'entityId': entityId },
         success: function(data){
             $('#placeholder-modal-edit').html(data);
-            // $('#placeholder-modal-edit > .modal-edit', data).modal('show');
             $('#modal-edit').modal('show');
             console.log(data);
-            // $('#modal-edit').html(output);
-            // $('#modal-edit').modal('show');
-            // $('#modal-edit').show();
-            // $("#modal-edit").css("overflow", "auto");
-            // $("body").css("overflow", "hidden");
         },
         error: function(){
-            console.log("Something went wrong");
+            console.log("Something went wrong with editing");
         }
     });
 }
 
 function creating() {
+    const url = '/Groups/Create';
     $.ajax({
-        url: '@Url.Action("Create", "Groups")',
-        type: 'POST',
-        data:  $("#form-GroupCreate").serialize(),
+        url: url,
+        type: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "X-Frame-Options": "SAMEORIGIN",
+        },
+        success: function(data){
+            $('#placeholder-modal-create').html(data);
+            $('#modal-create').modal('show');
+            console.log(data);
+        },
+        error: function(){
+            console.log("Something went wrong with creating");
+        }
     });
 }
 
 function previewing(entityId) {
+    const url = '/Groups/Details';
     $.ajax({
-        url: '@Url.Action("Details", "Groups")',
+        url: url,
         type: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "X-Frame-Options": "SAMEORIGIN",
+        },
         data: { 'entityId': entityId },
         success: function(data){
             $('#placeholder-modal-details').html(data);
-            // $('#placeholder-modal-edit > .modal-edit', data).modal('show');
             $('#modal-details').modal('show');
             console.log(data);
-            // $('#modal-edit').html(output);
-            // $('#modal-edit').modal('show');
-            // $('#modal-edit').show();
-            // $("#modal-edit").css("overflow", "auto");
-            // $("body").css("overflow", "hidden");
         },
         error: function(){
-            console.log("Something went wrong");
+            console.log("Something went wrong with previewing");
         }
     });
 }
@@ -58,6 +71,12 @@ function deleting(entityId) {
     $.ajax({
         url: url,
         type: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Cache-Control": "no-cache, no-store",
+            "Pragma": "no-cache",
+            "X-Frame-Options": "SAMEORIGIN",
+        },
         data: { 'entityId': entityId },
         success: function(data){
             $('#placeholder-modal-delete').html(data);
@@ -71,7 +90,7 @@ function deleting(entityId) {
             // $("body").css("overflow", "hidden");
         },
         error: function(){
-            console.log("Something went wrong");
+            console.log("Something went wrong with deleting");
         }
     });
 }

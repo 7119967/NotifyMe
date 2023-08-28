@@ -175,7 +175,11 @@ a {
 
     .l-navbar.show {
         width: calc(var(--nav-width) + 156px)
-    }
+    }    
+    
+    /*.l-navbar {*/
+    /*    width: calc(var(--nav-width) + 156px)*/
+    /*}*/
 
     .body-pd {
         padding-left: calc(var(--nav-width) + 188px)

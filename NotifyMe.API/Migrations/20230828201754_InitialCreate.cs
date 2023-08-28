@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -28,8 +29,7 @@ namespace NotifyMe.API.Migrations
                 name: "ChangeEvents",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EventName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EventDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -43,8 +43,7 @@ namespace NotifyMe.API.Migrations
                 name: "Configurations",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EventType = table.Column<int>(type: "int", nullable: false),
                     Threshold = table.Column<double>(type: "float", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -58,8 +57,7 @@ namespace NotifyMe.API.Migrations
                 name: "Groups",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -73,10 +71,9 @@ namespace NotifyMe.API.Migrations
                 name: "GroupUsers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GroupId = table.Column<int>(type: "int", nullable: false),
+                    GroupId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -88,8 +85,7 @@ namespace NotifyMe.API.Migrations
                 name: "Notifications",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Recipient = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChangedElements = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -125,10 +121,9 @@ namespace NotifyMe.API.Migrations
                 name: "AlertTrigger",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     AlertName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EventMonitoringId = table.Column<int>(type: "int", nullable: false),
+                    EventMonitoringId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ThresholdCondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -139,8 +134,7 @@ namespace NotifyMe.API.Migrations
                         name: "FK_AlertTrigger_ChangeEvents_EventMonitoringId",
                         column: x => x.EventMonitoringId,
                         principalTable: "ChangeEvents",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -155,7 +149,7 @@ namespace NotifyMe.API.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Info = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConfigurationId = table.Column<int>(type: "int", nullable: true),
+                    ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),

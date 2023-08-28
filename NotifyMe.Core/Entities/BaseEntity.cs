@@ -2,7 +2,7 @@
 {
     public interface IHasIdentity
     {
-        int Id { get; set; }
+        string Id { get; set; }
     }
     public interface IDatesCreateUpdate
     {
@@ -10,7 +10,7 @@
     }
     public abstract class BaseEntity : IHasIdentity, IDatesCreateUpdate
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public DateTime Timestamp { get; set; } = DateTime.Now;
 

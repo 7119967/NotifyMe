@@ -160,17 +160,14 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.AlertTrigger", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("AlertName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventMonitoringId")
-                        .HasColumnType("int");
+                    b.Property<string>("EventMonitoringId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ThresholdCondition")
                         .HasColumnType("nvarchar(max)");
@@ -187,11 +184,8 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Configuration", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("EventType")
                         .HasColumnType("int");
@@ -209,11 +203,8 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.EventMonitoring", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventDescription")
                         .HasColumnType("nvarchar(max)");
@@ -231,11 +222,8 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -253,14 +241,12 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.GroupUser", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("GroupId")
-                        .HasColumnType("int");
+                    b.Property<string>("GroupId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -275,11 +261,8 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Notification", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ChangedElements")
                         .HasColumnType("nvarchar(max)");
@@ -313,8 +296,8 @@ namespace NotifyMe.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ConfigurationId")
-                        .HasColumnType("int");
+                    b.Property<string>("ConfigurationId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -435,9 +418,7 @@ namespace NotifyMe.API.Migrations
                 {
                     b.HasOne("NotifyMe.Core.Entities.EventMonitoring", "EventMonitoring")
                         .WithMany("AlertTrigger")
-                        .HasForeignKey("EventMonitoringId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventMonitoringId");
 
                     b.Navigation("EventMonitoring");
                 });

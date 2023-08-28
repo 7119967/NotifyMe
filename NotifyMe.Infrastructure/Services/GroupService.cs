@@ -32,7 +32,7 @@ public class GroupService : IGroupService
 
     public async Task<Group?> GetByIdAsync(string entityId)
     {
-        Expression<Func<Group, bool>> filter = i => i.Id.ToString() == entityId;
+        Expression<Func<Group, bool>> filter = i => i.Id == entityId;
         return await _unitOfWork.GroupRepository.GetEntityAsync(filter);
     }
 

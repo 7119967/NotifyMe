@@ -151,7 +151,6 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id));
 
         CreateMap<GroupCreateViewModel, Group>()
-            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
             .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
         
@@ -161,6 +160,11 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
         
         CreateMap<Group, GroupEditViewModel>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+            .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
+        
+        CreateMap<GroupEditViewModel, Group>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
             .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
