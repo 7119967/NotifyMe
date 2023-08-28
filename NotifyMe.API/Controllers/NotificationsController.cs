@@ -44,10 +44,10 @@ public class NotificationsController : Controller
         return View(notifications);
     }
 
-    [Authorize]
-    public IActionResult Create(string idUser)
-    {
-
-        return View();
-    }
+    // [Authorize]
+    // public IActionResult Create(string idUser)
+    // {
+    //
+    //     return View();
+    // }
 }

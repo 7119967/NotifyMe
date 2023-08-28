@@ -37,123 +37,22 @@
                     </td>
                 </tr>
                 count++;
-
-                <!-- The previewing modal -->
-                <div class="modal fade" id="modalDetails" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
-                    @* @{ *@
-                    @*     var groupDetails = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
-                    @*     if (groupDetails != null) *@
-                    @*     { *@
-                    @*         var model = Mapper.Map<Group, GroupDetailsViewModel>(groupDetails); *@
-                    @*         @Html.PartialAsync("Details", model) *@
-                    @*     } *@
-                    @* } *@
-                </div>
-
-
-                <!-- The deleting modal -->
-                <div class="modal fade" id="modalDelete" tabindex="999" aria-labelledby="modalDelete" aria-hidden="true">
-                    @* @{ *@
-                    @*     var groupDelete = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
-                    @*     if (groupDelete != null) *@
-                    @*     { *@
-                    @*         var model = Mapper.Map<Group, GroupDeleteViewModel>(groupDelete); *@
-                    @*         @Html.PartialAsync("Delete", model) *@
-                    @*     } *@
-                    @* } *@
-                </div>
             }
             </tbody>
         </table>
     </div>
 </div>
 
+<!-- The previewing modal -->
+<div id="placeholder-modal-details"></div>
+
+<!-- The deleting modal -->
+<div id="placeholder-modal-delete"></div>
+
 <!-- The editing modal -->
-@* <div class="modal fade" id="modal-edit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true"> *@
-    <div id="placeholder-modal-edit"></div>
-@* </div> *@
-@* <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true"> *@
-@* @{ *@
-@*     var groupEdit = GroupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == item.Id); *@
-@*     if (groupEdit != null) *@
-@*     { *@
-@*         var model = Mapper.Map<Group, GroupEditViewModel>(groupEdit); *@
-@*         @Html.PartialAsync("Edit", model) *@
-@*     } *@
-@* } *@
-@* // </div> *@
+<div id="placeholder-modal-edit"></div>
 
 @section Scripts
 {
-    <script type="text/javascript">
-        
-        function editing(entityId) {
-            $.ajax({
-                url: '@Url.Action("Edit", "Groups")',
-                type: 'GET',
-                data: { 'entityId': entityId },
-                success: function(data){
-                    $('#placeholder-modal-edit').html(data);
-                    // $('#placeholder-modal-edit > .modal-edit', data).modal('show');
-                    $('#modal-edit').modal('show');
-                    console.log(data);
-                    // $('#modal-edit').html(output);
-                    // $('#modal-edit').modal('show');
-                    // $('#modal-edit').show();
-                    // $("#modal-edit").css("overflow", "auto");
-                    // $("body").css("overflow", "hidden");
-                },
-                error: function(){
-                    console.log("Something went wrong");  
-                }
-            });
-        // $.ajax({
-        //         url: '@Url.Action("Edit", "Groups")',
-        //         type: 'GET',
-        //         data: { 'entityId': entityId },
-        //         success: function(result){
-        //             $('#modal-edit').show();
-        //         },
-        //         error: function(){
-        //         console.log("Something went wrong");
-        //         }
-        //     });
-        }
-
-        // function editing(id) {
-        //    $.get(`@Url.Action("Edit")/?entityId=${id}`, function(data) {
-        //        $('#details-modal').html(data);
-        //        $("#modalEdit").show();
-        //        $("#modalEdit").css("overflow", "auto");
-        //        $("body").css("overflow", "hidden");
-        //    })
-        // }
-
-        function creating() {
-            $.ajax({
-                url: '@Url.Action("Create", "Groups")',
-                type: 'POST',
-                data:  $("#form-GroupCreate").serialize(),
-            });
-        }
-
-        function previewing(entityId) {
-            $.ajax({
-                url: '@Url.Action("Details", "Groups")',
-                type: 'GET',
-                data: { 'idUser': entityId },
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert(error.status + '\n' + error.message);
-                }
-            });
-        }
-
-    </script>
+    <script src="~/js/group.js" asp-append-version="true"></script>
 }

@@ -71,7 +71,7 @@ public class GroupsController : Controller
         var model = _mapper.Map<Group, GroupDetailsViewModel>(group);
 
         await Task.Yield();
-        return View(model);
+        return PartialView("PartialViews/DetailsPartialView", model);
     }
     
     [HttpGet]
@@ -88,5 +88,82 @@ public class GroupsController : Controller
         
         await Task.Yield();
         return PartialView("PartialViews/EditPartialView", model);
+    }
+    
+    [HttpPost]
+    [Authorize]
+    public IActionResult Edit(EditProfileViewModel model)
+    {
+        var source = new Group{};
+        
+        if (ModelState.IsValid)
+        {
+            if (model.UserName != null)
+            {
+                var user = _userManager.FindByNameAsync(model.UserName).Result;
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                // var editUser = _mapper.Map<User, EditProfileViewModel>(user);
+                // var target = _mapper.Map<EditProfileViewModel, User>(editUser);
+                // source = _mapper.Map<EditProfileViewModel, User>(model);
+                //
+                // _userService.ApplyChanges(source, target);
+
+                try
+                {
+                    // _userService.Update(target);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    return BadRequest();
+                }
+            }
+        }
+                
+        var obj = _mapper.Map<Group, GroupEditViewModel>(source);
+        return View("PartialViews/EditPartialView", obj);
+    }
+   
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Delete(int entityId)
+    {
+        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == entityId);
+        if (group == null)
+        {
+            return NotFound();
+        }
+
+        var model = _mapper.Map<Group, GroupDeleteViewModel>(group);
+        
+        await Task.Yield();
+        return PartialView("PartialViews/DeletePartialView", model);
+    }
+    
+    [Authorize]
+    [HttpDelete]
+    public async Task<IActionResult> Delete(GroupDeleteViewModel model)
+    {
+        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == model.Id);
+        if (group == null)
+        {
+            return NotFound();
+        }
+
+        try
+        {
+            await _groupService.DeleteAsync(group.Id.ToString());
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return BadRequest();
+        }
     }
 }

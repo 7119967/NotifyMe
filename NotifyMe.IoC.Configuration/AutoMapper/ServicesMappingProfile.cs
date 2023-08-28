@@ -164,6 +164,9 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
             .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));
+
+        CreateMap<Group, GroupDeleteViewModel>()
+            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id));
         
         CreateMap<Group, GroupIndexViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
