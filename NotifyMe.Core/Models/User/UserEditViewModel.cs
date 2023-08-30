@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 
-namespace NotifyMe.Core.Models;
+namespace NotifyMe.Core.Models.User;
 
-public class UserCreateViewModel
+public class UserEditViewModel
 {
     public string? Id { get; set; }
 
@@ -34,7 +34,11 @@ public class UserCreateViewModel
     [Display(Name = "Password")]
     [DataType(DataType.Password)]
     public string? Password { get; set; }
-
+    
+    [Display(Name = "PasswordConfirm")]
+    [DataType(DataType.Password)]
+    public string? PasswordConfirm { get; set; }
+    
     [Display(Name = "Avatar")]
     [DataType(DataType.Text)]
     public string? Avatar { get; set; }

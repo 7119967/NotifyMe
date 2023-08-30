@@ -3,83 +3,105 @@
     ViewBag.Title = "Create";
     Layout = "_Layout";
 }
-<div class="modal-dialog modal-lg p-5">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h1 class="modal-title fs-5" id="modalDetails">@ViewBag.Title</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<div class="modal fade" id="modal-create" tabindex="-1" aria-labelledby="modalCreate" aria-hidden="true">
+    <div class="modal-dialog modal-lg p-5">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalCreate">@ViewBag.Title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="form-UserCreate" asp-action="Create" asp-controller="Users" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="Id" class="control-label"></label>
+                                <input asp-for="Id" class="form-control" id="Id">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="UserName" class="control-label"></label>
+                                <input asp-for="UserName" class="form-control" id="UserName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="FirstName" class="control-label"></label>
+                                <input asp-for="FirstName" class="form-control" id="FirstName">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="LastName" class="control-label"></label>
+                                <input asp-for="LastName" class="form-control" id="LastName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="Email" class="control-label"></label>
+                                <input asp-for="Email" class="form-control" id="Email">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="PhoneNumber" class="control-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber">
+                            </div>
+                        </div>
+                    </div>            
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="Password" class="control-label"></label>
+                                <input asp-for="Password" class="form-control" id="Password">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="PasswordConfirm" class="control-label"></label>
+                                <input asp-for="PasswordConfirm" class="form-control" id="PasswordConfirm">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group">
+                            <label asp-for="Info" class="control-label"></label>
+                            <textarea asp-for="Info" class="form-control" id="Info"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="Avatar" class="control-label"></label>
+                                <input asp-for="Avatar" class="form-control" id="Avatar">
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="File" class="control-label">Upload an image file</label>
+                                <input asp-for="File" type="file" class="form-control-file" style="border: none; margin-top: 10px;"/>
+                                <span asp-validation-for="File" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
         </div>
-        <form asp-action="Create" asp-controller="Users" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="modal-body">
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Id" class="control-label"></label>
-                            <input asp-for="Id" class="form-control" id="Id">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="UserName" class="control-label"></label>
-                            <input asp-for="UserName" class="form-control" id="UserName">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="FirstName" class="control-label"></label>
-                            <input asp-for="FirstName" class="form-control" id="FirstName">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="LastName" class="control-label"></label>
-                            <input asp-for="LastName" class="form-control" id="LastName">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Email" class="control-label"></label>
-                            <input asp-for="Email" class="form-control" id="Email">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="PhoneNumber" class="control-label"></label>
-                            <input asp-for="PhoneNumber" class="form-control" id="PhoneNumber">
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="form-group">
-                        <label asp-for="Info" class="control-label"></label>
-                        <textarea asp-for="Info" class="form-control" id="Info"></textarea>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Avatar" class="control-label"></label>
-                            <input asp-for="Avatar" class="form-control" id="Avatar">
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="File" class="control-label">Upload an image file</label>
-                            <input asp-for="File" type="file" class="form-control-file" style="border: none; margin-top: 10px;"/>
-                            <span asp-validation-for="File" class="text-danger"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-        </form>
     </div>
 </div>
+
+@section Scripts{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

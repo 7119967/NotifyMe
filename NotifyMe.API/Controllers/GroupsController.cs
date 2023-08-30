@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Core.Models;
+using NotifyMe.Core.Models.Group;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize]
 public class GroupsController : Controller
 {
     private readonly IMapper _mapper;
@@ -22,13 +23,12 @@ public class GroupsController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var groups = await Task.Run(() => _groupService.GetAllAsync().Result);
-        var model = _mapper.Map<List<GroupIndexViewModel>>(groups);
+        var entities = await Task.Run(() => _groupService.GetAllAsync().Result);
+        var model = _mapper.Map<List<GroupListViewModel>>(entities);
         await Task.Yield();
         return View(model);
     }
-
-    [Authorize]
+    
     [HttpGet]
     public async Task<IActionResult> Create()
     {
@@ -36,7 +36,6 @@ public class GroupsController : Controller
         return PartialView("PartialViews/CreatePartialView", new GroupCreateViewModel());
     }
     
-    [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(GroupCreateViewModel? model)
@@ -46,18 +45,18 @@ public class GroupsController : Controller
             if (model != null)
             {
                 var maxId = _groupService.GetAllAsync().Result.Max(g => g.Id) ;
-                var group = _mapper.Map<GroupCreateViewModel, Group>(model);
+                var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
                 if (maxId is null)
                 {
-                    group.Id = "1";
+                    entity.Id = "1";
                 }
                 else 
                 {
                     var newId = Convert.ToInt32(maxId) + 1;
-                    group.Id = newId.ToString(); 
+                    entity.Id = newId.ToString(); 
                 }
                
-                await _groupService.CreateAsync(group);
+                await _groupService.CreateAsync(entity);
             }
             
             return RedirectToAction("Index");
@@ -69,48 +68,44 @@ public class GroupsController : Controller
         }
     }
     
-    [Authorize]
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == entityId);
-        if (group is null)
+        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        var model = _mapper.Map<Group, GroupDetailsViewModel>(group);
+        var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
 
         await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", model);
     }
     
-
-    [Authorize]    
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == entityId);
-        if (group == null)
+        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity == null)
         {
             return NotFound();
         }
 
-        var model = _mapper.Map<Group, GroupEditViewModel>(group);
+        var model = _mapper.Map<Group, GroupEditViewModel>(entity);
         
         await Task.Yield();
         return PartialView("PartialViews/EditPartialView", model);
     }
     
-    [Authorize] 
     [HttpPost]
     public async Task<IActionResult> Edit(GroupEditViewModel model)
     {
-        var target = _mapper.Map<GroupEditViewModel, Group>(model);
+        var entity = _mapper.Map<GroupEditViewModel, Group>(model);
         try
         {
-            await _groupService.UpdateAsync(target);
+            await _groupService.UpdateAsync(entity);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -119,36 +114,34 @@ public class GroupsController : Controller
             return BadRequest();
         }
     }
-   
-    [Authorize]
+
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == entityId);
-        if (group == null)
+        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity == null)
         {
             return NotFound();
         }
 
-        var model = _mapper.Map<Group, GroupDeleteViewModel>(group);
+        var model = _mapper.Map<Group, GroupDeleteViewModel>(entity);
         
         await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", model);
     }
     
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Delete(GroupDeleteViewModel model)
     {
-        var group = _groupService.GetAllAsync().Result.FirstOrDefault(group => group.Id == model.Id);
-        if (group == null)
+        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        if (entity == null)
         {
             return NotFound();
         }
 
         try
         {
-            await _groupService.DeleteAsync(group.Id);
+            await _groupService.DeleteAsync(entity.Id);
             return RedirectToAction("Index");
         }
         catch (Exception e)

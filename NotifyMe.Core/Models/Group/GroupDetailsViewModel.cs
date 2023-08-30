@@ -1,6 +1,6 @@
-﻿namespace NotifyMe.Core.Models
+﻿namespace NotifyMe.Core.Models.Group
 {
-    public class GroupEditViewModel
+    public class GroupDetailsViewModel
     {
         public string? Id { get; set; }
         public string? Name { get; set; }

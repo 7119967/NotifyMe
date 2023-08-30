@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
+using NotifyMe.Core.Models.User;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -19,6 +20,7 @@ public class UsersController : Controller
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
 
+  
     public UsersController(UserManager<User> userManager,
         RoleManager<IdentityRole> roleManager,
         SignInManager<User> signInManager,
@@ -38,13 +40,21 @@ public class UsersController : Controller
 
     [Authorize]
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var users = _mapper.Map<List<UserIndexViewModel>>(_userService.GetAllAsync().Result);
-
-        return View(users);
+        var entities = _mapper.Map<List<UserListViewModel>>(_userService.GetAllAsync().Result);
+        await Task.Yield();
+        return View(entities);
     }
-
+    
+    [Authorize]
+    [HttpGet]
+    public async Task<IActionResult> Create()
+    {
+        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        return PartialView("PartialViews/CreatePartialView", new UserCreateViewModel());
+    }
+    
     [Authorize]
     [HttpGet]
     public IActionResult Search(string search)
@@ -57,135 +67,142 @@ public class UsersController : Controller
             || t.PhoneNumber!.Contains(search)
             || t.Info!.Contains(search)).ToList();
 
-        var users = _mapper.Map<List<UserIndexViewModel>>(searchUsers);
+        var users = _mapper.Map<List<UserListViewModel>>(searchUsers);
 
         return RedirectToAction("Index", users);
-    }
-
-    [Authorize]
-    [HttpGet]
-    public IActionResult Create(string entityId)
-    {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
-        if (user is null)
-        {
-            NotFound();
-            return RedirectToAction("Index");
-        }
-        
-        var model = new UserCreateViewModel
-        {
-            
-        };
-
-        return Json(model);
     }
     
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(UserCreateViewModel model)
+    public async Task<IActionResult> Create(UserCreateViewModel? model)
     {
         try
         {
-            if (model != null)
+            if (model == null) return RedirectToAction("Index");
+            var user = _userService.GetAllAsync().Result.FirstOrDefault(e => e.UserName == model.UserName);
+            if (user != null)
             {
-                var entity = _mapper.Map<UserCreateViewModel, User>(model);
-                _userService.CreateAsync(entity);
+                BadRequest($"User {model.UserName} exists. Change the UserName");
+                return RedirectToAction("Index");
             }
-            var data = _mapper.Map<List<UserIndexViewModel>>(_userService.GetAllAsync().Result);
-            return View("Index", data);
+                
+            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
+            _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
+            var pathImage = $"/img/{model.Email}.jpg";
+                
+            var entity = _mapper.Map<UserCreateViewModel, User>(model);
+            entity.Id = Guid.NewGuid().ToString();
+            entity.Avatar = pathImage;
+            var result = await _userManager.CreateAsync(entity, model.Password!);
+
+            if (!result.Succeeded) return RedirectToAction("Index");
+            await _userManager.AddToRoleAsync(entity, "user");
+
+            return RedirectToAction("Index");
         }
-        catch
+        catch (Exception e)
         {
-            return Json(model);
+            Console.WriteLine(e.Message, e);
+            return RedirectToAction("Index");
         }
     }
     
     [Authorize]
     [HttpGet]
-    public IActionResult Details(string entityId)
+    public async Task<IActionResult> Details(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
-        if (user is null)
+        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        var model = _mapper.Map<User, UserDetailsViewModel>(user);
+        var model = _mapper.Map<User, UserDetailsViewModel>(entity);
 
-        return View(model);
+        await Task.Yield();
+        return PartialView("PartialViews/DetailsPartialView", model);
     }
 
+    [Authorize]    
     [HttpGet]
-    [Authorize]
-    public IActionResult Edit(string entityId)
+    public async Task<IActionResult> Edit(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
-        if (user == null)
+        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity == null)
         {
             return NotFound();
         }
 
-        var model = _mapper.Map<User, EditProfileViewModel>(user);
+        var model = _mapper.Map<User, UserEditViewModel>(entity);
 
-        return View("PartialViews/EditPartialView", model);
+        await Task.Yield();
+        return PartialView("PartialViews/EditPartialView", model);
     }
 
+    [Authorize] 
     [HttpPost]
-    [Authorize]
-    public IActionResult Edit(EditProfileViewModel model)
+    public async Task<IActionResult> Edit(UserEditViewModel model)
     {
-        var source = new User{};
-        
-        if (ModelState.IsValid)
+        if (model.File != null)
         {
-            if (model.UserName != null)
-            {
-                var user = _userManager.FindByNameAsync(model.UserName).Result;
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
-                var editUser = _mapper.Map<User, EditProfileViewModel>(user);
-                var target = _mapper.Map<EditProfileViewModel, User>(editUser);
-                source = _mapper.Map<EditProfileViewModel, User>(model);
-
-                _userService.ApplyChanges(source, target);
-
-                try
-                {
-                    _userService.Update(target);
-                    return RedirectToAction("Index");
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                    return BadRequest();
-                }
-            }
+            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
+            _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
+            var pathImage = $"/img/{model.Email}.jpg";
+            model.Avatar = pathImage;
         }
+        var user = _userManager.FindByNameAsync(model.UserName).Result;
+        if (user == null)
+        {
+            return NotFound();
+        }
+        var editUser = _mapper.Map<User, UserEditViewModel>(user);
+        var target = _mapper.Map<UserEditViewModel, User>(editUser);
+        var source = _mapper.Map<UserEditViewModel, User>(model);
         
-        var obj = _mapper.Map<User, EditProfileViewModel>(source);
-        return View("PartialViews/EditPartialView", obj);
+        _userService.ApplyChanges(source, target);
+
+        try
+        {
+            await _userService.UpdateAsync(target);
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+            return BadRequest();
+        }
     }
     
-
     [Authorize]
-    [HttpDelete]
-    public IActionResult Delete(string entityId)
+    [HttpGet]
+    public async Task<IActionResult> Delete(string entityId)
     {
-        var user = _userService.GetAllAsync().Result.FirstOrDefault(u => u.Id == entityId);
-        if (user == null)
+        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity == null)
+        {
+            return NotFound();
+        }
+        var model = _mapper.Map<User, UserDeleteViewModel>(entity);
+        
+        await Task.Yield();
+        return PartialView("PartialViews/DeletePartialView", model);
+    }
+    
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> Delete(UserDeleteViewModel model)
+    {
+        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        if (entity == null)
         {
             return NotFound();
         }
 
         try
         {
-            _userService.DeleteAsync(entityId);
+            await _userService.DeleteAsync(entity.Id);
             return RedirectToAction("Index");
         }
         catch (Exception e)

@@ -1,4 +1,4 @@
-﻿namespace NotifyMe.Core.Models;
+﻿namespace NotifyMe.Core.Models.User;
 
 public class UserDeleteViewModel
 {

@@ -1,5 +1,5 @@
 ﻿function editing(entityId) {
-    const url = '/Users/Edit';
+    const url = '/Groups/Edit';
     $.ajax({
         url: url,
         type: 'GET',
@@ -27,7 +27,7 @@
 }
 
 function creating() {
-    const url = '/Users/Create';
+    const url = '/Groups/Create';
     $.ajax({
         url: url,
         type: 'GET',
@@ -49,7 +49,7 @@ function creating() {
 }
 
 function previewing(entityId) {
-    const url = '/Users/Details';
+    const url = '/Groups/Details';
     $.ajax({
         url: url,
         type: 'GET',
@@ -72,7 +72,7 @@ function previewing(entityId) {
 }
 
 function deleting(entityId) {
-    const url = '/Users/Delete';
+    const url = '/Groups/Delete';
     $.ajax({
         url: url,
         type: 'GET',

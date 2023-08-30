@@ -1,4 +1,4 @@
-﻿namespace NotifyMe.Core.Models
+﻿namespace NotifyMe.Core.Models.Group
 {
     public class GroupDeleteViewModel
     {

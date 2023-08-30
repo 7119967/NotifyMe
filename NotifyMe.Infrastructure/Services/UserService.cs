@@ -15,14 +15,14 @@ public class UserService : IUserService
         _unitOfWork = unitOfWork;
     }
 
-    public Task<ICollection<User>> GetListEntitiesAsync(Expression<Func<User, bool>> filter)
+    public async Task<ICollection<User>> GetListEntitiesAsync(Expression<Func<User, bool>> filter)
     {
-        return _unitOfWork.UserRepository.GetAllAsync();
+        return await _unitOfWork.UserRepository.GetAllAsync();
     }
 
-    public Task<ICollection<User>> GetAllAsync()
+    public async Task<ICollection<User>> GetAllAsync()
     {
-        return _unitOfWork.UserRepository.GetAllAsync();
+        return await _unitOfWork.UserRepository.GetAllAsync();
     }
 
     public async Task<User> GetEntityAsync(Expression<Func<User, bool>> filter)
@@ -30,10 +30,10 @@ public class UserService : IUserService
         return await _unitOfWork.UserRepository.GetEntityAsync(filter) ?? throw new NullReferenceException();
     }
 
-    public Task<User?> GetByIdAsync(string entityId)
+    public async Task<User?> GetByIdAsync(string entityId)
     {
         Expression<Func<User, bool>> filter = i => i.Id == entityId;
-        return _unitOfWork.UserRepository.GetEntityAsync(filter);
+        return await _unitOfWork.UserRepository.GetEntityAsync(filter);
     }
 
     public async Task CreateAsync(User entity)
@@ -42,12 +42,11 @@ public class UserService : IUserService
         await _unitOfWork.CommitAsync();
     }
 
-    public Task UpdateAsync(User entity)
+    public async Task UpdateAsync(User entity)
     {
-        _unitOfWork.UserRepository.UpdateAsync(entity);
-        _unitOfWork.CommitAsync();
+        await _unitOfWork.UserRepository.UpdateAsync(entity);
+        await _unitOfWork.CommitAsync();
 
-        return Task.CompletedTask;
     }
 
     public void Update(User entity)

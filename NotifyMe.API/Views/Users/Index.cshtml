@@ -3,12 +3,13 @@
 @inject IMapper Mapper;
 @inject IUserService UserService;
 
-@model List<UserIndexViewModel>
+@model List<UserListViewModel>
 
 @{
     Layout = "_Layout";
     int count = 1;
 }
+
 <div class="row p-3">
     <div class="card p-3">
         <h5 class="card-header">
@@ -35,9 +36,7 @@
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
                         <td>
-                            @* <a class="btn" asp-controller="Users" asp-action="Details" asp-route-idUser="@item.Id">@item.UserName</a> *@
-                            <a class="btn link-primary" data-bs-toggle="modal" data-bs-target="#modalDetails">@item.UserName</a>
-                            @* <a class="btn link-primary" data-bs-toggle="modal" data-bs-target="#modalDetails" onclick="previewing(@item.Id)">@item.UserName</a> *@
+                            <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.UserName</a>
                         </td>
                         <td>@item.FirstName</td>
                         <td>@item.LastName</td>
@@ -48,47 +47,6 @@
                         </td>
                     </tr>
                     count++;
-
-                    <!-- The previewing modal -->
-                    <div class="modal fade" id="modalDetails" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
-                        @{
-                            var userDetails = UserService.GetAllAsync().Result.FirstOrDefault(u => u.Id == item.Id);
-                            if (userDetails != null)
-                            {
-                                var model = Mapper.Map<User, UserDetailsViewModel>(userDetails);
-                                @Html.Partial("PartialViews/DetailsPartialView", model)
-                            }
-                        }
-                    </div>
-
-                    <!-- The editing modal -->
-                    <div class="modal fade" id="modalEdit" tabindex="-1" aria-labelledby="modalEdit" aria-hidden="true">
-                        @{
-                            var userEdit = UserService.GetAllAsync().Result.FirstOrDefault(u => u.Id == item.Id);
-                            if (userEdit != null)
-                            {
-                                var model = Mapper.Map<User, EditProfileViewModel>(userEdit);
-                                @Html.Partial("PartialViews/EditPartialView", model)
-                            }
-                        }
-                    </div>
-
-                    <!-- The creating modal -->
-                    <div class="modal fade" id="modalCreate" tabindex="-1" aria-labelledby="modalCreate" aria-hidden="true">
-                        @Html.Partial("PartialViews/CreatePartialView", new UserCreateViewModel())
-                    </div>
-                    
-                    <!-- The deleting modal -->
-                    <div class="modal fade" id="modalDelete" tabindex="999" aria-labelledby="modalDelete" aria-hidden="true">
-                        @{
-                            var useDelete = UserService.GetAllAsync().Result.FirstOrDefault(u => u.Id == item.Id);
-                            if (useDelete != null)
-                            {
-                                var model = Mapper.Map<User,UserDeleteViewModel>(useDelete);
-                                @Html.Partial("PartialViews/DeletePartialView", model)
-                            }
-                        }
-                    </div>
                 }
                 </tbody>
             </table>
@@ -96,43 +54,19 @@
     </div>
 </div>
 
+<!-- The previewing modal -->
+<div id="placeholder-modal-create"></div>
+
+<!-- The previewing modal -->
+<div id="placeholder-modal-details"></div>
+
+<!-- The deleting modal -->
+<div id="placeholder-modal-delete"></div>
+
+<!-- The editing modal -->
+<div id="placeholder-modal-edit"></div>
+
 @section Scripts
 {
-    <script>
-        function editing(idCurrentUser) {
-            $.ajax({
-                url: '@Url.Action("Details", "Users")',
-                type: 'GET',
-                data: { 'idCurrentUser': idCurrentUser },
-            });
-        }
-        
-        function creating() {
-            // $.ajax({
-            //     url: '@Url.Action("Details", "Users")',
-            //     type: 'GET',
-            //     data: { 'idCurrentUser': idCurrentUser },
-            // });
-        }
-        
-        function previewing(entityId) { 
-            $.ajax({
-                url: '@Url.Action("Details", "Users")',
-                type: 'GET',
-                data: { 'idUser': entityId },
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert(error.status + '\n' + error.message);
-                }
-            });
-        }
-        
-
-    </script>
+    <script src="~/js/users.js" asp-append-version="true"></script>
 }

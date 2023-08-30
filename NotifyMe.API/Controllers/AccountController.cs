@@ -49,18 +49,21 @@ public class AccountController : Controller
     {
         if (ModelState.IsValid)
         {
-            string path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
+            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
             _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
-            string pathImage = $"/img/{model.Email}.jpg";
+            var pathImage = $"/img/{model.Email}.jpg";
 
-            User user = new User
+            var user = new User
             {
+                Id = Guid.NewGuid().ToString(),
                 UserName = model.UserName,
+                // FirstName = model.FirstName,
+                // LastName = model.LastName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 Avatar = pathImage
             };
-
+            
             var result = await _userManager.CreateAsync(user, model.Password!);
 
             if (result.Succeeded)
@@ -116,8 +119,7 @@ public class AccountController : Controller
     }
 
     [Authorize]
-    //[HttpGet]
-    //[ValidateAntiForgeryToken]
+    [HttpGet]
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
