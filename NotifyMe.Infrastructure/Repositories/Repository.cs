@@ -47,8 +47,6 @@ namespace NotifyMe.Infrastructure.Repositories
         public async Task UpdateAsync(T entity)
         {
             await Task.Run(() => _entities.Update(entity));
-            // _entities.Update(entity);
-            // await Task.Yield();
         }
 
         public void Update(T entity)

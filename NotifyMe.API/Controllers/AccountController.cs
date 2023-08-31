@@ -57,8 +57,6 @@ public class AccountController : Controller
             {
                 Id = Guid.NewGuid().ToString(),
                 UserName = model.UserName,
-                // FirstName = model.FirstName,
-                // LastName = model.LastName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber,
                 Avatar = pathImage

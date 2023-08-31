@@ -10,15 +10,15 @@
             "X-Frame-Options": "SAMEORIGIN",
         },
         data: { 'entityId': entityId },
-        success: function(data){
-            $('#placeholder-modal-edit').html(data);
+        success: function(result){
+            $('#placeholder-modal-edit').html(result);
             $('#modal-edit').modal('show');
             // $('#modal-edit').html(output);
             // $('#modal-edit').modal('show');
             // $('#modal-edit').show();
             // $("#modal-edit").css("overflow", "auto");
             // $("body").css("overflow", "hidden");
-            console.log(data);
+            console.log(result);
         },
         error: function(){
             console.log("Something went wrong with editing");
@@ -37,10 +37,10 @@ function creating() {
             "Pragma": "no-cache",
             "X-Frame-Options": "SAMEORIGIN",
         },
-        success: function(data){
-            $('#placeholder-modal-create').html(data);
+        success: function(result){
+            $('#placeholder-modal-create').html(result);
             $('#modal-create').modal('show');
-            console.log(data);
+            console.log(result);
         },
         error: function(){
             console.log("Something went wrong with creating");
@@ -60,10 +60,10 @@ function previewing(entityId) {
             "X-Frame-Options": "SAMEORIGIN",
         },
         data: { 'entityId': entityId },
-        success: function(data){
-            $('#placeholder-modal-details').html(data);
+        success: function(result){
+            $('#placeholder-modal-details').html(result);
             $('#modal-details').modal('show');
-            console.log(data);
+            console.log(result);
         },
         error: function(){
             console.log("Something went wrong with previewing");
@@ -83,10 +83,10 @@ function deleting(entityId) {
             "X-Frame-Options": "SAMEORIGIN",
         },
         data: { 'entityId': entityId },
-        success: function(data){
-            $('#placeholder-modal-delete').html(data);
+        success: function(result){
+            $('#placeholder-modal-delete').html(result);
             $('#modal-delete').modal('show');
-            console.log(data);
+            console.log(result);
         },
         error: function(){
             console.log("Something went wrong with deleting");

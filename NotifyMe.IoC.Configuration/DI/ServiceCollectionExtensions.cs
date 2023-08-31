@@ -14,7 +14,7 @@ using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Repositories;
 using NotifyMe.Infrastructure.Services;
-
+using NotifyMe.IoC.Configuration.AutoMapper;
 using RabbitMQ.Client;
 
 namespace NotifyMe.IoC.Configuration.DI;
@@ -51,11 +51,6 @@ public static class ServiceCollectionExtensions
                 options.LoginPath = new PathString("/Account/Login");
             });
 
-        // services.AddTransient<IEventMonitoringRepository, EventMonitoringRepository>();
-        // services.AddTransient<INotificationRepository, NotificationRepository>();
-        // services.AddTransient<IGroupRepository, GroupRepository>();
-        // services.AddTransient<IUserRepository, UserRepository>();
-
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -64,8 +59,9 @@ public static class ServiceCollectionExtensions
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
 
+        services.AddSingleton<ServicesMappingProfile>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        services.AddSingleton<RabbitMQService>(sp =>
+        services.AddSingleton<RabbitMQService>(_ =>
         {
             var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
             var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();

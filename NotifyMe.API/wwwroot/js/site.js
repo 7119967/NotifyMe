@@ -78,3 +78,13 @@ $("#btnLogin").click(function(event) {
 //     // Set focus back to dropdown toggle
 //     dropdown.find('.dropdown-toggle').focus();
 // });
+
+// document.addEventListener("'click .dropdown-toggle", function (e) {
+//         e.preventDefault();
+//         $(e.target).find('.dropdown-menu').toggle();
+//     }
+// );
+
+// $(document).ready(function() {
+//     $(".dropdown-toggle").dropdown();
+// });
