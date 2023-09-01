@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             bodypd = document.getElementById(bodyId),
             headerpd = document.getElementById(headerId)
 
-// Validate that all variables exist
+        // Validate that all variables exist
         if (toggle && nav && bodypd && headerpd) {
             toggle.addEventListener('click', () => {
                 // show navbar
@@ -36,55 +36,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             this.classList.add('active')
         }
     }
-
     linkColor.forEach(l => l.addEventListener('click', colorLink))
 
     // Your code to run since DOM is loaded and ready
 });
-
-$("#btnLogin").click(function(event) {
-
-    //Fetch form to apply custom Bootstrap validation
-    var form = $("#formLogin")
-
-    if (form[0].checkValidity() === false) {
-        event.preventDefault()
-        event.stopPropagation()
-    }
-
-    form.addClass('was-validated');
-});
-
-// // On dropdown open
-// $(document).on('shown.bs.dropdown', function(event) {
-//     var dropdown = $(event.target);
-//
-//     // Set aria-expanded to true
-//     dropdown.find('.dropdown-menu').attr('aria-expanded', true);
-//
-//     // Set focus on the first link in the dropdown
-//     setTimeout(function() {
-//         dropdown.find('.dropdown-menu li:first-child a').focus();
-//     }, 10);
-// });
-//
-// // On dropdown close
-// $(document).on('hidden.bs.dropdown', function(event) {
-//     var dropdown = $(event.target);
-//
-//     // Set aria-expanded to false        
-//     dropdown.find('.dropdown-menu').attr('aria-expanded', false);
-//
-//     // Set focus back to dropdown toggle
-//     dropdown.find('.dropdown-toggle').focus();
-// });
-
-// document.addEventListener("'click .dropdown-toggle", function (e) {
-//         e.preventDefault();
-//         $(e.target).find('.dropdown-menu').toggle();
-//     }
-// );
-
-// $(document).ready(function() {
-//     $(".dropdown-toggle").dropdown();
-// });

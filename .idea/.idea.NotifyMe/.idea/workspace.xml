@@ -15,18 +15,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/groups.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/groups.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/notifications.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/notifications.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/users.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
-    </list>
+    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -193,7 +182,7 @@
       <workItem from="1693182351295" duration="10004000" />
       <workItem from="1693246342016" duration="7266000" />
       <workItem from="1693396025159" duration="20600000" />
-      <workItem from="1693497324905" duration="5164000" />
+      <workItem from="1693497324905" duration="7029000" />
     </task>
     <servers />
   </component>
