@@ -39,4 +39,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     linkColor.forEach(l => l.addEventListener('click', colorLink))
 
     // Your code to run since DOM is loaded and ready
+    // const myModal = new bootstrap.Modal('#myModal', {
+    //     keyboard: false
+    // })
+    // const modalToggle = document.getElementById('toggleMyModal'); myModal.show(modalToggle)
 });

@@ -68,7 +68,7 @@ public class AccountController : Controller
             {
                 await _userManager.AddToRoleAsync(user, "user");
                 await _signInManager.SignInAsync(user, false);
-                return View();
+                return View("Login");
             }
 
             foreach (var error in result.Errors)

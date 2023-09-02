@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.IoC.Configuration"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.Core", "NotifyMe.Core\NotifyMe.Core.csproj", "{5EDE1A88-0A9E-4026-8573-C71044C9062A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotifyMe.Consumer", "NotifyMe.Consumer\NotifyMe.Consumer.csproj", "{6705CF90-4A86-40CD-80C5-68935E8662C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{5EDE1A88-0A9E-4026-8573-C71044C9062A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5EDE1A88-0A9E-4026-8573-C71044C9062A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5EDE1A88-0A9E-4026-8573-C71044C9062A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6705CF90-4A86-40CD-80C5-68935E8662C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6705CF90-4A86-40CD-80C5-68935E8662C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6705CF90-4A86-40CD-80C5-68935E8662C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6705CF90-4A86-40CD-80C5-68935E8662C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

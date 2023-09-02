@@ -54,6 +54,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+        services.AddScoped<IRabbitMqService, RabbitMqService>();
+        
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IUserService, UserService>();
@@ -61,12 +63,12 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<ServicesMappingProfile>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        services.AddSingleton<RabbitMQService>(_ =>
+        services.AddSingleton<RabbitMQService1>(_ =>
         {
             var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
             var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
             var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-            return new RabbitMQService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
+            return new RabbitMQService1(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
         });
 
         services.AddTransient<EmailService>();

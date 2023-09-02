@@ -6,7 +6,7 @@ using RabbitMQ.Client.Exceptions;
 
 namespace NotifyMe.Infrastructure.Services
 {
-    public class RabbitMQService
+    public class RabbitMQService1
     {
         private readonly string _rabbitMQHost;
         private readonly string _rabbitMQUsername;
@@ -16,7 +16,7 @@ namespace NotifyMe.Infrastructure.Services
         private IConnection? _connection;
         private IModel? _channel;
 
-        public RabbitMQService(string rabbitMQHost, string rabbitMQUsername, string rabbitMQPassword, string queueName)
+        public RabbitMQService1(string rabbitMQHost, string rabbitMQUsername, string rabbitMQPassword, string queueName)
         {
             _rabbitMQHost = rabbitMQHost;
             _rabbitMQUsername = rabbitMQUsername;

@@ -9,13 +9,36 @@
     <projectFile profileName="http">NotifyMe.API/NotifyMe.API.csproj</projectFile>
     <projectFile profileName="https">NotifyMe.API/NotifyMe.API.csproj</projectFile>
     <projectFile pubXmlPath="NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml">NotifyMe.API/NotifyMe.API.csproj</projectFile>
+    <projectFile profileName="IIS Express">NotifyMe.Consumer/NotifyMe.Consumer.csproj</projectFile>
+    <projectFile profileName="http">NotifyMe.Consumer/NotifyMe.Consumer.csproj</projectFile>
+    <projectFile profileName="https">NotifyMe.Consumer/NotifyMe.Consumer.csproj</projectFile>
     <projectFile kind="DockerCompose">docker-compose.dcproj</projectFile>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="" />
+    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IRabbitMqService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/css/site.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMQService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMQService1.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.sln" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,7 +96,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.Consumer: https">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -110,6 +133,51 @@
     </configuration>
     <configuration name="NotifyMe.API: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="https" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="NotifyMe.Consumer: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="NotifyMe.Consumer: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
+      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
+      <option name="LAUNCH_PROFILE_NAME" value="http" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <option name="USE_MONO" value="0" />
+      <option name="RUNTIME_ARGUMENTS" value="" />
+      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
+      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
+      <option name="SEND_DEBUG_REQUEST" value="1" />
+      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
+      <method v="2">
+        <option name="Build" />
+      </method>
+    </configuration>
+    <configuration name="NotifyMe.Consumer: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
+      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
       <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
       <option name="LAUNCH_PROFILE_NAME" value="https" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
@@ -163,6 +231,17 @@
       <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: IIS Express" />
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: http" />
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: https" />
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: http" />
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: https" />
+      <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: IIS Express" />
+      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Docker.NotifyMe.API/Dockerfile" />
+      <item itemvalue="Publish to IIS.NotifyMe.API: IISProfile" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -183,6 +262,7 @@
       <workItem from="1693246342016" duration="7266000" />
       <workItem from="1693396025159" duration="20600000" />
       <workItem from="1693497324905" duration="7029000" />
+      <workItem from="1693646786138" duration="12970000" />
     </task>
     <servers />
   </component>
@@ -207,19 +287,6 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/ValidationController.cs</url>
-          <line>18</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\ValidationController.cs" initialLine="18" containingFunctionPresentation="Method 'CheckUserName'">
-            <startOffsets>
-              <option value="388" />
-            </startOffsets>
-            <endOffsets>
-              <option value="389" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/ActionsPartialView.cshtml</url>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Views\Users\PartialViews\ExpandPartialView.cshtml" initialLine="0" isMultiMethodBreakpoint="true">

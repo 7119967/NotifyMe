@@ -3,8 +3,8 @@
 :root {
     --header-height: 3rem;
     --nav-width: 68px;
-    --first-color: #4723D9;
-    --first-color-light: #AFA5D9;
+    --first-color: #0d6efd;
+    --first-color-light: #adb5bd;
     --white-color: #F7F6FB;
     --body-font: 'Nunito', sans-serif;
     --normal-font-size: 1rem;
@@ -144,6 +144,37 @@ a {
     height: 100vh
 }
 
+.footer {
+    height: 45px;
+}
+
+/*html {*/
+/*    font-size: 14px;*/
+/*}*/
+
+/*@media (min-width: 768px) {*/
+/*    html {*/
+/*        font-size: 16px;*/
+/*    }*/
+/*}*/
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+/*html {*/
+/*    position: relative;*/
+/*    min-height: 100%;*/
+/*}*/
+
+/*body {*/
+/*    margin-bottom: 60px;*/
+/*}*/
+
+.grey-bg {
+    background-color: #F5F7FA;
+}
+
 @media screen and (min-width: 768px) {
     body {
         margin: calc(var(--header-height) + 1rem) 0 0 0;
@@ -160,16 +191,16 @@ a {
         height: 40px
     }
 
-        .header_img img {
-            width: 45px
-        }
+    .header_img img {
+        width: 45px
+    }
 
     .l-navbar {
         left: 0;
         padding: 1rem 1rem 0 0
     }
 
-    .show {
+    .l-navbar.show {
         width: calc(var(--nav-width) + 156px)
     }
 

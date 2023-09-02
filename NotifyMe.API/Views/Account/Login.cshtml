@@ -1,17 +1,16 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewBag.Title = "Login form";
+    ViewBag.Title = "Login in";
     Layout = "_Layout";
 }
-<div class="row p-5">
-    <div class="col">
-    </div>
+<div class="row p-5 justify-content-center align-items-center">
     <div class="col-6">
         <!-- form card login -->
         <div class="card rounded-0">
             <div class="card-header">
                 <h3 class="mb-0">@ViewBag.Title</h3>
+                <p>Use a local account to log in</p>
             </div>
             <div class="card-body">
                 <form asp-action="Login" asp-controller="Account" asp-antiforgery="true" method="post" class="form" role="form" autocomplete="off" id="formLogin">
@@ -36,13 +35,15 @@
                     <div class="form-group mb-3">
                         <input type="submit" value="Sign in" class="btn btn-primary" id="btnLogin"/>
                     </div>
+                    <div class="col">
+                        <a asp-controller="Account" asp-action="Register" class="">
+                            Register as a new user
+                        </a>
+                    </div>
                 </form>
             </div>
-            <!--/card-block-->
+
         </div>
-        <!-- /form card login -->
-    </div>
-    <div class="col">
     </div>
 </div>
 
