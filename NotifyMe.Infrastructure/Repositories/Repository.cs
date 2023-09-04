@@ -25,8 +25,7 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task<ICollection<T>> GetAllAsync()
         {
-            // return await _entities.AsQueryable().ToListAsync() ?? throw new NullReferenceException();
-            return await _entities.ToListAsync();
+            return await _entities.ToListAsync() ?? throw new NullReferenceException();
         }
 
         public async Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)

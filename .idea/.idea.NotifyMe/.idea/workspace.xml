@@ -19,25 +19,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IRabbitMqService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/css/site.css" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/css/site.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/site.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMQService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMQService1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/.config/dotnet-tools.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/.config/dotnet-tools.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -263,6 +247,7 @@
       <workItem from="1693396025159" duration="20600000" />
       <workItem from="1693497324905" duration="7029000" />
       <workItem from="1693646786138" duration="12970000" />
+      <workItem from="1693816917522" duration="607000" />
     </task>
     <servers />
   </component>
