@@ -9,6 +9,7 @@ namespace NotifyMe.Infrastructure.Context
     {
         public DbSet<EventMonitoring> ChangeEvents { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<Message> Messages { get; set; } = null!;
         public DbSet<Configuration> Configurations { get; set; } = null!;
         public override DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;

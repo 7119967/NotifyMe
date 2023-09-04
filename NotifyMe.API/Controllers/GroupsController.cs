@@ -44,7 +44,7 @@ public class GroupsController : Controller
         {
             if (model != null)
             {
-                var maxId = _groupService.GetAllAsync().Result.Max(g => g.Id) ;
+                var maxId = _groupService.GetAllAsync().Result.Max(g => g.Id);
                 var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
                 if (maxId is null)
                 {

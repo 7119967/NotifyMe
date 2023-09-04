@@ -53,16 +53,17 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-        services.AddScoped<IRabbitMqService, RabbitMqService>();
         
         services.AddTransient<INotificationService, NotificationService>();
+        services.AddTransient<IMessageService, MessageService>();
         services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
 
         services.AddSingleton<ServicesMappingProfile>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+        
+        services.AddSingleton<IRabbitMqService, RabbitMqService>();
         services.AddSingleton<RabbitMQService1>(_ =>
         {
             var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();

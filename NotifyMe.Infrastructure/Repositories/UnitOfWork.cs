@@ -12,11 +12,13 @@ namespace NotifyMe.Infrastructure.Repositories
 
         private readonly IEventMonitoringRepository _eventMonitoringRepository = null!;
         private readonly INotificationRepository _notificationRepository = null!;
+        private readonly IMessageRepository _messageRepository = null!;
         private readonly IGroupRepository _groupRepository = null!;
         private readonly IUserRepository _userRepository = null!;
 
         public IEventMonitoringRepository EventMonitoringRepository => _eventMonitoringRepository ?? new EventMonitoringRepository(_dbContext);
         public INotificationRepository NotificationRepository => _notificationRepository ?? new NotificationRepository(_dbContext);
+        public IMessageRepository MessageRepository => _messageRepository ?? new MessageRepository(_dbContext);
         public IGroupRepository GroupRepository => _groupRepository ?? new GroupRepository(_dbContext);
         public IUserRepository UserRepository => _userRepository ?? new UserRepository(_dbContext);
 

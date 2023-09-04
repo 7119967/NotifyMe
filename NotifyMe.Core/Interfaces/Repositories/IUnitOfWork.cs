@@ -4,6 +4,7 @@
     {
         IEventMonitoringRepository EventMonitoringRepository { get; }
         INotificationRepository NotificationRepository { get; }
+        IMessageRepository MessageRepository { get; }
         IGroupRepository GroupRepository { get; }
         IUserRepository UserRepository { get; }
 

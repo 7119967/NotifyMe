@@ -1,4 +1,8 @@
 ﻿using System.Text;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using NotifyMe.Core.Entities;
+using NotifyMe.Core.Interfaces.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -9,6 +13,10 @@ public static class RabbitMqExtensions
 {
     public static void RabbitMqConsumer(this IApplicationBuilder app)
     {
+        using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
+        var services = scope.ServiceProvider;
+        var messageService = services.GetRequiredService<IMessageService>();
+        
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
@@ -22,13 +30,46 @@ public static class RabbitMqExtensions
         consumer.Received += (model, ea) =>
         {
             var body = ea.Body.ToArray();
-            var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine(" [x] Received {0}", message);
+            var message = new Message
+            {
+                Body = Encoding.UTF8.GetString(body)
+            };
+            
+            var maxId = messageService?.GetAllAsync().Result.Max(e => e.Id);
+            if (maxId is null)
+            {
+                message.Id = "1";
+            }
+            else 
+            {
+                var newId = Convert.ToInt32(maxId) + 1;
+                message.Id = newId.ToString(); 
+            }
+
+            try
+            {
+                messageService?.CreateAsync(message);
+                Console.WriteLine(" [x] Received {0}", message);
+            }
+
+            // var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
+            // var context = scope.ServiceProvider.GetRequiredService<IMessageService>();
+            // try
+            // {
+            //     context.CreateAsync(message);
+            //     Console.WriteLine(" [x] Received {0}", message);
+            // }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         };
+        
         channel.BasicConsume(queue: "MyQueue",
             autoAck: true,
             consumer: consumer);
-
+        
         Console.WriteLine(" Press [enter] to exit.");
         Console.ReadLine();
     }
