@@ -1,13 +1,18 @@
 ﻿using System.Text;
+
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+
 using NotifyMe.Core.Entities;
+using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
+using NotifyMe.Infrastructure.Context;
+using NotifyMe.Infrastructure.Services;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace NotifyMe.IoC.Configuration.DI;
-using Microsoft.AspNetCore.Builder;
 
 public static class RabbitMqExtensions
 {
@@ -16,7 +21,7 @@ public static class RabbitMqExtensions
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
         var services = scope.ServiceProvider;
         var messageService = services.GetRequiredService<IMessageService>();
-        
+
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
