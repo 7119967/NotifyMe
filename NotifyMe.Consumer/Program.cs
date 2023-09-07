@@ -19,14 +19,14 @@ namespace NotifyMe.Consumer
 
             var connection = configuration?.GetConnectionString("DefaultConnection");
 
-            builder.Services.AddDbContext<DatabaseContext>(options =>
-            {
-                options
-                    .UseSqlServer(connection, op => op.MigrationsAssembly("NotifyMe.API"))
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                    .EnableSensitiveDataLogging()
-                    .UseLazyLoadingProxies();
-            });
+            //builder.Services.AddDbContext<DatabaseContext>(options =>
+            //{
+            //    options
+            //        .UseSqlServer(connection, op => op.MigrationsAssembly("NotifyMe.API"))
+            //        .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+            //        .EnableSensitiveDataLogging()
+            //        .UseLazyLoadingProxies();
+            //});
             
             // Services
             builder.Services.ConfigureBusinessServices(configuration);
