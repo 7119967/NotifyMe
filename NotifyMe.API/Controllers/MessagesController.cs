@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-
+using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
 
@@ -51,7 +51,7 @@ public class MessagesController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Delete(GroupDeleteViewModel model)
+    public async Task<IActionResult> Delete(Message model)
     {
         var entity = _messageService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
         if (entity == null)

@@ -19,14 +19,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Messages/PartialViews/DeletePartialView.cshtml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Messages/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Consumer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Consumer/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Consumer/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Consumer/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +83,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.Consumer: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -259,6 +256,7 @@
       <workItem from="1694011792883" duration="1332000" />
       <workItem from="1694018556338" duration="534000" />
       <workItem from="1694021385855" duration="2310000" />
+      <workItem from="1694103433566" duration="613000" />
     </task>
     <servers />
   </component>
