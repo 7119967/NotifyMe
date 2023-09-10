@@ -6,7 +6,7 @@
     var user = await UserManager.GetUserAsync(User);
 }
 
-@model ICollection<Notification>
+@model ICollection<Configuration>
 
 @{
     Layout = "_Layout";
@@ -25,9 +25,10 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Change Type</th>
+                    <th scope="col">Priority Type</th>
+                    <th scope="col">Threshold</th>
                     <th scope="col">Message</th>
-                    <th scope="col">CurrentThreshold</th>
-                    <th scope="col">EventId</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -37,10 +38,11 @@
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
                         <td>
-                            <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.Message</a>
+                            <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.ChangeType</a>
                         </td>
-                        <td>@item.CurrentThreshold</td>
-                        <td>@item.EventId</td>
+                        <td>@item.PriorityType</td>
+                        <td>@item.Threshold</td>
+                        <td>@item.Message</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>

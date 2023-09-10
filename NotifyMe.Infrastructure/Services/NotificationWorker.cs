@@ -16,6 +16,10 @@ public class NotificationWorker : BackgroundService
     private readonly IModel _channel;
     private readonly EmailService _emailService;
 
+    public NotificationWorker()
+    {
+        
+    }
     public NotificationWorker(IModel channel, EmailService emailService)
     {
         _channel = channel;
@@ -41,7 +45,7 @@ public class NotificationWorker : BackgroundService
             _channel.BasicAck(e.DeliveryTag, false);
         };
 
-        _channel.BasicConsume("notifications", false, consumer);
+        // _channel.BasicConsume("notifications", false, consumer);
 
         return Task.CompletedTask;
     }

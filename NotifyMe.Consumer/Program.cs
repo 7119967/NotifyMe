@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore;
-using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 using NotifyMe.IoC.Configuration.DI;
 
@@ -13,11 +11,11 @@ namespace NotifyMe.Consumer
                 .AddJsonFile("appsettings.json");
 
             IConfiguration configuration = configurationBuilder.Build();
-            
+
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddHostedService<RabbitMqListener>();
             
             // Services
+            builder.Services.AddHostedService<RabbitMqListener>();
             builder.Services.ConfigureBusinessServices(configuration);
 
             var app = builder.Build();

@@ -13,7 +13,11 @@ public class EmailService
     public Task SendEmailNotification(Notification notification)
     {
         var message = new MailMessage();
-        message.To.Add(notification.Recipient ?? throw new InvalidOperationException());
+        foreach (var receiver in new List<Group>())
+        {
+            message.To.Add(receiver.Name ?? throw new InvalidOperationException());
+        }
+       
         message.From = new MailAddress("alerts@example.com");
         message.Subject = "Alert notification";
         message.Body = notification.Message;

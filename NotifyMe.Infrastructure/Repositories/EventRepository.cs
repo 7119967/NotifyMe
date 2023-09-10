@@ -4,9 +4,9 @@ using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.Infrastructure.Repositories
 {
-    public class EventMonitoringRepository : Repository<EventMonitoring>, IEventMonitoringRepository
+    public class EventRepository : Repository<Event>, IEventRepository
     {
-        public EventMonitoringRepository(DatabaseContext context) : base(context)
+        public EventRepository(DatabaseContext context) : base(context)
         {
         }
     }

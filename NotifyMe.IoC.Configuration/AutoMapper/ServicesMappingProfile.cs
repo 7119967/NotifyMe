@@ -13,15 +13,15 @@ public class ServicesMappingProfile : Profile
     public ServicesMappingProfile()
     {
     
-        CreateMap<User, ProfileViewModel>()
-            .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
-            .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
-            .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
-            .ForMember(d => d.LastName, s => s.MapFrom(o => o.LastName))
-            .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
-            .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber))
-            .ForMember(d => d.Avatar, s => s.MapFrom(o => o.Avatar))
-            .ForMember(d => d.Info, s => s.MapFrom(o => o.Info));
+        // CreateMap<User, ProfileViewModel>()
+        //     .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
+        //     .ForMember(d => d.UserName, s => s.MapFrom(o => o.UserName))
+        //     .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
+        //     .ForMember(d => d.LastName, s => s.MapFrom(o => o.LastName))
+        //     .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
+        //     .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber))
+        //     .ForMember(d => d.Avatar, s => s.MapFrom(o => o.Avatar))
+        //     .ForMember(d => d.Info, s => s.MapFrom(o => o.Info));
 
         CreateMap<User, UserEditViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -45,7 +45,9 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.FirstName, s => s.MapFrom(o => o.FirstName))
             .ForMember(d => d.LastName, s => s.MapFrom(o => o.LastName))
             .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
-            .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber));
+            .ForMember(d => d.PhoneNumber, s => s.MapFrom(o => o.PhoneNumber))
+            // .ForMember(d => d.Group, s => s.MapFrom(o => o.Group))
+            ;
 
         CreateMap<UserEditViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -142,10 +144,11 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
             .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));  
         
-        CreateMap<NotificationCreateViewModel, Notification>()
-            .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
-            .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
-            .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements));
+        // CreateMap<NotificationCreateViewModel, Notification>()
+        //     .ForMember(d => d.Receivers, s => s.MapFrom(o => o.Recipient))
+        //     .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
+        //     // .ForMember(d => d., s => s.MapFrom(o => o.ChangedElements))
+        //     ;
         
         CreateMap<Group, GroupDetailsViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -154,9 +157,10 @@ public class ServicesMappingProfile : Profile
         
         CreateMap<Notification, NotificationDetailsViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
-            .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
+            // .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
             .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
-            .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements));
+            // .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements))
+            ;
         
         CreateMap<Group, GroupEditViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -165,9 +169,10 @@ public class ServicesMappingProfile : Profile
         
         CreateMap<Notification, NotificationEditViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
-            .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
+            // .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
             .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
-            .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements));
+            // .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements))
+            ;
         
         CreateMap<GroupEditViewModel, Group>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -176,9 +181,10 @@ public class ServicesMappingProfile : Profile
         
         CreateMap<NotificationEditViewModel, Notification>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
-            .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
+            // .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
             .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
-            .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements));
+            // .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements))
+            ;
 
         CreateMap<Group, GroupDeleteViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id));        
@@ -193,8 +199,9 @@ public class ServicesMappingProfile : Profile
         
         CreateMap<Notification, NotificationListViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
-            .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
+            // .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
             .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
-            .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements));
+            // .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements))
+            ;
     }
 }

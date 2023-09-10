@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@* @{ *@
+@*     var user = await UserManager.GetUserAsync(User); *@
+@* } *@
+
+@model Configuration
+@{
+    ViewBag.Title = "Preview";
+    Layout = "_Layout";
+}
+<div class="modal fade" id="modal-details" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg p-5">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalDetailsLabel">@ViewBag.Title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="ChangeType" class="control-label"></label>
+                            <input asp-for="ChangeType" class="form-control" id="ChangeType">
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="PriorityType" class="control-label"></label>
+                            <textarea asp-for="PriorityType" class="form-control" id="PriorityType"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Threshold" class="control-label"></label>
+                            <textarea asp-for="Threshold" class="form-control" id="Threshold"></textarea>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Message" class="control-label"></label>
+                            <textarea asp-for="Message" class="form-control" id="Message"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Groups" class="control-label"></label>
+                            <textarea asp-for="Groups" class="form-control" id="Groups"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

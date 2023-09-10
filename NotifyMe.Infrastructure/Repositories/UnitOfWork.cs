@@ -10,14 +10,18 @@ namespace NotifyMe.Infrastructure.Repositories
         private bool disposed = false;
         private readonly DatabaseContext _dbContext;
 
-        private readonly IEventMonitoringRepository _eventMonitoringRepository = null!;
+        private readonly IChangeRepository _changeRepository = null!;
+        private readonly IEventRepository _eventRepository = null!;
         private readonly INotificationRepository _notificationRepository = null!;
+        private readonly IConfigurationRepository _configurationRepository = null!;
         private readonly IMessageRepository _messageRepository = null!;
         private readonly IGroupRepository _groupRepository = null!;
         private readonly IUserRepository _userRepository = null!;
 
-        public IEventMonitoringRepository EventMonitoringRepository => _eventMonitoringRepository ?? new EventMonitoringRepository(_dbContext);
+        public IChangeRepository ChangeRepository => _changeRepository ?? new ChangeRepository(_dbContext);
+        public IEventRepository EventRepository => _eventRepository ?? new EventRepository(_dbContext);
         public INotificationRepository NotificationRepository => _notificationRepository ?? new NotificationRepository(_dbContext);
+        public IConfigurationRepository ConfigurationRepository => _configurationRepository ?? new ConfigurationRepository(_dbContext);
         public IMessageRepository MessageRepository => _messageRepository ?? new MessageRepository(_dbContext);
         public IGroupRepository GroupRepository => _groupRepository ?? new GroupRepository(_dbContext);
         public IUserRepository UserRepository => _userRepository ?? new UserRepository(_dbContext);
@@ -54,13 +58,13 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!disposed)
             {
                 if (disposing)
                 {
                     _dbContext.Dispose();
                 }
-                this.disposed = true;
+                disposed = true;
             }
         }
 

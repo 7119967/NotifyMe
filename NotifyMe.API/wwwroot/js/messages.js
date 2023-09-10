@@ -13,11 +13,6 @@ function editing(entityId) {
         success: function (result) {
             $('#placeholder-modal-edit').html(result);
             $('#modal-edit').modal('show');
-            // $('#modal-edit').html(output);
-            // $('#modal-edit').modal('show');
-            // $('#modal-edit').show();
-            // $("#modal-edit").css("overflow", "auto");
-            // $("body").css("overflow", "hidden");
             console.log(result);
         },
         error: function () {

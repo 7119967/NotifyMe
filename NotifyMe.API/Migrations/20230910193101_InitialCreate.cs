@@ -26,74 +26,19 @@ namespace NotifyMe.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChangeEvents",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EventName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EventDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChangeEvents", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Configurations",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    EventType = table.Column<int>(type: "int", nullable: false),
-                    Threshold = table.Column<double>(type: "float", nullable: false),
+                    ChangeType = table.Column<int>(type: "int", nullable: false),
+                    PriorityType = table.Column<int>(type: "int", nullable: false),
+                    Threshold = table.Column<int>(type: "int", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Configurations", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Groups",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GroupUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    GroupId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GroupUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Notifications",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Recipient = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChangedElements = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notifications", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -118,22 +63,109 @@ namespace NotifyMe.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AlertTrigger",
+                name: "Events",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AlertName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    EventMonitoringId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ThresholdCondition = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AlertTrigger", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AlertTrigger_ChangeEvents_EventMonitoringId",
-                        column: x => x.EventMonitoringId,
-                        principalTable: "ChangeEvents",
+                        name: "FK_Events_Configurations_ConfigurationId",
+                        column: x => x.ConfigurationId,
+                        principalTable: "Configurations",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Changes",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ChangeType = table.Column<int>(type: "int", nullable: false),
+                    ChangeDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Changes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Changes_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Sender = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentBody = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentThreshold = table.Column<int>(type: "int", nullable: false),
+                    EventId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Groups",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    MessageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Groups", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Groups_Configurations_ConfigurationId",
+                        column: x => x.ConfigurationId,
+                        principalTable: "Configurations",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Groups_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
                         principalColumn: "Id");
                 });
 
@@ -149,7 +181,7 @@ namespace NotifyMe.API.Migrations
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Info = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    GroupId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -166,9 +198,9 @@ namespace NotifyMe.API.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Configurations_ConfigurationId",
-                        column: x => x.ConfigurationId,
-                        principalTable: "Configurations",
+                        name: "FK_AspNetUsers_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
                         principalColumn: "Id");
                 });
 
@@ -258,11 +290,6 @@ namespace NotifyMe.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AlertTrigger_EventMonitoringId",
-                table: "AlertTrigger",
-                column: "EventMonitoringId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
                 column: "RoleId");
@@ -295,9 +322,9 @@ namespace NotifyMe.API.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_ConfigurationId",
+                name: "IX_AspNetUsers_GroupId",
                 table: "AspNetUsers",
-                column: "ConfigurationId");
+                column: "GroupId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -305,14 +332,41 @@ namespace NotifyMe.API.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Changes_EventId",
+                table: "Changes",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_ConfigurationId",
+                table: "Events",
+                column: "ConfigurationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_ConfigurationId",
+                table: "Groups",
+                column: "ConfigurationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Groups_MessageId",
+                table: "Groups",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_EventId",
+                table: "Messages",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_EventId",
+                table: "Notifications",
+                column: "EventId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "AlertTrigger");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -329,22 +383,25 @@ namespace NotifyMe.API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Groups");
-
-            migrationBuilder.DropTable(
-                name: "GroupUsers");
+                name: "Changes");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
-
-            migrationBuilder.DropTable(
-                name: "ChangeEvents");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Groups");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Configurations");

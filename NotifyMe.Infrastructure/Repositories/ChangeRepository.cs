@@ -4,10 +4,10 @@ using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.Infrastructure.Repositories
 {
-    public class ConfigurationRepository: Repository<Configuration>, IConfigurationRepository
+    public class ChangeRepository : Repository<Change>, IChangeRepository
     {
-        public ConfigurationRepository(DatabaseContext context) : base(context)
+        public ChangeRepository(DatabaseContext context) : base(context)
         {
         }
-        }
+    }
 }

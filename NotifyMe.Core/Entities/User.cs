@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Identity;
 
 namespace NotifyMe.Core.Entities
 {
@@ -11,10 +12,8 @@ namespace NotifyMe.Core.Entities
         public override string? PhoneNumber { get; set; }
         public string? Info { get; set; }
         public string? Avatar { get; set; }
-        // public override string? ConcurrencyStamp { get; set; }
-
-        //public virtual List<UserGroupUser> UserGroupUser { get; set; } = new List<UserGroupUser>();
-
-        // public virtual List<Group> Groups { get; set; } = new();
+        public string? GroupId { get; set; }
+        [JsonIgnore]
+        public virtual Group? Group { get; set; }
     }
 }

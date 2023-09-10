@@ -1,6 +1,6 @@
 ﻿namespace NotifyMe.Core.Enums
 {
-    public enum EventType
+    public enum ChangeType
     {
         Creation = 1,
         Update = 2,

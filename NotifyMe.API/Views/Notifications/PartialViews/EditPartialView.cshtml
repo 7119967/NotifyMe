@@ -4,7 +4,7 @@
 @{
     var user = await UserManager.GetUserAsync(User);
 }
-@model NotificationEditViewModel
+@model Notification
 @{
     ViewBag.Title = "Edit";
     Layout = "_Layout";
@@ -19,32 +19,32 @@
             <form asp-action="Edit" asp-controller="Notifications" method="post" enctype="multipart/form-data">
                 @Html.Hidden("Id", Model.Id)
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="modal-body">
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="Recipient" class="control-label"></label>
-                                <input asp-for="Recipient" class="form-control" id="Recipient">
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label asp-for="Message" class="control-label"></label>
+                                    <input asp-for="Message" class="form-control" id="Message">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label asp-for="CurrentThreshold" class="control-label"></label>
+                                    <input asp-for="CurrentThreshold" class="form-control" id="CurrentThreshold">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label asp-for="EventId" class="control-label"></label>
+                                    <input asp-for="EventId" class="form-control" id="EventId">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="Message" class="control-label"></label>
-                                <textarea asp-for="Message" class="form-control" id="Message"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="form-group">
-                                <label asp-for="ChangedElements" class="control-label"></label>
-                                <textarea asp-for="ChangedElements" class="form-control" id="ChangedElements"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abort</button>
                     <button type="submit" class="btn btn-success">Save</button>

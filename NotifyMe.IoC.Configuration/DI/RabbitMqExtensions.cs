@@ -37,7 +37,7 @@ public static class RabbitMqExtensions
             var body = ea.Body.ToArray();
             var message = new Message
             {
-                Body = Encoding.UTF8.GetString(body)
+                ContentBody = Encoding.UTF8.GetString(body)
             };
             
             var maxId = messageService?.GetAllAsync().Result.Max(e => e.Id);

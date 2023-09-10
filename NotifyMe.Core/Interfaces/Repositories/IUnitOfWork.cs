@@ -2,8 +2,10 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IEventMonitoringRepository EventMonitoringRepository { get; }
+        IChangeRepository ChangeRepository { get; }
+        IEventRepository EventRepository { get; }
         INotificationRepository NotificationRepository { get; }
+        IConfigurationRepository ConfigurationRepository { get; }
         IMessageRepository MessageRepository { get; }
         IGroupRepository GroupRepository { get; }
         IUserRepository UserRepository { get; }

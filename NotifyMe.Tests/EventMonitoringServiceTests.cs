@@ -8,16 +8,15 @@ namespace NotifyMe.Tests
 {
     public class EventMonitoringServiceTests
     {
-
-        private readonly EventMonitoringService _service;
+        private readonly EventService _service;
         private readonly Mock<IUnitOfWork> _unitOfWorkMock;
-        private readonly Mock<IEventMonitoringRepository> _repositoryMock;
+        private readonly Mock<IEventRepository> _repositoryMock;
 
         public EventMonitoringServiceTests()
         {
             _unitOfWorkMock = new Mock<IUnitOfWork>();
-            _repositoryMock = new Mock<IEventMonitoringRepository>();
-            _service = new EventMonitoringService(_unitOfWorkMock.Object, _repositoryMock.Object);
+            _repositoryMock = new Mock<IEventRepository>();
+            _service = new EventService(_unitOfWorkMock.Object);
         }
 
         [Fact]
@@ -26,7 +25,7 @@ namespace NotifyMe.Tests
 
             _service.LogEvent("Test", "Details");
 
-            _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<EventMonitoring>()), Times.Once());
+            _repositoryMock.Verify(r => r.CreateAsync(It.IsAny<Event>()), Times.Once());
 
         }
 
@@ -36,7 +35,7 @@ namespace NotifyMe.Tests
 
             _service.LogEvent("Test", "Details");
 
-            _repositoryMock.Verify(r => r.CreateAsync(It.Is<EventMonitoring>(
+            _repositoryMock.Verify(r => r.CreateAsync(It.Is<Event>(
                 e => e.EventName == "Test" && e.EventDescription == "Details"
             )), Times.Once());
 

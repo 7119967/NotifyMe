@@ -54,8 +54,10 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
+        services.AddTransient<IChangeService, ChangeService>();
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IMessageService, MessageService>();
+        services.AddTransient<IEventService, EventService>();
         services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
@@ -76,5 +78,8 @@ public static class ServiceCollectionExtensions
         services.AddTransient<UploadFileService>();
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        
+        services.AddHostedService<EventMonitor>();
+        services.AddHostedService<NotificationWorker>();
     }
 }

@@ -8,41 +8,32 @@ using NotifyMe.Core.Models.Notification;
 
 namespace NotifyMe.API.Controllers;
 
-public class NotificationsController : Controller
+public class ConfigurationsController : Controller
 {
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
-    private readonly ILogger<NotificationsController> _logger;
+    private readonly ILogger<ConfigurationsController> _logger;
     private readonly IEventLogger _eventLogger;
-    private readonly INotificationService _notificationService;
+    private readonly IConfigurationService _configurationService;
 
-    public NotificationsController(
+    public ConfigurationsController(
         UserManager<User> userManager,
         IMapper mapper,
-        ILogger<NotificationsController> logger,
+        ILogger<ConfigurationsController> logger,
         IEventLogger eventLogger,
-        INotificationService notificationService)
+        IConfigurationService configurationService)
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
         _eventLogger = eventLogger;
-        _notificationService = notificationService;
-    }
-
-    [HttpPost]
-    public IActionResult SendNotification(Notification notification)
-    {
-        _eventLogger.LogEvent(notification);
-        _notificationService.SendNotification(notification);
-
-        return RedirectToAction("");
+        _configurationService = configurationService;
     }
 
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _notificationService.GetAllAsync().Result);
-        // var model = _mapper.Map<List<NotificationListViewModel>>(entities);
+        var entities = await Task.Run(() => _configurationService.GetAllAsync().Result);
+        // var model = _mapper.Map<List<ConfigurationListViewModel>>(entities);
         await Task.Yield();
         return View(entities);
     }
@@ -51,19 +42,19 @@ public class NotificationsController : Controller
     public async Task<IActionResult> Create()
     {
         var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
-        return PartialView("PartialViews/CreatePartialView", new Notification());
+        return PartialView("PartialViews/CreatePartialView", new Configuration());
     }
     
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(Notification? model)
+    public async Task<IActionResult> Create(Configuration? model)
     {
         try
         {
             if (model != null)
             {
-                var maxId = _notificationService.GetAllAsync().Result.Max(e => e.Id) ;
-                // var entity = _mapper.Map<NotificationCreateViewModel, Notification>(model);
+                var maxId = _configurationService.GetAllAsync().Result.Max(e => e.Id) ;
+                // var entity = _mapper.Map<ConfigurationCreateViewModel, Configuration>(model);
                 if (maxId is null)
                 {
                     model.Id = "1";
@@ -74,7 +65,7 @@ public class NotificationsController : Controller
                     model.Id = newId.ToString(); 
                 }
                
-                await _notificationService.CreateAsync(model);
+                await _configurationService.CreateAsync(model);
             }
             
             return RedirectToAction("Index");
@@ -89,14 +80,14 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        // var model = _mapper.Map<Notification, NotificationDetailsViewModel>(entity);
+        // var model = _mapper.Map<Configuration, ConfigurationDetailsViewModel>(entity);
 
         await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);
@@ -105,25 +96,25 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        // var model = _mapper.Map<Notification, NotificationEditViewModel>(entity);
+        // var model = _mapper.Map<Configuration, ConfigurationEditViewModel>(entity);
         
         await Task.Yield();
         return PartialView("PartialViews/EditPartialView", entity);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Edit(Notification model)
+    public async Task<IActionResult> Edit(Configuration model)
     {
-        // var entity = _mapper.Map<NotificationEditViewModel, Notification>(model);
+        // var entity = _mapper.Map<ConfigurationEditViewModel, Configuration>(model);
         try
         {
-            await _notificationService.UpdateAsync(model);
+            await _configurationService.UpdateAsync(model);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -136,22 +127,22 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        // var model = _mapper.Map<Notification, NotificationDeleteViewModel>(entity);
+        // var model = _mapper.Map<Configuration, ConfigurationDeleteViewModel>(entity);
         
         await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", entity);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Delete(Notification model)
+    public async Task<IActionResult> Delete(Configuration model)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
         if (entity == null)
         {
             return NotFound();
@@ -159,7 +150,7 @@ public class NotificationsController : Controller
 
         try
         {
-            await _notificationService.DeleteAsync(entity.Id);
+            await _configurationService.DeleteAsync(entity.Id);
             return RedirectToAction("Index");
         }
         catch (Exception e)

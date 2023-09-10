@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
+using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models;
 using NotifyMe.Core.Models.User;
+using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
@@ -19,6 +22,8 @@ public class UsersController : Controller
     private readonly UploadFileService _uploadFileService;
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly DatabaseContext _databaseContext;
 
   
     public UsersController(UserManager<User> userManager,
@@ -42,7 +47,8 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var entities = _mapper.Map<List<UserListViewModel>>(_userService.GetAllAsync().Result);
+        // var entities = _mapper.Map<List<UserListViewModel>>(_userService.GetAllAsync().Result);
+        var entities = _databaseContext.Users.Include(p => p.Group).ToList();
         await Task.Yield();
         return View(entities);
     }

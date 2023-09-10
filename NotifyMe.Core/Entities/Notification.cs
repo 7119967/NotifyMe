@@ -1,9 +1,13 @@
-﻿namespace NotifyMe.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace NotifyMe.Core.Entities
 {
     public class Notification : BaseEntity
     {
-        public string? Recipient { get; set; }
         public string? Message { get; set; }
-        public string? ChangedElements { get; set; }
+        public int CurrentThreshold { get; set; }
+        public string? EventId { get; set; }
+        [JsonIgnore] 
+        public virtual Event? Event { get; set; }
     }
 }

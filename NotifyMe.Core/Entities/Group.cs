@@ -1,12 +1,14 @@
-﻿namespace NotifyMe.Core.Entities
+﻿using System.Text.Json.Serialization;
+
+namespace NotifyMe.Core.Entities
 {
     public class Group : BaseEntity
     {
         public string? Name { get; set; }
         public string? Description { get; set; }
-
-        //public virtual List<UserGroupUser> UserGroupUser { get; set; } = new List<UserGroupUser>();
-
-        // public virtual List<User> Users { get; set; } = new();
+        public string? ConfigurationId { get; set; }
+        [JsonIgnore]
+        public virtual Configuration? Configuration { get; set; }
+        public virtual List<User> Users { get; set; } = new();
     }
 }

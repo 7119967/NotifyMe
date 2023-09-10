@@ -1,7 +1,9 @@
-﻿namespace NotifyMe.Core.Interfaces.Services;
+﻿using NotifyMe.Core.Entities;
+
+namespace NotifyMe.Core.Interfaces.Services;
 
 public interface IRabbitMqService
 {
     void SendMessage(object obj);
-    void SendMessage(string message);
+    void SendMessage(Message message);
 }

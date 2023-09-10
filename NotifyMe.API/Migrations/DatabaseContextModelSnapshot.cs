@@ -158,28 +158,28 @@ namespace NotifyMe.API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("NotifyMe.Core.Entities.AlertTrigger", b =>
+            modelBuilder.Entity("NotifyMe.Core.Entities.Change", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AlertName")
+                    b.Property<string>("ChangeDescription")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EventMonitoringId")
+                    b.Property<int>("ChangeType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ThresholdCondition")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventMonitoringId");
+                    b.HasIndex("EventId");
 
-                    b.ToTable("AlertTrigger");
+                    b.ToTable("Changes");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Configuration", b =>
@@ -187,11 +187,17 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("EventType")
+                    b.Property<int>("ChangeType")
                         .HasColumnType("int");
 
-                    b.Property<double>("Threshold")
-                        .HasColumnType("float");
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PriorityType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Threshold")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -201,9 +207,12 @@ namespace NotifyMe.API.Migrations
                     b.ToTable("Configurations");
                 });
 
-            modelBuilder.Entity("NotifyMe.Core.Entities.EventMonitoring", b =>
+            modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConfigurationId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EventDescription")
@@ -217,7 +226,9 @@ namespace NotifyMe.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ChangeEvents");
+                    b.HasIndex("ConfigurationId");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
@@ -225,8 +236,14 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("ConfigurationId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MessageId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -236,27 +253,11 @@ namespace NotifyMe.API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ConfigurationId");
+
+                    b.HasIndex("MessageId");
+
                     b.ToTable("Groups");
-                });
-
-            modelBuilder.Entity("NotifyMe.Core.Entities.GroupUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("GroupId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("GroupUsers");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
@@ -264,7 +265,18 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Body")
+                    b.Property<string>("ContentBody")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Sender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Subject")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -272,6 +284,8 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("Messages");
                 });
@@ -281,19 +295,21 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ChangedElements")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CurrentThreshold")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EventId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Message")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Recipient")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EventId");
 
                     b.ToTable("Notifications");
                 });
@@ -313,9 +329,6 @@ namespace NotifyMe.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ConfigurationId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -325,6 +338,9 @@ namespace NotifyMe.API.Migrations
 
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GroupId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Info")
                         .HasColumnType("nvarchar(max)");
@@ -367,7 +383,7 @@ namespace NotifyMe.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ConfigurationId");
+                    b.HasIndex("GroupId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -431,30 +447,86 @@ namespace NotifyMe.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NotifyMe.Core.Entities.AlertTrigger", b =>
+            modelBuilder.Entity("NotifyMe.Core.Entities.Change", b =>
                 {
-                    b.HasOne("NotifyMe.Core.Entities.EventMonitoring", "EventMonitoring")
-                        .WithMany("AlertTrigger")
-                        .HasForeignKey("EventMonitoringId");
+                    b.HasOne("NotifyMe.Core.Entities.Event", null)
+                        .WithMany("Changes")
+                        .HasForeignKey("EventId");
+                });
 
-                    b.Navigation("EventMonitoring");
+            modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Configuration", "Configuration")
+                        .WithMany("Events")
+                        .HasForeignKey("ConfigurationId");
+
+                    b.Navigation("Configuration");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Configuration", "Configuration")
+                        .WithMany("Groups")
+                        .HasForeignKey("ConfigurationId");
+
+                    b.HasOne("NotifyMe.Core.Entities.Message", null)
+                        .WithMany("Receivers")
+                        .HasForeignKey("MessageId");
+
+                    b.Navigation("Configuration");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Event", "Event")
+                        .WithMany("Messages")
+                        .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Notification", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Event", "Event")
+                        .WithMany("Notifications")
+                        .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
                 {
-                    b.HasOne("NotifyMe.Core.Entities.Configuration", null)
-                        .WithMany("Recipients")
-                        .HasForeignKey("ConfigurationId");
+                    b.HasOne("NotifyMe.Core.Entities.Group", "Group")
+                        .WithMany("Users")
+                        .HasForeignKey("GroupId");
+
+                    b.Navigation("Group");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Configuration", b =>
                 {
-                    b.Navigation("Recipients");
+                    b.Navigation("Events");
+
+                    b.Navigation("Groups");
                 });
 
-            modelBuilder.Entity("NotifyMe.Core.Entities.EventMonitoring", b =>
+            modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>
                 {
-                    b.Navigation("AlertTrigger");
+                    b.Navigation("Changes");
+
+                    b.Navigation("Messages");
+
+                    b.Navigation("Notifications");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
+                {
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
+                {
+                    b.Navigation("Receivers");
                 });
 #pragma warning restore 612, 618
         }
