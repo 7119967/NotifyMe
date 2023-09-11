@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230910193101_InitialCreate")]
+    [Migration("20230911165655_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -251,6 +251,9 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PriorityType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
@@ -452,9 +455,11 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Change", b =>
                 {
-                    b.HasOne("NotifyMe.Core.Entities.Event", null)
+                    b.HasOne("NotifyMe.Core.Entities.Event", "Event")
                         .WithMany("Changes")
                         .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>

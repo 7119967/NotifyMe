@@ -150,6 +150,7 @@ namespace NotifyMe.API.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PriorityType = table.Column<int>(type: "int", nullable: false),
                     ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     MessageId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)

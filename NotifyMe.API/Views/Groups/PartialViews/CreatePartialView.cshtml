@@ -30,13 +30,13 @@
                         </div>
                     </div>
                     <div class="row mb-3">
-                            <div class="col">
-                                <div class="form-group">
-                                    <label for="Username">User to Add</label>
-                                    <input type="text" class="form-control" id="Username" name="Username" placeholder="Enter the username of the user to add">
-                                </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="PriorityType" class="control-label">Priority</label><br/>
+                                <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
                             </div>
                         </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

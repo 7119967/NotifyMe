@@ -29,7 +29,7 @@ public static class ServiceCollectionExtensions
         {
             options
                 .UseSqlServer(connection, op => op.MigrationsAssembly("NotifyMe.API"))
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         });
@@ -55,6 +55,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         services.AddTransient<IChangeService, ChangeService>();
+        services.AddTransient<IConfigurationService, ConfigurationService>();
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IMessageService, MessageService>();
         services.AddTransient<IEventService, EventService>();

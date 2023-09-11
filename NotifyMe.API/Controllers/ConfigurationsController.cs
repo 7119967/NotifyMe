@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NotifyMe.Core.Entities;
+using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Models.Notification;
 
@@ -41,7 +42,14 @@ public class ConfigurationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        var  changeTypeValues = Enum.GetValues(typeof(ChangeType)).Cast<ChangeType>();
+        var changeTypes = new SelectList(changeTypeValues);
+        ViewBag.ChangeTypes = changeTypes;
+        
+        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
+        var priorities = new SelectList(priorityTypeValues);
+        ViewBag.Priorities = priorities;
+        
         return PartialView("PartialViews/CreatePartialView", new Configuration());
     }
     

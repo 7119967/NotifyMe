@@ -23,6 +23,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
+                    <th scope="col">Priority</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -35,6 +36,7 @@
                             <a class="btn link-primary p-0" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.Name</a>
                         </td>
                         <td>@item.Description</td>
+                        <td>@item.PriorityType</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>

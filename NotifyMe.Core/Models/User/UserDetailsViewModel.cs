@@ -48,4 +48,5 @@ public class UserDetailsViewModel
     public string? PasswordHash { get; set; }
     public string? SecurityStamp { get; set; }
     public bool? LockoutEnabled { get; set; }
+    public string? GroupId { get; set; }
 }

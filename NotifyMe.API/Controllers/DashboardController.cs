@@ -2,7 +2,7 @@
 
 namespace NotifyMe.API.Controllers;
 
-public class StatisticsController : Controller
+public class DashboardController : Controller
 {
     // GET
     public IActionResult Index()

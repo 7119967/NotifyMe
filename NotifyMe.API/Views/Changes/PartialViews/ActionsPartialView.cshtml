@@ -1,0 +1,21 @@
+﻿@model Change
+
+<div class="dropdown">
+    <button class="btn dropdown-toggle" id="dropdownMenuButton-@Model.Id" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Actions menu">
+        <i class='bx bx-list-ul'></i>
+    </button>
+    <ul class="dropdown-menu align-items-center justify-content-evenly" aria-labelledby="dropdownMenuButton-@Model.Id">
+        <li class="dropdown-item">
+            <i class='bx bx-edit-alt'></i>
+            <a class="btn" data-bs-toggle="ajax-modal" data-bs-target="#modal-edit" onclick="editing('@Model.Id')">Edit</a>
+        </li>
+        <li class="dropdown-item">
+            <i class='bx bx-detail'></i>
+            <a class="btn" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@Model.Id')">Details</a>
+        </li>
+        <li class="dropdown-item">
+            <i class='bx bx-trash'></i>
+            <a class="btn" data-bs-toggle="ajax-modal" data-bs-target="#modal-delete" onclick="deleting('@Model.Id')">Delete</a>
+        </li>
+    </ul>
+</div>

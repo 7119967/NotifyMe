@@ -248,6 +248,9 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("PriorityType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
@@ -449,9 +452,11 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Change", b =>
                 {
-                    b.HasOne("NotifyMe.Core.Entities.Event", null)
+                    b.HasOne("NotifyMe.Core.Entities.Event", "Event")
                         .WithMany("Changes")
                         .HasForeignKey("EventId");
+
+                    b.Navigation("Event");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>

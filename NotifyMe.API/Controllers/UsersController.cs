@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
@@ -59,6 +60,9 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
+        ViewBag.Groups = groups;
+        
         //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
         await Task.Yield();
         return PartialView("PartialViews/CreatePartialView", new UserCreateViewModel());

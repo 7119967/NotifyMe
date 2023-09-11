@@ -16,27 +16,16 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="ChangeType" class="control-label"></label>
-                                <select asp-for="ChangeType" class="form-control" id="ChangeType">
-                                    <option value="">-- Select Change Type --</option>
-                                    <option value="1">Creation</option>
-                                    <option value="2">Update</option>
-                                    <option value="3">Deletion</option>
-                                    <option value="4">View</option>
-                                </select>
+                                <label asp-for="ChangeType" class="control-label">ChangeType</label>
+                                <select asp-for="ChangeType" asp-items="ViewBag.ChangeTypes"></select>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="PriorityType" class="control-label"></label>
-                                <select asp-for="PriorityType" class="form-control" id="PriorityType">
-                                    <option value="">-- Select Priority Type --</option>
-                                    <option value="1">High</option>
-                                    <option value="2">Middle</option>
-                                    <option value="3">Low</option>
-                                </select>
+                                <label asp-for="PriorityType" class="control-label">Priority</label><br/>
+                                <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
                             </div>
                         </div>
                     </div>

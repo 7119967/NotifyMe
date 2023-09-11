@@ -15,6 +15,12 @@ public class ChangesController : ControllerBase
         _changeService = changeService;
     }
 
+    [HttpGet("entity/fetch/all")]
+    public IActionResult Index()
+    {
+        return Ok(_changeService.GetAllAsync().Result);
+    }
+    
     [HttpGet("entity/fetch/id/{id}")]
     public async Task<IActionResult> GetById(string id)
     {

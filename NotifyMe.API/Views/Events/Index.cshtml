@@ -1,12 +1,8 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-@inject RoleManager<IdentityRole> roleManager;
-@{
-    var user = await UserManager.GetUserAsync(User);
-}
-
-@model ICollection<Notification>
+﻿@using AutoMapper
+@using NotifyMe.Core.Interfaces.Services;
+@inject IMapper Mapper;
+@inject IGroupService GroupService;
+@model List<Event>
 
 @{
     Layout = "_Layout";
@@ -25,9 +21,9 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Message</th>
-                    <th scope="col">Threshold</th>
-                    <th scope="col">Event</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Configuration</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -37,10 +33,10 @@
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
                         <td>
-                            <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.Message</a>
+                            <a class="btn link-primary p-0" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.EventName</a>
                         </td>
-                        <td>@item.CurrentThreshold</td>
-                        <td>@item.Event</td>
+                        <td>@item.EventDescription</td>
+                        <td>@item.Configuration</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>
@@ -67,5 +63,5 @@
 
 @section Scripts
 {
-    <script src="~/js/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/groups.js" asp-append-version="true"></script>
 }

@@ -3,9 +3,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 using NotifyMe.Core.Entities;
+using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
 using NotifyMe.Infrastructure.Context;
@@ -40,6 +42,10 @@ public class GroupsController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
+        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
+        var priorities = new SelectList(priorityTypeValues);
+        ViewBag.Priorities = priorities;
+        
         //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
         await Task.Yield();
         return PartialView("PartialViews/CreatePartialView", new GroupCreateViewModel());

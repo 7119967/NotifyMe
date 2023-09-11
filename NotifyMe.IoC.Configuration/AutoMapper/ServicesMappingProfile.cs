@@ -79,7 +79,9 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.NormalizedEmail, s => s.MapFrom(o => o.NormalizedEmail))
             .ForMember(d => d.PasswordHash, s => s.MapFrom(o => o.PasswordHash))
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
-            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
+            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled))
+            .ForMember(d => d.GroupId, s => s.MapFrom(o => o.GroupId))
+            ;
         
         CreateMap<UserEditViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -95,7 +97,9 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.NormalizedEmail, s => s.MapFrom(o => o.NormalizedEmail))
             .ForMember(d => d.PasswordHash, s => s.MapFrom(o => o.PasswordHash))
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
-            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));  
+            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled))
+            .ForMember(d => d.GroupId, s => s.MapFrom(o => o.GroupId))
+            ;  
         
         CreateMap<UserDetailsViewModel, User>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -127,7 +131,8 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.NormalizedEmail, s => s.MapFrom(o => o.NormalizedEmail))
             .ForMember(d => d.PasswordHash, s => s.MapFrom(o => o.PasswordHash))
             .ForMember(d => d.SecurityStamp, s => s.MapFrom(o => o.SecurityStamp))
-            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled));
+            .ForMember(d => d.LockoutEnabled, s => s.MapFrom(o => o.LockoutEnabled))
+            ;
 
         CreateMap<UserListViewModel, UserDetailsViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
@@ -142,7 +147,9 @@ public class ServicesMappingProfile : Profile
 
         CreateMap<GroupCreateViewModel, Group>()
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
-            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description));  
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description))
+            .ForMember(d => d.PriorityType, s => s.MapFrom(o => o.PriorityType))
+            ;  
         
         // CreateMap<NotificationCreateViewModel, Notification>()
         //     .ForMember(d => d.Receivers, s => s.MapFrom(o => o.Recipient))
@@ -195,7 +202,9 @@ public class ServicesMappingProfile : Profile
         CreateMap<Group, GroupListViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
             .ForMember(d => d.Name, s => s.MapFrom(o => o.Name))
-            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description)); 
+            .ForMember(d => d.Description, s => s.MapFrom(o => o.Description))
+            .ForMember(d => d.PriorityType, s => s.MapFrom(o => o.PriorityType))
+            ; 
         
         CreateMap<Notification, NotificationListViewModel>()
             .ForMember(d => d.Id, s => s.MapFrom(o => o.Id))
