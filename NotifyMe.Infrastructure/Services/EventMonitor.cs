@@ -30,9 +30,9 @@ public class EventMonitor : BackgroundService
             {
                 var changes = _dbContext?.Changes.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
 
-                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation && t.Timestamp == DateTime.UtcNow);
-                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update && t.Timestamp == DateTime.UtcNow);
-                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion && t.Timestamp == DateTime.UtcNow);
+                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation);
+                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update);
+                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion);
                 var currentCounterView = changes.Count(t => t.ChangeType == ChangeType.View && t.Timestamp == DateTime.UtcNow);
 
                 var configurations = _dbContext?.Configurations.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();

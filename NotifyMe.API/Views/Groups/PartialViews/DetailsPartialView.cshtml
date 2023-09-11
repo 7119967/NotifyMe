@@ -5,7 +5,7 @@
 @*     var user = await UserManager.GetUserAsync(User); *@
 @* } *@
 
-@model GroupDetailsViewModel
+@model Group
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
@@ -31,6 +31,19 @@
                         <div class="form-group">
                             <label asp-for="Description" class="control-label"></label>
                             <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+                        </div>
+                    </div>
+                </div>          
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Users" class="control-label"></label>
+                            <ul id="Users">
+                                @foreach (var user in Model.Users)
+                                {
+                                    <li>@user.UserName (@user.FirstName @user.LastName)</li>
+                                }
+                            </ul>
                         </div>
                     </div>
                 </div>

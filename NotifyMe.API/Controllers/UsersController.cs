@@ -32,7 +32,8 @@ public class UsersController : Controller
         IHostEnvironment environment,
         IMapper mapper,
         IUserService userService,
-        UploadFileService uploadFileService)
+        UploadFileService uploadFileService,
+        DatabaseContext databaseContext)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -41,6 +42,7 @@ public class UsersController : Controller
         _mapper = mapper;
         _userService = userService;
         _uploadFileService = uploadFileService;
+        _databaseContext = databaseContext;
     }
 
     [Authorize]
@@ -57,7 +59,8 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        await Task.Yield();
         return PartialView("PartialViews/CreatePartialView", new UserCreateViewModel());
     }
     

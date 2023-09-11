@@ -3,9 +3,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
+using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
@@ -15,11 +18,16 @@ public class GroupsController : Controller
     private readonly IMapper _mapper;
     private readonly IGroupService _groupService;
     private readonly UserManager<User> _userManager;
-    public GroupsController(UserManager<User> userManager, IMapper mapper, IGroupService groupService)
+    private readonly DatabaseContext _databaseContext;
+    public GroupsController(UserManager<User> userManager, 
+        IMapper mapper, 
+        IGroupService groupService,
+        DatabaseContext databaseContext)
     {
         _userManager = userManager;
         _groupService = groupService;
         _mapper = mapper;
+        _databaseContext = databaseContext;
     }
     public async Task<IActionResult> Index()
     {
@@ -32,7 +40,8 @@ public class GroupsController : Controller
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        await Task.Yield();
         return PartialView("PartialViews/CreatePartialView", new GroupCreateViewModel());
     }
     
@@ -78,10 +87,11 @@ public class GroupsController : Controller
             return RedirectToAction("Index");
         }
 
-        var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
+        //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
+        entity.Users = _databaseContext.Users.Where(e => e.GroupId == entityId).ToList();
 
         await Task.Yield();
-        return PartialView("PartialViews/DetailsPartialView", model);
+        return PartialView("PartialViews/DetailsPartialView", entity);
     }
     
     [HttpGet]

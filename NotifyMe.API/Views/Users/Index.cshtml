@@ -28,6 +28,7 @@
                     <th scope="col">LastName</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
+                    <th scope="col">Group</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -43,6 +44,7 @@
                         <td>@item.LastName</td>
                         <td>@item.Email</td>
                         <td>@item.PhoneNumber</td>
+                        <td>@item.Group?.Name</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>
