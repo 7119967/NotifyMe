@@ -29,20 +29,32 @@ public class EventMonitor : BackgroundService
             try
             {
                 var changes = _dbContext?.Changes.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
+                
+                if (changes.Count() == 0) 
+                {
+                    await Console.Out.WriteLineAsync("There is no changes. Create a change");
+                    continue;
+                }
 
-                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation);
-                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update);
-                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion);
+                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation && t.Timestamp == DateTime.UtcNow);
+                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update && t.Timestamp == DateTime.UtcNow);
+                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion && t.Timestamp == DateTime.UtcNow);
                 var currentCounterView = changes.Count(t => t.ChangeType == ChangeType.View && t.Timestamp == DateTime.UtcNow);
 
                 var configurations = _dbContext?.Configurations.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
+
+                if (configurations.Count() == 0)
+                {
+                    await Console.Out.WriteLineAsync("There is no configurations. Create a Configuration");
+                    continue;
+                }
 
                 foreach (var configuration in configurations)
                 {
                     switch (configuration.ChangeType)
                     {
                         case ChangeType.Creation:
-                            if (currentCounterCreation == configuration.Threshold)
+                            if (currentCounterCreation >= configuration.Threshold)
                             {
                                 var eventCreation = CreateEvent(configuration, currentCounterCreation);
                                 _dbContext?.Events.AddAsync(eventCreation);
@@ -54,7 +66,7 @@ public class EventMonitor : BackgroundService
                             break;
                         
                         case ChangeType.Update:
-                            if (currentCounterUpdate == configuration.Threshold)
+                            if (currentCounterUpdate >= configuration.Threshold)
                             {
                                 var eventCreation = CreateEvent(configuration, currentCounterUpdate);
                                 _dbContext?.Events.AddAsync(eventCreation);
@@ -66,7 +78,7 @@ public class EventMonitor : BackgroundService
                             break;
                         
                         case ChangeType.Deletion:
-                            if (currentCounterDeletion == configuration.Threshold)
+                            if (currentCounterDeletion >= configuration.Threshold)
                             {
                                 var eventCreation = CreateEvent(configuration, currentCounterDeletion);
                                 _dbContext?.Events.AddAsync(eventCreation);
@@ -78,7 +90,7 @@ public class EventMonitor : BackgroundService
                             break;
                         
                         case ChangeType.View:
-                            if (currentCounterView == configuration.Threshold)
+                            if (currentCounterView >= configuration.Threshold)
                             {
                                 var eventCreation = CreateEvent(configuration, currentCounterView);
                                 _dbContext?.Events.AddAsync(eventCreation);
@@ -112,20 +124,22 @@ public class EventMonitor : BackgroundService
             _dbContext?.Changes.Update(item);
         }
     }
-    private Message CreateMessage (ChangeType changeType, int currentValue, int thresholdValue)
+    private Message CreateMessage (Configuration configuration, int currentValue)
     {
+        var receivers = new List<User>();
+        foreach (var user in configuration.Group!.Users)
+        {
+            receivers.Add(user.Email);
+        }
+
         return new Message
         {
             Sender = "",
-            Receivers = new List<Group>
-            {
-                new() { Name = "Bob"}, 
-                new() { Name = "Charlie"}, 
-                new() { Name = "David"}
-            },
-            Subject = $"ALERT: {changeType} exceeded threshold",
+            Receivers = receivers,
+
+            Subject = $"ALERT: {configuration.ChangeType} exceeded threshold",
             ContentBody =
-                $"ALERT: {changeType} exceeded threshold. Current value: {currentValue}, Threshold: {thresholdValue}"
+                $"ALERT: {configuration.ChangeType} exceeded threshold. Current value: {currentValue}, Threshold: {configuration.Threshold}"
         };
     }
     
@@ -134,7 +148,7 @@ public class EventMonitor : BackgroundService
         return new Event
         {
             EventName = $"{configuration.ChangeType} exceeded threshold",
-            EventDescription = $"{configuration.Message}. Current value: {currentValue}, Threshold: {configuration.Threshold}",
+            EventDescription = $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
             ConfigurationId = configuration.Id
         };
     }

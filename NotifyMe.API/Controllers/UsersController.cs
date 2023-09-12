@@ -101,7 +101,11 @@ public class UsersController : Controller
             }
                 
             var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
-            _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
+            if (model.File != null)
+            {
+                _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
+            }
+
             var pathImage = $"/img/{model.Email}.jpg";
                 
             var entity = _mapper.Map<UserCreateViewModel, User>(model);

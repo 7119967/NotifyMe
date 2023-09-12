@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
-using NotifyMe.Core.Models.Notification;
+using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
@@ -16,19 +18,22 @@ public class ConfigurationsController : Controller
     private readonly ILogger<ConfigurationsController> _logger;
     private readonly IEventLogger _eventLogger;
     private readonly IConfigurationService _configurationService;
+    private readonly DatabaseContext _databaseContext;
 
     public ConfigurationsController(
         UserManager<User> userManager,
         IMapper mapper,
         ILogger<ConfigurationsController> logger,
         IEventLogger eventLogger,
-        IConfigurationService configurationService)
+        IConfigurationService configurationService,
+        DatabaseContext databaseContext)
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
         _eventLogger = eventLogger;
         _configurationService = configurationService;
+        _databaseContext = databaseContext;
     }
 
     public async Task<IActionResult> Index()
@@ -49,7 +54,10 @@ public class ConfigurationsController : Controller
         var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
         var priorities = new SelectList(priorityTypeValues);
         ViewBag.Priorities = priorities;
-        
+
+        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
+        ViewBag.Groups = groups;
+
         return PartialView("PartialViews/CreatePartialView", new Configuration());
     }
     
@@ -61,18 +69,27 @@ public class ConfigurationsController : Controller
         {
             if (model != null)
             {
-                var maxId = _configurationService.GetAllAsync().Result.Max(e => e.Id) ;
-                // var entity = _mapper.Map<ConfigurationCreateViewModel, Configuration>(model);
-                if (maxId is null)
+                var seequence = _configurationService.GetAllAsync().Result;
+                var size = seequence.Count();
+                int[] anArray = new int[size];
+                if (size == 0)
                 {
                     model.Id = "1";
                 }
-                else 
+                else
                 {
-                    var newId = Convert.ToInt32(maxId) + 1;
-                    model.Id = newId.ToString(); 
+                    var index = 0;
+                    foreach (var change in seequence)
+                    {
+                        anArray[index] = Convert.ToInt32(change.Id);
+                        index++;
+                    }
+
+                    int maxValue = anArray.Max();
+                    var newId = Convert.ToInt32(maxValue) + 1;
+                    model.Id = newId.ToString();
                 }
-               
+
                 await _configurationService.CreateAsync(model);
             }
             
@@ -110,8 +127,19 @@ public class ConfigurationsController : Controller
             return NotFound();
         }
 
+        var changeTypeValues = Enum.GetValues(typeof(ChangeType)).Cast<ChangeType>();
+        var changeTypes = new SelectList(changeTypeValues);
+        ViewBag.ChangeTypes = changeTypes;
+
+        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
+        var priorities = new SelectList(priorityTypeValues);
+        ViewBag.Priorities = priorities;
+
+        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
+        ViewBag.Groups = groups;
+
         // var model = _mapper.Map<Configuration, ConfigurationEditViewModel>(entity);
-        
+
         await Task.Yield();
         return PartialView("PartialViews/EditPartialView", entity);
     }

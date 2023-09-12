@@ -50,17 +50,39 @@ public class ChangesController : ControllerBase
             // {
             //     return BadRequest("The entity with the specified ID already exists");
             // }
-            
-            var maxId = _changeService.GetAllAsync().Result.Max(e => e.Id) ;
-            if (maxId is null)
+           
+            var seequence = _changeService.GetAllAsync().Result;
+            var size = seequence.Count();
+            int[] anArray = new int[size];
+            if (size == 0)
             {
                 entity.Id = "1";
             }
-            else 
+            else
             {
-                var newId = Convert.ToInt32(maxId) + 1;
-                entity.Id = newId.ToString(); 
+                var index = 0;
+                foreach (var change in seequence)
+                {
+                    anArray[index] = Convert.ToInt32(change.Id);
+                    index++;
+                }
+
+                int maxValue = anArray.Max();
+                var newId = Convert.ToInt32(maxValue) + 1;
+                entity.Id = newId.ToString();
             }
+    
+
+            //var maxId = _changeService.GetAllAsync().Result.Max(e => e.Id);
+            //if (maxId is null)
+            //{
+            //    entity.Id = "1";
+            //}
+            //else 
+            //{
+            //    var newId = Convert.ToInt32(maxId) + 1;
+            //    entity.Id = newId.ToString(); 
+            //}
             
             await _changeService.CreateAsync(entity);
             return Ok(entity);

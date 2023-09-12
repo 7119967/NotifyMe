@@ -16,34 +16,23 @@
                 <h1 class="modal-title fs-5" id="modalEdit">@ViewBag.Title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form asp-action="Edit" asp-controller="Notifications" method="post" enctype="multipart/form-data">
+            <form asp-action="Edit" asp-controller="Configurations" method="post" enctype="multipart/form-data">
                 @Html.Hidden("Id", Model.Id)
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="ChangeType" class="control-label"></label>
-                                <select asp-for="ChangeType" class="form-control" id="ChangeType">
-                                    <option value="">-- Select Change Type --</option>
-                                    <option value="1">Creation</option>
-                                    <option value="2">Update</option>
-                                    <option value="3">Deletion</option>
-                                    <option value="4">View</option>
-                                </select>
+                                <label asp-for="ChangeType" class="control-label">ChangeType</label>
+                                <select asp-for="ChangeType" asp-items="ViewBag.ChangeTypes"></select>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="PriorityType" class="control-label"></label>
-                                <select asp-for="PriorityType" class="form-control" id="PriorityType">
-                                    <option value="">-- Select Priority Type --</option>
-                                    <option value="1">High</option>
-                                    <option value="2">Middle</option>
-                                    <option value="3">Low</option>
-                                </select>
+                                <label asp-for="PriorityType" class="control-label">Priority</label><br />
+                                <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
                             </div>
                         </div>
                     </div>
@@ -64,8 +53,8 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="Groups" class="control-label"></label>
-                                <textarea asp-for="Groups" class="form-control" id="Groups"></textarea>
+                                <label asp-for="GroupId">Group</label><br />
+                                <select asp-for="GroupId" asp-items="ViewBag.Groups"></select>
                             </div>
                         </div>
 

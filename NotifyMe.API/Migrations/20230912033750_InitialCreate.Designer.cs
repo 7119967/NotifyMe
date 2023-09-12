@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230911165655_InitialCreate")]
+    [Migration("20230912033750_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -193,6 +193,9 @@ namespace NotifyMe.API.Migrations
                     b.Property<int>("ChangeType")
                         .HasColumnType("int");
 
+                    b.Property<string>("GroupId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
@@ -206,6 +209,8 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GroupId");
 
                     b.ToTable("Configurations");
                 });
@@ -239,9 +244,6 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ConfigurationId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -258,8 +260,6 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ConfigurationId");
 
                     b.HasIndex("MessageId");
 
@@ -462,6 +462,15 @@ namespace NotifyMe.API.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("NotifyMe.Core.Entities.Configuration", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Group", "Group")
+                        .WithMany("Configurations")
+                        .HasForeignKey("GroupId");
+
+                    b.Navigation("Group");
+                });
+
             modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>
                 {
                     b.HasOne("NotifyMe.Core.Entities.Configuration", "Configuration")
@@ -473,15 +482,9 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
                 {
-                    b.HasOne("NotifyMe.Core.Entities.Configuration", "Configuration")
-                        .WithMany("Groups")
-                        .HasForeignKey("ConfigurationId");
-
                     b.HasOne("NotifyMe.Core.Entities.Message", null)
                         .WithMany("Receivers")
                         .HasForeignKey("MessageId");
-
-                    b.Navigation("Configuration");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
@@ -514,8 +517,6 @@ namespace NotifyMe.API.Migrations
             modelBuilder.Entity("NotifyMe.Core.Entities.Configuration", b =>
                 {
                     b.Navigation("Events");
-
-                    b.Navigation("Groups");
                 });
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Event", b =>
@@ -529,6 +530,8 @@ namespace NotifyMe.API.Migrations
 
             modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
                 {
+                    b.Navigation("Configurations");
+
                     b.Navigation("Users");
                 });
 

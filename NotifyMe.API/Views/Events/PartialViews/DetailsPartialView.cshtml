@@ -5,7 +5,7 @@
 @*     var user = await UserManager.GetUserAsync(User); *@
 @* } *@
 
-@model Configuration
+@model Event
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
@@ -21,41 +21,31 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="ChangeType" class="control-label"></label>
-                            <input asp-for="ChangeType" class="form-control" id="ChangeType">
+                            <label asp-for="EventName" class="control-label"></label>
+                            <input asp-for="EventName" class="form-control" id="Name">
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="PriorityType" class="control-label"></label>
-                            <textarea asp-for="PriorityType" class="form-control" id="PriorityType"></textarea>
+                            <label asp-for="EventDescription" class="control-label"></label>
+                            <textarea asp-for="EventDescription" class="form-control" id="Description"></textarea>
                         </div>
                     </div>
-                </div>
+                </div>          
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Threshold" class="control-label"></label>
-                            <textarea asp-for="Threshold" class="form-control" id="Threshold"></textarea>
+                            <label asp-for="Changes" class="control-label"></label>
+                            <ul id="Users">
+                                @foreach (Change change in Model.Changes)
+                                {
+                                    <li>@change.Id @change.Timestamp @change.ChangeType @change.ChangeDescription</li>
+                                }
+                            </ul>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Message" class="control-label"></label>
-                            <textarea asp-for="Message" class="form-control" id="Message"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Group" class="control-label"></label>
-                            <textarea asp-for="Group" class="form-control" id="Group"></textarea>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="modal-footer">

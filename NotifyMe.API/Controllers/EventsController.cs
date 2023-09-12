@@ -26,18 +26,19 @@ public class EventsController : Controller
         _mapper = mapper;
         _databaseContext = databaseContext;
     }
-    public IActionResult Index()
+    //public IActionResult Index()
+    //{
+    //    return Ok(_eventService.GetAllAsync().Result);
+    //}
+
+    public async Task<IActionResult> Index()
     {
-        return Ok(_eventService.GetAllAsync().Result);
+        var entities = await Task.Run(() => _eventService.GetAllAsync().Result);
+        // var model = _mapper.Map<List<GroupListViewModel>>(entities);
+        await Task.Yield();
+        return View(entities);
     }
-    // public async Task<IActionResult> Index()
-    // {
-    //     var entities = await Task.Run(() => _eventService.GetAllAsync().Result);
-    //     // var model = _mapper.Map<List<GroupListViewModel>>(entities);
-    //     await Task.Yield();
-    //     return View(entities);
-    // }
-    
+
     // [HttpGet]
     // public async Task<IActionResult> Create()
     // {
@@ -78,22 +79,22 @@ public class EventsController : Controller
     //     }
     // }
     //
-    // [HttpGet]
-    // public async Task<IActionResult> Details(string entityId)
-    // {
-    //     var entity = _eventService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
-    //     if (entity is null)
-    //     {
-    //         NotFound();
-    //         return RedirectToAction("Index");
-    //     }
-    //
-    //     //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
-    //     entity.Users = _databaseContext.Users.Where(e => e.GroupId == entityId).ToList();
-    //
-    //     await Task.Yield();
-    //     return PartialView("PartialViews/DetailsPartialView", entity);
-    // }
+    [HttpGet]
+    public async Task<IActionResult> Details(string entityId)
+    {
+        var entity = _eventService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        if (entity is null)
+        {
+            NotFound();
+            return RedirectToAction("Index");
+        }
+
+        //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
+        entity.Changes = _databaseContext.Changes.Where(e => e.EventId == entityId).ToList();
+
+        await Task.Yield();
+        return PartialView("PartialViews/DetailsPartialView", entity);
+    }
     //
     // [HttpGet]
     // public async Task<IActionResult> Edit(string entityId)
