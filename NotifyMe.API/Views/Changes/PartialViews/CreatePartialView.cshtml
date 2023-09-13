@@ -1,4 +1,4 @@
-﻿@model Notification
+﻿@model Change
 @{
     ViewBag.Title = "Create";
     Layout = "_Layout";
@@ -10,22 +10,22 @@
                 <h1 class="modal-title fs-5" id="modalCreate">@ViewBag.Title</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="form-NotificationCreate" asp-action="Create" asp-controller="Notifications" method="post" enctype="multipart/form-data">
+            <form id="form-GroupCreate" asp-action="Create" asp-controller="Changes" method="post" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="modal-body">
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="Message" class="control-label"></label>
-                                <input asp-for="Message" class="form-control" id="Message">
+                                <label asp-for="ChangeType" class="control-label">ChangeType</label>
+                                <select asp-for="ChangeType" asp-items="ViewBag.ChangeTypes"></select>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="EventId" class="control-label"></label>
-                                <input asp-for="EventId" class="form-control" id="EventId">
+                                <label asp-for="ChangeDescription" class="control-label"></label>
+                                <textarea asp-for="ChangeDescription" class="form-control" id="ChangeDescription"></textarea>
                             </div>
                         </div>
                     </div>

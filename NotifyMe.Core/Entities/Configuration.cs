@@ -13,8 +13,9 @@ namespace NotifyMe.Core.Entities
         public string? GroupId { get; set; } = null;
         [JsonIgnore]
         public virtual Group? Group { get; set; }
-
-        //public virtual List<Group> Groups { get; set; } = new();
+        [JsonIgnore]
         public virtual List<Event> Events { get; set; } = new();
+        //public virtual List<Group> Groups { get; set; } = new();
+       
     }
 }

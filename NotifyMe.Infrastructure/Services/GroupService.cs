@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
@@ -52,5 +52,12 @@ public class GroupService : IGroupService
     {
         await _unitOfWork.GroupRepository.DeleteAsync(entityId);
         await _unitOfWork.CommitAsync();
+    }
+
+    public EntityEntry<Group> Create(Group entity)
+    {
+        var entityEntry = _unitOfWork.GroupRepository.Create(entity);
+        _unitOfWork.CommitAsync();
+        return entityEntry;
     }
 }

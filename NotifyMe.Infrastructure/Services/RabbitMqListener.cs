@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using Microsoft.Extensions.Hosting;
+using NotifyMe.Core.Entities;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -10,15 +12,15 @@ public class RabbitMqListener : BackgroundService
 {
     private IConnection _connection;
     private IModel _channel;
+    private EmailService _emailService;
 
-    public RabbitMqListener()
+    public RabbitMqListener(EmailService emailService)
     {
-        // Не забудьте вынести значения "localhost" и "MyQueue"
-        // в файл конфигурации
         var factory = new ConnectionFactory { HostName = "localhost" };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
         _channel.QueueDeclare(queue: "MyQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
+        _emailService = emailService;
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -29,8 +31,9 @@ public class RabbitMqListener : BackgroundService
         consumer.Received += (ch, ea) =>
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
-			
-            // Каким-то образом обрабатываем полученное сообщение
+            
+            _emailService.SendEmail(content);
+
             Debug.WriteLine($"A message received: {content}");
 
             _channel.BasicAck(ea.DeliveryTag, false);

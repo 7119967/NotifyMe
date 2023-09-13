@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
@@ -12,9 +11,10 @@ using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
 using NotifyMe.Infrastructure.Context;
 
+
 namespace NotifyMe.API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "admin")]
 public class GroupsController : Controller
 {
     private readonly IMapper _mapper;
@@ -59,18 +59,29 @@ public class GroupsController : Controller
         {
             if (model != null)
             {
-                var maxId = _groupService.GetAllAsync().Result.Max(g => g.Id);
+                var seequence = _groupService.GetAllAsync().Result;
+                var size = seequence.Count();
+                int[] anArray = new int[size];
+                if (size == 0)
+                {
+                    model.Id = "1";
+                }
+                else
+                {
+                    var index = 0;
+                    foreach (var configuration in seequence)
+                    {
+                        anArray[index] = Convert.ToInt32(configuration.Id);
+                        index++;
+                    }
+
+                    int maxValue = anArray.Max();
+                    var newId = Convert.ToInt32(maxValue) + 1;
+                    model.Id = newId.ToString();
+                }
+
                 var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
-                if (maxId is null)
-                {
-                    entity.Id = "1";
-                }
-                else 
-                {
-                    var newId = Convert.ToInt32(maxId) + 1;
-                    entity.Id = newId.ToString(); 
-                }
-               
+
                 await _groupService.CreateAsync(entity);
             }
             
@@ -92,6 +103,10 @@ public class GroupsController : Controller
             NotFound();
             return RedirectToAction("Index");
         }
+
+        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
+        var priorities = new SelectList(priorityTypeValues);
+        ViewBag.Priorities = priorities;
 
         //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
         entity.Users = _databaseContext.Users.Where(e => e.GroupId == entityId).ToList();

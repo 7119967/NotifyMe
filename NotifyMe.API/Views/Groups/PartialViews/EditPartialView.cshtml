@@ -36,6 +36,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="form-group">
+                                <label asp-for="PriorityType" class="control-label">Priority</label><br />
+                                <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Abort</button>

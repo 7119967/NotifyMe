@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace NotifyMe.Core.Interfaces.Repositories
 {
@@ -12,5 +13,6 @@ namespace NotifyMe.Core.Interfaces.Repositories
         Task UpdateAsync(T entity);
         void Update(T entity);
         Task DeleteAsync(string entityId);
+        EntityEntry<T> Create(T entity);
     }
 }

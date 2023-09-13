@@ -14,6 +14,7 @@ using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize(Roles = "admin, user")]
 public class UsersController : Controller
 {
     private readonly UserManager<User> _userManager;

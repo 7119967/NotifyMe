@@ -2,7 +2,7 @@
 @using NotifyMe.Core.Interfaces.Services;
 @inject IMapper Mapper;
 @inject IGroupService GroupService;
-@model List<Event>
+@model ICollection<Event>
 
 @{
     Layout = "_Layout";
@@ -21,9 +21,11 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Configuration</th>
+                    <th scope="col">CurrentThreshold</th>
+                    <th scope="col">ConfigurationId</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -32,11 +34,13 @@
                 {
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
+                        <td>@item.Id</td>
                         <td>
                             <a class="btn link-primary p-0" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.EventName</a>
                         </td>
                         <td>@item.EventDescription</td>
-                        <td>@item.Configuration</td>
+                        <td>@item.CurrentThreshold</td>
+                        <td>@item.Configuration?.Id</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>
@@ -63,5 +67,10 @@
 
 @section Scripts
 {
-    <script src="~/js/groups.js" asp-append-version="true"></script>
+    <script src="~/js/events.js" asp-append-version="true"></script>
+    <script>
+         document.addEventListener("DOMContentLoaded", function () {
+                    fetchingAll();
+         });
+    </script>
 }

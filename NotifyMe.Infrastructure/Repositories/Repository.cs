@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Infrastructure.Context;
 
@@ -63,6 +63,12 @@ namespace NotifyMe.Infrastructure.Repositories
 
             _entities.Entry(entity).State = EntityState.Deleted;
             await Task.Run(() => _entities.Remove(entity));
+        }
+
+        public EntityEntry<T> Create(T entity)
+        {
+            var entityEntry = _entities.AddAsync(entity).Result;
+            return entityEntry;
         }
     }
 }

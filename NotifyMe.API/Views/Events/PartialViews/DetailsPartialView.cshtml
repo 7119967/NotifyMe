@@ -21,8 +21,22 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" class="form-control" id="Id" readonly>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Timestamp" class="control-label"></label>
+                            <input asp-for="Timestamp" class="form-control" id="Timestamp" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
                             <label asp-for="EventName" class="control-label"></label>
-                            <input asp-for="EventName" class="form-control" id="Name">
+                            <input asp-for="EventName" class="form-control" id="Name" readonly>
                         </div>
                     </div>
                 </div>
@@ -30,18 +44,34 @@
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="EventDescription" class="control-label"></label>
-                            <textarea asp-for="EventDescription" class="form-control" id="Description"></textarea>
+                            <textarea asp-for="EventDescription" class="form-control" id="Description" readonly></textarea>
                         </div>
                     </div>
-                </div>          
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="CurrentThreshold" class="control-label"></label>
+                            <input asp-for="CurrentThreshold" class="form-control" id="CurrentThreshold" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="ConfigurationId" class="control-label"></label>
+                            <input asp-for="ConfigurationId" class="form-control" id="ConfigurationId" readonly>
+                        </div>
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
                             <label asp-for="Changes" class="control-label"></label>
-                            <ul id="Users">
+                            <ul id="Changes">
                                 @foreach (Change change in Model.Changes)
                                 {
-                                    <li>@change.Id @change.Timestamp @change.ChangeType @change.ChangeDescription</li>
+                                    <li readonly>@change.Id @change.Timestamp @change.ChangeType @change.ChangeDescription</li>
                                 }
                             </ul>
                         </div>

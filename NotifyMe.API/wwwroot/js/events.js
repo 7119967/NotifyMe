@@ -1,28 +1,5 @@
-function fetchingAll() {
-    const url = '/entity/fetch/all';
-    $.ajax({
-        url: url,
-        type: 'GET',
-        headers: {
-            "Content-Type": "text/html",
-            "Cache-Control": "no-cache, no-store",
-            "Pragma": "no-cache",
-            "X-Frame-Options": "SAMEORIGIN",
-        },
-        // data: { 'entityId': entityId },
-        success: function (result) {
-            // $('#placeholder-modal-edit').html(result);
-            // $('#modal-edit').modal('show');
-            console.log(result);
-        },
-        error: function () {
-            console.log("Something went wrong with editing");
-        }
-    });
-}
-
-function editing(entityId) {
-    const url = '/Changes/Edit';
+﻿function editing(entityId) {
+    const url = '/Events/Edit';
     $.ajax({
         url: url,
         type: 'GET',
@@ -45,7 +22,7 @@ function editing(entityId) {
 }
 
 function creating() {
-    const url = '/Changes/Create';
+    const url = '/Events/Create';
     $.ajax({
         url: url,
         type: 'GET',
@@ -67,7 +44,7 @@ function creating() {
 }
 
 function previewing(entityId) {
-    const url = '/Changes/Details';
+    const url = '/Events/Details';
     $.ajax({
         url: url,
         type: 'GET',
@@ -90,7 +67,7 @@ function previewing(entityId) {
 }
 
 function deleting(entityId) {
-    const url = '/Changes/Delete';
+    const url = '/Events/Delete';
     $.ajax({
         url: url,
         type: 'GET',

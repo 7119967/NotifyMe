@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
-[Authorize]
+[Authorize(Roles = "admin")]
 public class EventsController : Controller
 {
     private readonly IMapper _mapper;

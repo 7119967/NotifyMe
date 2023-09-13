@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Interfaces.Services;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize(Roles = "admin, user")]
 [Route("api/[controller]")]
 [ApiController]
 public class RabbitMqController : ControllerBase

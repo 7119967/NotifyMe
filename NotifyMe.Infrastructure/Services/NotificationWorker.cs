@@ -38,8 +38,8 @@ public class NotificationWorker : BackgroundService
 
             if (notification != null)
             {
-                Task.Run(() => _emailService.SendEmailNotification(notification));
-                Task.Run(() => _emailService.SendSmsNotification(notification));
+                //Task.Run(() => _emailService.SendEmail(notification));
+                Task.Run(() => _emailService.SendSms(notification));
             }
 
             _channel.BasicAck(e.DeliveryTag, false);

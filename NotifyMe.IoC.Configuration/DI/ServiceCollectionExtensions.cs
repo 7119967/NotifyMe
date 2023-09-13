@@ -52,7 +52,9 @@ public static class ServiceCollectionExtensions
             });
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        //services.AddTransient<IUnitOfWork, UnitOfWork>();
         
         services.AddTransient<IChangeService, ChangeService>();
         services.AddTransient<IConfigurationService, ConfigurationService>();

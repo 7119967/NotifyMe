@@ -1,10 +1,10 @@
 ﻿using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json;
-
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
+using NotifyMe.Core.Interfaces.Services;
 using RabbitMQ.Client;
 
 namespace NotifyMe.Infrastructure.Services
@@ -77,6 +77,13 @@ namespace NotifyMe.Infrastructure.Services
         {
             await _unitOfWork.NotificationRepository.DeleteAsync(entityId);
             await _unitOfWork.CommitAsync();
+        }
+
+        public EntityEntry<Notification> Create(Notification entity)
+        {
+            var entityEntry = _unitOfWork.NotificationRepository.Create(entity);
+            _unitOfWork.CommitAsync();
+            return entityEntry;
         }
     }
 }

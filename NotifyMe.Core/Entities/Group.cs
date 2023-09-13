@@ -11,7 +11,9 @@ namespace NotifyMe.Core.Entities
         //public string? ConfigurationId { get; set; }
         //[JsonIgnore]
         //public virtual Configuration? Configuration { get; set; }
+        [JsonIgnore]
         public virtual List<User> Users { get; set; } = new();
+        [JsonIgnore]
         public virtual List<Configuration> Configurations { get; set; } = new List<Configuration>();
     }
 }

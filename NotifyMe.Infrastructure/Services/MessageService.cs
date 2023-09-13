@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
@@ -51,5 +52,12 @@ public class MessageService: IMessageService
     {
         await _unitOfWork.MessageRepository.DeleteAsync(entityId);
         await _unitOfWork.CommitAsync();
+    }
+
+    public EntityEntry<Message> Create(Message entity)
+    {
+        var entityEntry = _unitOfWork.MessageRepository.Create(entity);
+        _unitOfWork.CommitAsync();
+        return entityEntry;
     }
 }

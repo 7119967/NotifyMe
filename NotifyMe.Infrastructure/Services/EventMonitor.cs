@@ -12,23 +12,25 @@ public class EventMonitor : BackgroundService
 {
     private readonly DatabaseContext? _dbContext;
     private readonly IRabbitMqService? _rabbitMqService;
+    private readonly IChangeService? _changeService;
 
     public EventMonitor(IServiceProvider serviceProvider)
     {
         var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
         _dbContext = scope?.ServiceProvider.GetRequiredService<DatabaseContext>();
         _rabbitMqService = scope?.ServiceProvider.GetRequiredService<IRabbitMqService>();
+        _changeService = scope?.ServiceProvider.GetRequiredService<IChangeService>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            await Task.Delay(5000, stoppingToken);
+            await Task.Delay(15000, stoppingToken);
 
             try
             {
-                var changes = _dbContext?.Changes.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
+                var changes = _dbContext.Changes.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
                 
                 if (changes.Count() == 0) 
                 {
@@ -36,12 +38,24 @@ public class EventMonitor : BackgroundService
                     continue;
                 }
 
-                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation && t.Timestamp.Date == DateTime.UtcNow.Date);
-                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update && t.Timestamp.Date == DateTime.UtcNow.Date);
-                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion && t.Timestamp.Date == DateTime.UtcNow.Date);
-                var currentCounterView = changes.Count(t => t.ChangeType == ChangeType.View && t.Timestamp.Date == DateTime.UtcNow.Date);
+                var currentCounterCreation = changes.Count(t => 
+                    t.ChangeType == ChangeType.Creation && 
+                    t.Timestamp.Date == DateTime.Now.Date && 
+                    string.IsNullOrEmpty(t.EventId));
+                var currentCounterUpdate = changes.Count(t => 
+                    t.ChangeType == ChangeType.Update &&
+                    t.Timestamp.Date == DateTime.Now.Date && 
+                    string.IsNullOrEmpty(t.EventId));
+                var currentCounterDeletion = changes.Count(t => 
+                    t.ChangeType == ChangeType.Deletion && 
+                    t.Timestamp.Date == DateTime.Now.Date && 
+                    string.IsNullOrEmpty(t.EventId));
+                var currentCounterView = changes.Count(t => 
+                    t.ChangeType == ChangeType.View && 
+                    t.Timestamp.Date == DateTime.Now.Date && 
+                    string.IsNullOrEmpty(t.EventId));
 
-                var configurations = _dbContext?.Configurations.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
+                var configurations = _dbContext?.Configurations?.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
 
                 if (configurations.Count() == 0)
                 {
@@ -56,48 +70,37 @@ public class EventMonitor : BackgroundService
                         case ChangeType.Creation:
                             if (currentCounterCreation >= configuration.Threshold)
                             {
-                                var eventCreation = CreateEvent(configuration, currentCounterCreation);
-                                _dbContext?.Events.AddAsync(eventCreation);
-                                AddEventToRelativeChanges(changes, currentCounterCreation, eventCreation);
-                                await SendAlertAsync(ChangeType.Creation, currentCounterCreation, configuration.Threshold);
-                                var message = CreateMessage(eventCreation, currentCounterCreation);
-                                _rabbitMqService?.SendMessage(message);
+                                var eventItem = CreateEvent(configuration, currentCounterCreation);
+                                await AddEventToRelativeChanges(configuration.ChangeType, eventItem);
+                                _rabbitMqService?.SendMessage(eventItem.Id);
                             }
                             break;
                         
                         case ChangeType.Update:
                             if (currentCounterUpdate >= configuration.Threshold)
                             {
-                                var eventCreation = CreateEvent(configuration, currentCounterUpdate);
-                                _dbContext?.Events.AddAsync(eventCreation);
-                                AddEventToRelativeChanges(changes, currentCounterUpdate, eventCreation);
-                                await SendAlertAsync(ChangeType.Update, currentCounterUpdate, configuration.Threshold);
-                                var message = CreateMessage(eventCreation, currentCounterCreation);
-                                _rabbitMqService?.SendMessage(message);
+                                var eventItem = CreateEvent(configuration, currentCounterUpdate);
+                                await AddEventToRelativeChanges(configuration.ChangeType, eventItem);
+                                _rabbitMqService?.SendMessage(eventItem.Id);
                             }
                             break;
                         
                         case ChangeType.Deletion:
                             if (currentCounterDeletion >= configuration.Threshold)
                             {
-                                var eventCreation = CreateEvent(configuration, currentCounterDeletion);
-                                _dbContext?.Events.AddAsync(eventCreation);
-                                AddEventToRelativeChanges(changes, currentCounterDeletion, eventCreation);
-                                await SendAlertAsync(ChangeType.Deletion, currentCounterDeletion, configuration.Threshold);
-                                var message = CreateMessage(eventCreation, currentCounterCreation);
-                                _rabbitMqService?.SendMessage(message);
+                                var eventItem = CreateEvent(configuration, currentCounterDeletion);
+                                await AddEventToRelativeChanges(configuration.ChangeType, eventItem);
+                                _rabbitMqService?.SendMessage(eventItem.Id);
                             }
                             break;
                         
                         case ChangeType.View:
                             if (currentCounterView >= configuration.Threshold)
                             {
-                                var eventCreation = CreateEvent(configuration, currentCounterView);
-                                _dbContext?.Events.AddAsync(eventCreation);
-                                AddEventToRelativeChanges(changes, currentCounterView, eventCreation);
-                                await SendAlertAsync(ChangeType.View, currentCounterView, configuration.Threshold);
-                                var message = CreateMessage(eventCreation, currentCounterCreation);
-                                _rabbitMqService?.SendMessage(message);
+                                var eventItem = CreateEvent(configuration, currentCounterView);
+                                await AddEventToRelativeChanges(configuration.ChangeType, eventItem);
+                                //var message = CreateMessage(eventItem);
+                                _rabbitMqService?.SendMessage(eventItem.Id);
                             }
                             break;
                         
@@ -114,54 +117,69 @@ public class EventMonitor : BackgroundService
         }
     }
     
-    private void AddEventToRelativeChanges (List<Change> changes, int currentValue, Event eventItem)
+    private async Task AddEventToRelativeChanges (ChangeType changeType, Event eventItem)
     {
-        var collectionCreation = changes.Take(currentValue);
-                    
-        foreach (var item in collectionCreation)
+        var collection = _dbContext?.Changes.Where(t =>
+            t.ChangeType == changeType && 
+            t.Timestamp.Date == DateTime.Now.Date && 
+            string.IsNullOrEmpty(t.EventId));
+        
+        foreach (var item in collection!)
         {
             item.EventId = eventItem.Id;
-            _dbContext?.Changes.Update(item);
-        }
-    }
-    private Message CreateMessage (Event eventItem, int currentValue)
-    {
-        var receivers = new List<string>();
-
-        foreach (var user in eventItem.Configuration!.Group!.Users)
-        {
-            if (!string.IsNullOrEmpty(user.Email))
-            {
-                receivers.Add(user.Email);
-            }
+            item.Event = eventItem;
+            await _changeService!.UpdateAsync(item);
         }
 
-        return new Message
-        {
-            Sender = "",
-            Receivers = string.Join(";", receivers),
-            EventId = eventItem.Id,
-            Event = eventItem,
-            Subject = $"ALERT: {eventItem.Configuration.ChangeType} exceeded threshold",
-            ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {currentValue}, Threshold: {eventItem.Configuration.Threshold}"
-        };
+        await Task.CompletedTask;
     }
+    
     
     private Event CreateEvent (Configuration configuration, int currentValue)
     {
-        return new Event
+        var model = new Event
         {
             EventName = $"{configuration.ChangeType} exceeded threshold",
             EventDescription = $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
+            CurrentThreshold = currentValue,
             ConfigurationId = configuration.Id,
             Configuration = configuration
         };
-    }
-    
-    private async Task SendAlertAsync(ChangeType changeType, int? currentValue, double thresholdValue)
-    {
-        await Task.Run(() =>
-            Console.WriteLine(
-                $"ALERT: {changeType} exceeded threshold. Current value: {currentValue}, Threshold: {thresholdValue}"));
+        
+        var seequence = _dbContext?.Events.AsEnumerable();
+        var size = seequence!.Count();
+        int[] anArray = new int[size];
+        if (size == 0)
+        {
+            model.Id = "1";
+        }
+        else
+        {
+            var index = 0;
+            foreach (var element in seequence!)
+            {
+                anArray[index] = Convert.ToInt32(element.Id);
+                index++;
+            }
+
+            int maxValue = anArray.Max();
+            var newId = Convert.ToInt32(maxValue) + 1;
+            model.Id = newId.ToString();
+        }
+
+        var existingEntity = _dbContext?.Events.Find(model.Id);
+
+        if (existingEntity != null)
+        {
+            var entity = _dbContext?.Events.Update(model);
+            _dbContext?.SaveChanges();
+            return entity!.Entity;
+        }
+        else
+        {
+            var entity = _dbContext?.Events.AddAsync(model).Result;
+            _dbContext?.SaveChanges();
+            return entity!.Entity;
+        }
     }
 }

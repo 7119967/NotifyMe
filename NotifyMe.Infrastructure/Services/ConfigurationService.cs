@@ -1,7 +1,8 @@
 ﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
+using NotifyMe.Core.Interfaces.Services;
 
 namespace NotifyMe.Infrastructure.Services
 {
@@ -51,6 +52,13 @@ namespace NotifyMe.Infrastructure.Services
         {
             await _unitOfWork.ConfigurationRepository.DeleteAsync(entityId);
             await _unitOfWork.CommitAsync();
+        }
+
+        public EntityEntry<Configuration> Create(Configuration entity)
+        {
+            var entityEntry = _unitOfWork.ConfigurationRepository.Create(entity);
+            _unitOfWork.CommitAsync();
+            return entityEntry;
         }
     }
 }

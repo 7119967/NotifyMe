@@ -1,13 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Notification;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize(Roles = "admin, user")]
 public class NotificationsController : Controller
 {
     private readonly IMapper _mapper;
@@ -34,7 +37,7 @@ public class NotificationsController : Controller
     public IActionResult SendNotification(Notification notification)
     {
         _eventLogger.LogEvent(notification);
-        _notificationService.SendNotification(notification);
+        // _notificationService.SendNotification(notification);
 
         return RedirectToAction("");
     }

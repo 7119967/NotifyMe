@@ -5,5 +5,5 @@ namespace NotifyMe.Core.Interfaces.Services;
 public interface IRabbitMqService
 {
     void SendMessage(object obj);
-    void SendMessage(Message message);
+    void SendMessage(string message);
 }

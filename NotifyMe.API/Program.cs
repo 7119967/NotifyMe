@@ -49,7 +49,7 @@ namespace NotifyMe.API
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Users}/{action=Index}/{id?}");
+                pattern: "{controller=Dashboard}/{action=Index}/{id?}");
 
             var rabbitMqService = app.Services.GetRequiredService<RabbitMQService1>();
             rabbitMqService.StartListening();

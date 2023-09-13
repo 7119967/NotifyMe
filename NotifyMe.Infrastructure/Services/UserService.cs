@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
@@ -59,6 +60,13 @@ public class UserService : IUserService
     {
         await _unitOfWork.UserRepository.DeleteAsync(entityId);
         await _unitOfWork.CommitAsync();
+    }
+
+    public EntityEntry<User> Create(User entity)
+    {
+        var entityEntry = _unitOfWork.UserRepository.Create(entity);
+        _unitOfWork.CommitAsync();
+        return entityEntry;
     }
 
     public void ApplyChanges(Object source, Object target)

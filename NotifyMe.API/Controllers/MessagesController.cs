@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize(Roles = "admin, user")]
 public class MessagesController : Controller
 {
     private readonly IMessageService _messageService;

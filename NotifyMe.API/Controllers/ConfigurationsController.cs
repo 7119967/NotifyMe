@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
+using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
+[Authorize(Roles = "admin")]
 public class ConfigurationsController : Controller
 {
     private readonly IMapper _mapper;
@@ -79,9 +81,9 @@ public class ConfigurationsController : Controller
                 else
                 {
                     var index = 0;
-                    foreach (var change in seequence)
+                    foreach (var configuration in seequence)
                     {
-                        anArray[index] = Convert.ToInt32(change.Id);
+                        anArray[index] = Convert.ToInt32(configuration.Id);
                         index++;
                     }
 

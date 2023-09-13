@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject RoleManager<IdentityRole> RoleManager
 @{
     var user = await UserManager.GetUserAsync(User);
 }
@@ -44,20 +45,23 @@
                     <a asp-controller="Dashboard" asp-action="Index" class="nav_link active">
                         <i class='bx bx-grid-alt nav_icon'></i> <span class="nav_name">Dashboard</span>
                     </a>
-                    <a asp-controller="Users" asp-action="Index" class="nav_link">
-                        <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span>
-                    </a>
-                    <a asp-controller="Groups" asp-action="Index" class="nav_link">
-                        <i class='bx bx-group nav_icon'></i> <span class="nav_name">Groups</span>
-                    </a>
-                    <a asp-controller="Configurations" asp-action="Index" class="nav_link">
-                        <i class='bx bx-cog nav_icon'></i> <span class="nav_name">Configurations</span>
-                    </a>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <a asp-controller="Users" asp-action="Index" class="nav_link">
+                            <i class='bx bx-user nav_icon'></i> <span class="nav_name">Users</span>
+                        </a>
+                        <a asp-controller="Groups" asp-action="Index" class="nav_link">
+                            <i class='bx bx-group nav_icon'></i> <span class="nav_name">Groups</span>
+                        </a>
+                        <a asp-controller="Configurations" asp-action="Index" class="nav_link">
+                            <i class='bx bx-cog nav_icon'></i> <span class="nav_name">Configurations</span>
+                        </a>
+                        <a asp-controller="Events" asp-action="Index" class="nav_link">
+                            <i class='bx bx-select-multiple nav_icon'></i> <span class="nav_name">Events</span>
+                        </a>
+                    }
                     <a asp-controller="Changes" asp-action="Index" class="nav_link">
                         <i class='bx bxs-right-arrow nav_icon'></i> <span class="nav_name">Changes</span>
-                    </a>
-                    <a asp-controller="Events" asp-action="Index" class="nav_link">
-                        <i class='bx bx-select-multiple nav_icon'></i> <span class="nav_name">Events</span>
                     </a>
                     <a asp-controller="Notifications" asp-action="Index" class="nav_link">
                         <i class='bx bx-bell nav_icon nav_icon'></i> <span class="nav_name">Notifications</span>

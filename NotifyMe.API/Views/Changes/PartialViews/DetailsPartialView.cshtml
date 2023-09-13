@@ -5,7 +5,7 @@
 @*     var user = await UserManager.GetUserAsync(User); *@
 @* } *@
 
-@model Configuration
+@model Change
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
@@ -21,41 +21,46 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" class="form-control" id="Id" readonly>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Timestamp" class="control-label"></label>
+                            <input asp-for="Timestamp" class="form-control" id="Timestamp" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-group">
                             <label asp-for="ChangeType" class="control-label"></label>
-                            <input asp-for="ChangeType" class="form-control" id="ChangeType">
+                            <input asp-for="ChangeType" class="form-control" id="ChangeType" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="PriorityType" class="control-label"></label>
-                            <textarea asp-for="PriorityType" class="form-control" id="PriorityType"></textarea>
+                            <label asp-for="ChangeDescription" class="control-label"></label>
+                            <textarea asp-for="ChangeDescription" class="form-control" id="ChangeDescription" readonly></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Threshold" class="control-label"></label>
-                            <textarea asp-for="Threshold" class="form-control" id="Threshold"></textarea>
+                            <label asp-for="Event.EventName" class="control-label"></label>
+                            <input asp-for="Event.EventName" class="form-control" id="Event.EventName" readonly>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Message" class="control-label"></label>
-                            <textarea asp-for="Message" class="form-control" id="Message"></textarea>
+                            <label asp-for="Event.EventDescription" class="control-label"></label>
+                            <input asp-for="Event.EventDescription" class="form-control" id="Event.EventDescription" readonly>
                         </div>
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Group!.Name" class="control-label"></label>
-                            <textarea asp-for="Group!.Name" class="form-control" id="Group.Name"></textarea>
-                        </div>
-                    </div>
-
                 </div>
             </div>
             <div class="modal-footer">

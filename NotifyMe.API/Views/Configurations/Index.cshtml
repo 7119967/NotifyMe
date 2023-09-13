@@ -25,9 +25,11 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Id</th>
                     <th scope="col">Change</th>
                     <th scope="col">Priority</th>
                     <th scope="col">Threshold</th>
+                    <th scope="col">Group</th>
                     <th scope="col">Message</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -37,11 +39,13 @@
                 {
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
+                        <td>@item.Id</td>
                         <td>
                             <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.ChangeType</a>
                         </td>
                         <td>@item.PriorityType</td>
                         <td>@item.Threshold</td>
+                        <td>@item.Group?.Name</td>
                         <td>@item.Message</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }

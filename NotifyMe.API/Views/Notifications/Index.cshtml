@@ -26,7 +26,6 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Message</th>
-                    <th scope="col">Threshold</th>
                     <th scope="col">Event</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -39,7 +38,6 @@
                         <td>
                             <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.Message</a>
                         </td>
-                        <td>@item.CurrentThreshold</td>
                         <td>@item.Event</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }

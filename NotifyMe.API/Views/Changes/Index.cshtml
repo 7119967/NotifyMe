@@ -2,7 +2,7 @@
 @using NotifyMe.Core.Interfaces.Services;
 @inject IMapper Mapper;
 @inject IGroupService GroupService;
-@model List<Change>
+@model ICollection<Change>
 
 @{
     Layout = "_Layout";
@@ -21,9 +21,10 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Type</th>
+                    <th scope="col">Id</th>
+                    <th scope="col">ChangeType</th>
                     <th scope="col">Description</th>
-                    <th scope="col">Event</th>
+                    <th scope="col">EventId</th>
                     <th scope="col">Actions</th>
                 </tr>
                 </thead>
@@ -32,11 +33,12 @@
                 {
                     <tr data-row=">@item.Id">
                         <th scope="row">@count</th>
+                        <td>@item.Id</td>
                         <td>
                             <a class="btn link-primary p-0" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.ChangeType</a>
                         </td>
                         <td>@item.ChangeDescription</td>
-                        <td>@item.Event</td>
+                        <td>@item.Event?.Id</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>

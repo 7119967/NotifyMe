@@ -20,11 +20,9 @@
                                 <select asp-for="ChangeType" asp-items="ViewBag.ChangeTypes"></select>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="PriorityType" class="control-label">Priority</label><br/>
+                                <label asp-for="PriorityType" class="control-label">Priority</label>
                                 <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
                             </div>
                         </div>
@@ -32,22 +30,22 @@
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="Threshold" class="control-label"></label>
-                                <input asp-for="Threshold" class="form-control" id="Threshold">
+                                <label asp-for="GroupId">Group</label>
+                                <select asp-for="GroupId" asp-items="ViewBag.Groups"></select>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="Message" class="control-label"></label>
-                                <textarea asp-for="Message" class="form-control" id="Message"></textarea>
+                                <label asp-for="Threshold" class="control-label"></label>
+                                <input asp-for="Threshold" class="form-control" id="Threshold">
                             </div>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col">
                             <div class="form-group">
-                                <label asp-for="GroupId">Group</label><br />
-                                <select asp-for="GroupId" asp-items="ViewBag.Groups"></select>
+                                <label asp-for="Message" class="control-label"></label>
+                                <textarea asp-for="Message" class="form-control" id="Message"></textarea>
                             </div>
                         </div>
                     </div>

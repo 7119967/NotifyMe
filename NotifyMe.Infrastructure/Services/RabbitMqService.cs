@@ -15,10 +15,14 @@ public class RabbitMqService : IRabbitMqService
         SendMessage(message);
     }
 
-    public void SendMessage(Message message)
+    public void SendMessage(string message)
     {
-        // Serialize the message to a JSON string
-        string messageBody = JsonConvert.SerializeObject(message);
+        JsonSerializerSettings settings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
+
+        string messageBody = JsonConvert.SerializeObject(message, settings);
         
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = factory.CreateConnection();
