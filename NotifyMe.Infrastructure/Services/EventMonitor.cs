@@ -36,10 +36,10 @@ public class EventMonitor : BackgroundService
                     continue;
                 }
 
-                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation && t.Timestamp == DateTime.UtcNow);
-                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update && t.Timestamp == DateTime.UtcNow);
-                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion && t.Timestamp == DateTime.UtcNow);
-                var currentCounterView = changes.Count(t => t.ChangeType == ChangeType.View && t.Timestamp == DateTime.UtcNow);
+                var currentCounterCreation = changes.Count(t => t.ChangeType == ChangeType.Creation && t.Timestamp.Date == DateTime.UtcNow.Date);
+                var currentCounterUpdate = changes.Count(t => t.ChangeType == ChangeType.Update && t.Timestamp.Date == DateTime.UtcNow.Date);
+                var currentCounterDeletion = changes.Count(t => t.ChangeType == ChangeType.Deletion && t.Timestamp.Date == DateTime.UtcNow.Date);
+                var currentCounterView = changes.Count(t => t.ChangeType == ChangeType.View && t.Timestamp.Date == DateTime.UtcNow.Date);
 
                 var configurations = _dbContext?.Configurations.ToListAsync(cancellationToken: stoppingToken).Result ?? throw new NullReferenceException();
 
@@ -60,7 +60,7 @@ public class EventMonitor : BackgroundService
                                 _dbContext?.Events.AddAsync(eventCreation);
                                 AddEventToRelativeChanges(changes, currentCounterCreation, eventCreation);
                                 await SendAlertAsync(ChangeType.Creation, currentCounterCreation, configuration.Threshold);
-                                var message = CreateMessage(ChangeType.Creation, currentCounterCreation, configuration.Threshold);
+                                var message = CreateMessage(eventCreation, currentCounterCreation);
                                 _rabbitMqService?.SendMessage(message);
                             }
                             break;
@@ -72,7 +72,7 @@ public class EventMonitor : BackgroundService
                                 _dbContext?.Events.AddAsync(eventCreation);
                                 AddEventToRelativeChanges(changes, currentCounterUpdate, eventCreation);
                                 await SendAlertAsync(ChangeType.Update, currentCounterUpdate, configuration.Threshold);
-                                var message = CreateMessage(ChangeType.Update, currentCounterUpdate, configuration.Threshold);
+                                var message = CreateMessage(eventCreation, currentCounterCreation);
                                 _rabbitMqService?.SendMessage(message);
                             }
                             break;
@@ -84,7 +84,7 @@ public class EventMonitor : BackgroundService
                                 _dbContext?.Events.AddAsync(eventCreation);
                                 AddEventToRelativeChanges(changes, currentCounterDeletion, eventCreation);
                                 await SendAlertAsync(ChangeType.Deletion, currentCounterDeletion, configuration.Threshold);
-                                var message = CreateMessage(ChangeType.Deletion, currentCounterDeletion, configuration.Threshold);
+                                var message = CreateMessage(eventCreation, currentCounterCreation);
                                 _rabbitMqService?.SendMessage(message);
                             }
                             break;
@@ -96,7 +96,7 @@ public class EventMonitor : BackgroundService
                                 _dbContext?.Events.AddAsync(eventCreation);
                                 AddEventToRelativeChanges(changes, currentCounterView, eventCreation);
                                 await SendAlertAsync(ChangeType.View, currentCounterView, configuration.Threshold);
-                                var message = CreateMessage(ChangeType.View, currentCounterView, configuration.Threshold);
+                                var message = CreateMessage(eventCreation, currentCounterCreation);
                                 _rabbitMqService?.SendMessage(message);
                             }
                             break;
@@ -124,22 +124,26 @@ public class EventMonitor : BackgroundService
             _dbContext?.Changes.Update(item);
         }
     }
-    private Message CreateMessage (Configuration configuration, int currentValue)
+    private Message CreateMessage (Event eventItem, int currentValue)
     {
-        var receivers = new List<User>();
-        foreach (var user in configuration.Group!.Users)
+        var receivers = new List<string>();
+
+        foreach (var user in eventItem.Configuration!.Group!.Users)
         {
-            receivers.Add(user.Email);
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                receivers.Add(user.Email);
+            }
         }
 
         return new Message
         {
             Sender = "",
-            Receivers = receivers,
-
-            Subject = $"ALERT: {configuration.ChangeType} exceeded threshold",
-            ContentBody =
-                $"ALERT: {configuration.ChangeType} exceeded threshold. Current value: {currentValue}, Threshold: {configuration.Threshold}"
+            Receivers = string.Join(";", receivers),
+            EventId = eventItem.Id,
+            Event = eventItem,
+            Subject = $"ALERT: {eventItem.Configuration.ChangeType} exceeded threshold",
+            ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {currentValue}, Threshold: {eventItem.Configuration.Threshold}"
         };
     }
     
@@ -149,7 +153,8 @@ public class EventMonitor : BackgroundService
         {
             EventName = $"{configuration.ChangeType} exceeded threshold",
             EventDescription = $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
-            ConfigurationId = configuration.Id
+            ConfigurationId = configuration.Id,
+            Configuration = configuration
         };
     }
     

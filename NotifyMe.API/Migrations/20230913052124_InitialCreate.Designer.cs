@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230912033750_InitialCreate")]
+    [Migration("20230913052124_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -247,9 +247,6 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("MessageId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -260,8 +257,6 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
 
                     b.ToTable("Groups");
                 });
@@ -277,6 +272,10 @@ namespace NotifyMe.API.Migrations
 
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Receivers")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sender")
                         .IsRequired()
@@ -480,13 +479,6 @@ namespace NotifyMe.API.Migrations
                     b.Navigation("Configuration");
                 });
 
-            modelBuilder.Entity("NotifyMe.Core.Entities.Group", b =>
-                {
-                    b.HasOne("NotifyMe.Core.Entities.Message", null)
-                        .WithMany("Receivers")
-                        .HasForeignKey("MessageId");
-                });
-
             modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
                 {
                     b.HasOne("NotifyMe.Core.Entities.Event", "Event")
@@ -533,11 +525,6 @@ namespace NotifyMe.API.Migrations
                     b.Navigation("Configurations");
 
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("NotifyMe.Core.Entities.Message", b =>
-                {
-                    b.Navigation("Receivers");
                 });
 #pragma warning restore 612, 618
         }

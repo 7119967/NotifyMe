@@ -4,16 +4,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
-using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Infrastructure.Context;
-using NotifyMe.Infrastructure.Services;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-
-using Twilio.TwiML.Voice;
 
 namespace NotifyMe.IoC.Configuration.DI;
 
