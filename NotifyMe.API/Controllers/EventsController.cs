@@ -27,10 +27,6 @@ public class EventsController : Controller
         _mapper = mapper;
         _databaseContext = databaseContext;
     }
-    //public IActionResult Index()
-    //{
-    //    return Ok(_eventService.GetAllAsync().Result);
-    //}
 
     public async Task<IActionResult> Index()
     {
@@ -79,7 +75,7 @@ public class EventsController : Controller
     //         return RedirectToAction("Index");
     //     }
     // }
-    //
+
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
@@ -96,7 +92,7 @@ public class EventsController : Controller
         await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);
     }
-    //
+
     // [HttpGet]
     // public async Task<IActionResult> Edit(string entityId)
     // {
