@@ -29,7 +29,7 @@ public static class ServiceCollectionExtensions
         {
             options
                 .UseSqlServer(connection, op => op.MigrationsAssembly("NotifyMe.API"))
-                // .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         });

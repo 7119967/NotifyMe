@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
-using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using RabbitMQ.Client;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -17,12 +16,11 @@ public class RabbitMqService : IRabbitMqService
 
     public void SendMessage(string message)
     {
-        JsonSerializerSettings settings = new JsonSerializerSettings
-        {
-            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-        };
-
-        string messageBody = JsonConvert.SerializeObject(message, settings);
+        // JsonSerializerSettings settings = new JsonSerializerSettings
+        // {
+        //     ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        // };
+        // string messageBody = JsonConvert.SerializeObject(message, settings);
         
         var factory = new ConnectionFactory() { HostName = "localhost" };
         using var connection = factory.CreateConnection();
@@ -33,7 +31,7 @@ public class RabbitMqService : IRabbitMqService
             autoDelete: false,
             arguments: null);
 
-        var body = Encoding.UTF8.GetBytes(messageBody);
+        var body = Encoding.UTF8.GetBytes(message);
 
         channel.BasicPublish(exchange: "",
             routingKey: "MyQueue",

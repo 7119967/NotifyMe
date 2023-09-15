@@ -123,7 +123,11 @@ public class GroupsController : Controller
         {
             return NotFound();
         }
-
+        
+        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
+        var priorities = new SelectList(priorityTypeValues);
+        ViewBag.Priorities = priorities;
+        
         var model = _mapper.Map<Group, GroupEditViewModel>(entity);
         
         await Task.Yield();

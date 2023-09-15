@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230913052124_InitialCreate")]
+    [Migration("20230914170019_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -223,6 +223,9 @@ namespace NotifyMe.API.Migrations
                     b.Property<string>("ConfigurationId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("CurrentThreshold")
+                        .HasColumnType("int");
+
                     b.Property<string>("EventDescription")
                         .HasColumnType("nvarchar(max)");
 
@@ -299,9 +302,6 @@ namespace NotifyMe.API.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CurrentThreshold")
-                        .HasColumnType("int");
 
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");

@@ -19,59 +19,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/CreatePartialView.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/events.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/DashboardController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/DashboardController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Events/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Events/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/Index.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/CreatePartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/EditPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Notifications/PartialViews/EditPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913052124_InitialCreate.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913052124_InitialCreate.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913190534_AddPropCurrentThresholdinEvent.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913190534_AddPropCurrentThresholdinEvent.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/changes.js" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/js/changes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Change.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Change.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Configuration.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Configuration.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Event.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Event.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Group.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Group.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Notification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Notification.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IChangeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IChangeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IConfigService.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IConfigurationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IConfigurationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IEventService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IEventService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IGroupService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IGroupService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IMessageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IMessageService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/INotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/INotificationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IUserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IUserService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ChangeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ChangeService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ConfigurationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ConfigurationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/CreatePartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/EditPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/EditPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserListViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserListViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/GroupService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/GroupService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -115,30 +80,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "XThreadsFramesViewSplitterKey": "0.46357617",
-    "git-widget-placeholder": "dev",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.46357617&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\rashi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
-      "C:\\Users\\rashi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
-      "C:\\Users\\rashi\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\rashi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\rashi\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\rashi\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.Consumer: http">
+}</component>
+  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -319,6 +284,9 @@
       <workItem from="1694528619307" duration="113000" />
       <workItem from="1694614354565" duration="2393000" />
       <workItem from="1694618435839" duration="20754000" />
+      <workItem from="1694648017782" duration="725000" />
+      <workItem from="1694704072686" duration="1704000" />
+      <workItem from="1694706149556" duration="6661000" />
     </task>
     <servers />
   </component>
@@ -390,17 +358,69 @@
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
-          <line>134</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="131" containingFunctionPresentation="Method 'AddEventToRelativeChanges'">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs</url>
+          <line>24</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqService.cs" initialLine="24" containingFunctionPresentation="Method 'SendMessage'">
             <startOffsets>
-              <option value="6674" />
+              <option value="708" />
             </startOffsets>
             <endOffsets>
-              <option value="6706" />
+              <option value="773" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="52" />
+          <option name="timeStamp" value="53" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>116</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="112" containingFunctionPresentation="Method 'ProcessingEvent'">
+            <startOffsets>
+              <option value="4844" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4886" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs</url>
+          <line>29</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqListener.cs" initialLine="29" containingFunctionPresentation="Method 'ExecuteAsync'">
+            <startOffsets>
+              <option value="906" />
+            </startOffsets>
+            <endOffsets>
+              <option value="957" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="55" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>138</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="138" containingFunctionPresentation="Method 'CreateEvent'">
+            <startOffsets>
+              <option value="5503" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5504" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="57" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>166</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="166" containingFunctionPresentation="Method 'CreateEvent'">
+            <startOffsets>
+              <option value="6390" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6432" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="58" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

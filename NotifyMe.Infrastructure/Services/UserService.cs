@@ -92,6 +92,7 @@ public class UserService : IUserService
                 case "PhoneNumber":
                 case "Avatar":
                 case "Info":
+                case "GroupId":
                     property.SetValue(target, sourceValue);
                     break;
             }

@@ -11,8 +11,8 @@ public class AdminInitializer
         UserManager<User> userManager)
     {
         string adminLogin = "admin";
+        string adminPassword = "pass";     
         string adminEmail = "admin@admin.com";
-        string adminPassword = "pass";
 
         var roles = new[]
         {
@@ -31,7 +31,8 @@ public class AdminInitializer
             User admin = new User
             {
                 UserName = adminLogin,
-                Email = adminEmail
+                Email = adminEmail,
+                Avatar = ""
             };
 
             IdentityResult result = await userManager.CreateAsync(admin, adminPassword);

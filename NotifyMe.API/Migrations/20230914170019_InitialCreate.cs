@@ -210,6 +210,7 @@ namespace NotifyMe.API.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     EventName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EventDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CurrentThreshold = table.Column<int>(type: "int", nullable: false),
                     ConfigurationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -271,7 +272,6 @@ namespace NotifyMe.API.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CurrentThreshold = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

@@ -136,6 +136,9 @@ public class UsersController : Controller
             NotFound();
             return RedirectToAction("Index");
         }
+        
+        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
+        ViewBag.Groups = groups;
 
         var model = _mapper.Map<User, UserDetailsViewModel>(entity);
 
@@ -152,6 +155,9 @@ public class UsersController : Controller
         {
             return NotFound();
         }
+        
+        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
+        ViewBag.Groups = groups;
 
         var model = _mapper.Map<User, UserEditViewModel>(entity);
 
