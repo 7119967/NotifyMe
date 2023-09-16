@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
@@ -40,7 +40,10 @@ public class ConfigurationsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _configurationService.GetAllAsync().Result);
+        var entities = _databaseContext.Configurations
+            .Include(e => e.Group)
+            ;
+        
         // var model = _mapper.Map<List<ConfigurationListViewModel>>(entities);
         await Task.Yield();
         return View(entities);
@@ -60,6 +63,7 @@ public class ConfigurationsController : Controller
         var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
         ViewBag.Groups = groups;
 
+        await Task.CompletedTask;
         return PartialView("PartialViews/CreatePartialView", new Configuration());
     }
     
@@ -71,27 +75,10 @@ public class ConfigurationsController : Controller
         {
             if (model != null)
             {
-                var seequence = _configurationService.GetAllAsync().Result;
-                var size = seequence.Count();
-                int[] anArray = new int[size];
-                if (size == 0)
-                {
-                    model.Id = "1";
-                }
-                else
-                {
-                    var index = 0;
-                    foreach (var configuration in seequence)
-                    {
-                        anArray[index] = Convert.ToInt32(configuration.Id);
-                        index++;
-                    }
+                var sequence = await _configurationService!.GetAllAsync();
+                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
 
-                    int maxValue = anArray.Max();
-                    var newId = Convert.ToInt32(maxValue) + 1;
-                    model.Id = newId.ToString();
-                }
-
+                model.Id = newId.ToString();
                 await _configurationService.CreateAsync(model);
             }
             
@@ -107,8 +94,13 @@ public class ConfigurationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _databaseContext.Configurations
+                .Include(e => e.Group)
+                .Include(e => e.Events)
+                .FirstOrDefault(e => e.Id == entityId)
+            ;
         if (entity is null)
+            
         {
             NotFound();
             return RedirectToAction("Index");

@@ -51,8 +51,8 @@ namespace NotifyMe.API
                 name: "default",
                 pattern: "{controller=Dashboard}/{action=Index}/{id?}");
 
-            var rabbitMqService = app.Services.GetRequiredService<RabbitMQService1>();
-            rabbitMqService.StartListening();
+            // var rabbitMqService = app.Services.GetRequiredService<RabbitMQService1>();
+            // rabbitMqService.StartListening();
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;

@@ -1,8 +1,10 @@
-﻿using System.Net.Mail;
-
+﻿using System.Net;
+using System.Net.Mail;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using NotifyMe.Core.Entities;
+using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 
 using Twilio;
@@ -13,35 +15,59 @@ namespace NotifyMe.Infrastructure.Services;
 public class EmailService
 {
     private readonly DatabaseContext? _dbContext;
+    private readonly IConfigurationService? _configurationService;
+    private readonly IGroupService? _groupService;
+    private readonly INotificationService? _notificationService;
+    private readonly INotificationUserService? _notificationUserService;
     public EmailService(IServiceProvider serviceProvider)
     {
         var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
         _dbContext = scope?.ServiceProvider.GetRequiredService<DatabaseContext>();
+        _configurationService = scope?.ServiceProvider.GetRequiredService<IConfigurationService>();
+        _groupService = scope?.ServiceProvider.GetRequiredService<IGroupService>();
+        _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
+        _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
     }
-    public Task SendEmail(string eventId)
+    public async Task SendEmail(string eventId)
     {
         var originalEvent = _dbContext?.Events.FirstOrDefault(e => e.Id == eventId);
-        var originalMessage = CreateMessage(originalEvent!);
-        var receivers = new List<string>();
+                
+        var configuration = await _configurationService!
+                .AsQueryable()
+                .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId); 
+        
+        var group = await _groupService!
+                .AsQueryable()
+                .Include(g => g.Users)
+                .FirstOrDefaultAsync(t => t.Id == configuration!.Id);
+        
+        // var originalMessage = CreateMessage(originalEvent!);
+        // var receivers = new List<string>();
 
         var message = new MailMessage();
-        foreach (var receiver in originalMessage!.Receivers)
+        foreach (var receiver in group!.Users)
         {
-            message.To.Add(receiver.ToString() ?? throw new InvalidOperationException());
+            message.To.Add(receiver.Email ?? throw new InvalidOperationException());
         }
        
-        message.From = new MailAddress("alerts@example.com");
-        message.Subject = originalMessage.Subject;
-        message.Body = originalMessage.ContentBody;
+        message.From = new MailAddress("7119967@mail.ru");
+        message.Subject = "Subject";
+        message.Body = "Content";
 
+        Console.WriteLine("Enter the password of your email");
+        var password = Console.ReadLine();
+        
         using (var smtp = new SmtpClient())
         {
-            smtp.Host = "smtp.example.com";
-            smtp.SendMailAsync(message);
+            smtp.Host = "smtp.mail.ru";
+            smtp.Port = 587;
+            smtp.EnableSsl = true;
+            smtp.Credentials = new NetworkCredential("7119967@mail.ru", $"{password}");
+            await smtp.SendMailAsync(message);
             smtp.Dispose();
         }
 
-        return Task.CompletedTask;
+        await Task.CompletedTask;
     }
 
     public Task SendSms(Notification notification)
@@ -71,6 +97,24 @@ public class EmailService
         Console.ReadKey();
 
         return Task.CompletedTask;
+    }   
+    public void SendNotification(string eventId)
+    {
+        var originalEvent = _dbContext?.Events.FirstOrDefault(e => e.Id == eventId);
+                
+        var configuration = _configurationService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId).Result; 
+        
+        var group = _groupService!
+            .AsQueryable()
+            .Include(g => g.Users)
+            .FirstOrDefaultAsync(t => t.Id == configuration!.Id).Result;
+        
+        CreateNotification(group!, originalEvent!);
+       
+        
+        // await Task.CompletedTask;
     }
 
     private Message CreateMessage(Event eventItem)
@@ -129,5 +173,43 @@ public class EmailService
             _dbContext?.SaveChanges();
             return entity!.Entity;
         }
+    }
+    private void CreateNotification(Group group, Event eventItem)
+    {
+        var sequence = _notificationService!.GetAllAsync().Result;
+        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+
+        var notification = new Notification
+        {
+            Id = newId.ToString(),
+            // Message = eventItem.EventDescription,
+            // EventId = eventItem.Id,
+            // Event = eventItem
+        };
+
+        _notificationService?.Create(notification);
+        
+        var usersToReceiveNotification = new List<User>();
+
+        foreach (var user in group.Users)
+        {
+            usersToReceiveNotification.Add(user);
+        }
+        
+        var sequence2 = _notificationService!.GetAllAsync().Result;
+        var newId2 = (sequence2?.Any() == true) ? (sequence2.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        
+        foreach (var user in usersToReceiveNotification)
+        {
+            notification.NotificationUsers!.Add(new NotificationUser
+            {
+                Id = newId.ToString(),
+                User = user,
+                UserId = user.Id,
+                NotificationId = notification.Id,
+                Notification = notification
+            });
+        }
+        _notificationService?.Update(notification);
     }
 }

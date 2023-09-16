@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
@@ -59,26 +59,10 @@ public class GroupsController : Controller
         {
             if (model != null)
             {
-                var seequence = _groupService.GetAllAsync().Result;
-                var size = seequence.Count();
-                int[] anArray = new int[size];
-                if (size == 0)
-                {
-                    model.Id = "1";
-                }
-                else
-                {
-                    var index = 0;
-                    foreach (var configuration in seequence)
-                    {
-                        anArray[index] = Convert.ToInt32(configuration.Id);
-                        index++;
-                    }
+                var sequence = await _groupService!.GetAllAsync();
+                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
 
-                    int maxValue = anArray.Max();
-                    var newId = Convert.ToInt32(maxValue) + 1;
-                    model.Id = newId.ToString();
-                }
+                model.Id = newId.ToString();
 
                 var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
 
@@ -97,7 +81,10 @@ public class GroupsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _databaseContext.Groups
+            .Include(g => g.Users)
+            .FirstOrDefault(e => e.Id == entityId);
+        
         if (entity is null)
         {
             NotFound();
@@ -107,9 +94,6 @@ public class GroupsController : Controller
         var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
         var priorities = new SelectList(priorityTypeValues);
         ViewBag.Priorities = priorities;
-
-        //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
-        entity.Users = _databaseContext.Users.Where(e => e.GroupId == entityId).ToList();
 
         await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);

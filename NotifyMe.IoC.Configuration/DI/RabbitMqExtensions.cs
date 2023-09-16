@@ -1,11 +1,12 @@
 ﻿using System.Text;
 
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Newtonsoft.Json;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
-
+using NotifyMe.Infrastructure.Services;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -18,11 +19,16 @@ public static class RabbitMqExtensions
         using var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
         var services = scope.ServiceProvider;
         var unitOfWork = services.GetRequiredService<IUnitOfWork>();
-
-        var factory = new ConnectionFactory() { HostName = "localhost" };
+        var emailService = services.GetRequiredService<EmailService>();
+        var config = app.ApplicationServices.GetRequiredService<IConfiguration>();
+        
+        var rabbitMqHost = config!["RabbitMq:Host"] ?? throw new NullReferenceException();
+        var rabbitMqQueueName = config["RabbitMq:QueueName"] ?? throw new NullReferenceException();
+        
+        var factory = new ConnectionFactory { HostName = rabbitMqHost };
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
-        channel.QueueDeclare(queue: "MyQueue",
+        channel.QueueDeclare(queue: rabbitMqQueueName,
             durable: false,
             exclusive: false,
             autoDelete: false,
@@ -32,45 +38,20 @@ public static class RabbitMqExtensions
         consumer.Received += (model, ea) =>
         {
             var body = ea.Body.ToArray();
-            var message = new Message
-            {
-                ContentBody = Encoding.UTF8.GetString(body)
-            };
-
-            var seequence = unitOfWork.MessageRepository.GetAllAsync().Result;
-            var size = seequence.Count();
-            int[] anArray = new int[size];
-            if (size == 0)
-            {
-                message.Id = "1";
-            }
-            else
-            {
-                var index = 0;
-                foreach (var change in seequence)
-                {
-                    anArray[index] = Convert.ToInt32(change.Id);
-                    index++;
-                }
-
-                int maxValue = anArray.Max();
-                var newId = Convert.ToInt32(maxValue) + 1;
-                message.Id = newId.ToString();
-            }
-
+            var stringBody = Encoding.UTF8.GetString(body);
+      
+            var newEvent = JsonConvert.DeserializeObject<Event>(stringBody);
+            var json = JsonConvert.SerializeObject(newEvent, Formatting.Indented);
+            Console.WriteLine(" [x] Received {0}", json);
             try
             {
-                unitOfWork.MessageRepository?.CreateAsync(message);
-                Console.WriteLine(" [x] Received {0}", message);
+                if (newEvent != null)
+                {
+                    emailService.SendNotification(newEvent.Id);
+                    // Task.Run(async() => await emailService.SendNotification(newEvent.Id));
+                    // Task.Run(async () => await emailService.SendEmail(newEvent.Id));
+                }
             }
-
-            // var scope = app.ApplicationServices.GetService<IServiceScopeFactory>()!.CreateScope();
-            // var context = scope.ServiceProvider.GetRequiredService<IMessageService>();
-            // try
-            // {
-            //     context.CreateAsync(message);
-            //     Console.WriteLine(" [x] Received {0}", message);
-            // }
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -78,7 +59,7 @@ public static class RabbitMqExtensions
             }
         };
         
-        channel.BasicConsume(queue: "MyQueue",
+        channel.BasicConsume(queue:rabbitMqQueueName,
             autoAck: true,
             consumer: consumer);
         

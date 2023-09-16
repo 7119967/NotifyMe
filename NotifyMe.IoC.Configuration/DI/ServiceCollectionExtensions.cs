@@ -52,30 +52,38 @@ public static class ServiceCollectionExtensions
             });
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        //services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        //services.AddTransient<IUnitOfWork, UnitOfWork>();
         
-        services.AddTransient<IChangeService, ChangeService>();
-        services.AddTransient<IConfigurationService, ConfigurationService>();
-        services.AddTransient<INotificationService, NotificationService>();
-        services.AddTransient<IMessageService, MessageService>();
-        services.AddTransient<IEventService, EventService>();
-        services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
+        services.AddTransient<IEventService, EventService>();
+        services.AddTransient<IGroupService, GroupService>();
+        services.AddTransient<IChangeService, ChangeService>();
+        services.AddTransient<IMessageService, MessageService>();
+        services.AddTransient<INotificationService, NotificationService>();
+        services.AddTransient<IConfigurationService, ConfigurationService>();
+        services.AddTransient<INotificationUserService, NotificationUserService>();
 
         services.AddSingleton<ServicesMappingProfile>();
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         
         services.AddSingleton<IRabbitMqService, RabbitMqService>();
-        services.AddSingleton<RabbitMQService1>(_ =>
-        {
-            var rabbitMqHost = configuration["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
-            var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
-            var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-            return new RabbitMQService1(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
-        });
+        // services.AddSingleton<RabbitMqService>(_ =>
+        // {
+        //     var rabbitMqHost = configuration!["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
+        //     var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
+        //     var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
+        //     var rabbitMqQueueName = configuration["ConnectionStrings:RabbitMQQueueName"] ?? throw new NullReferenceException();
+        //     return new RabbitMqService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, rabbitMqQueueName);
+        // });
+        
+        // services.AddSingleton<RabbitMQService1>(_ =>
+        // {
+        //     var rabbitMqHost = configuration!["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
+        //     var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
+        //     var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
+        //     return new RabbitMQService1(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
+        // });
 
         services.AddTransient<EmailService>();
         services.AddTransient<UploadFileService>();
@@ -83,6 +91,6 @@ public static class ServiceCollectionExtensions
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         
         services.AddHostedService<EventMonitor>();
-        services.AddHostedService<NotificationWorker>();
+        // services.AddHostedService<NotificationWorker>();
     }
 }

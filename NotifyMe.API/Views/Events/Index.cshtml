@@ -1,8 +1,10 @@
 ﻿@using AutoMapper
 @using NotifyMe.Core.Interfaces.Services;
+@using Microsoft.EntityFrameworkCore.Query
 @inject IMapper Mapper;
 @inject IGroupService GroupService;
-@model ICollection<Event>
+
+@model IIncludableQueryable<Event, Configuration>
 
 @{
     Layout = "_Layout";

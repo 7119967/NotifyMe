@@ -9,6 +9,7 @@
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
+    int count = 1;
 }
 <div class="modal fade" id="modal-details" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg p-5">
@@ -21,37 +22,53 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Name" class="control-label"></label>
-                            <input asp-for="Name" class="form-control" id="Name">
+                            <label asp-for="PriorityType" class="form-label">Priority</label><br/>
+                            <select asp-for="PriorityType" asp-items="ViewBag.Priorities" class="form-control" readonly></select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" id="Name" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Description" class="control-label"></label>
-                            <textarea asp-for="Description" class="form-control" id="Description"></textarea>
+                            <label asp-for="Description" class="form-label"></label>
+                            <textarea asp-for="Description" class="form-control" id="Description" readonly></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="PriorityType" class="control-label">Priority</label><br/>
-                            <select asp-for="PriorityType" asp-items="ViewBag.Priorities"></select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Users" class="control-label"></label>
-                            <ul id="Users">
-                                @foreach (var user in Model.Users)
+                            <h5>Users</h5>
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">UserName</th>
+                                    <th scope="col">FirstName</th>
+                                    <th scope="col">LastName</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var item in Model.Users)
                                 {
-                                    <li>@user.UserName (@user.FirstName @user.LastName)</li>
+                                    <tr data-row=">@item.Id" readonly>
+                                        <th scope="row">@count</th>
+                                        <td>
+                                            <a class="btn link-primary p-0" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.UserName</a>
+                                        </td>
+                                        <td>@item.FirstName</td>
+                                        <td>@item.LastName</td>
+                                    </tr>
+                                    count++;
                                 }
-                            </ul>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

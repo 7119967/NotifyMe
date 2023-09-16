@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
@@ -15,6 +15,7 @@ public class EventMonitor : BackgroundService
     private readonly IRabbitMqService? _rabbitMqService;
     private readonly IChangeService? _changeService;
     private readonly IEventService? _eventService;
+    private readonly IConfigurationService? _configurationService;
 
     public EventMonitor(IServiceProvider serviceProvider)
     {
@@ -23,6 +24,7 @@ public class EventMonitor : BackgroundService
         _rabbitMqService = scope?.ServiceProvider.GetRequiredService<IRabbitMqService>();
         _changeService = scope?.ServiceProvider.GetRequiredService<IChangeService>();
         _eventService = scope?.ServiceProvider.GetRequiredService<IEventService>();
+        _configurationService = scope?.ServiceProvider.GetRequiredService<IConfigurationService>();
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -33,10 +35,10 @@ public class EventMonitor : BackgroundService
 
             try
             {
-                var changes = _dbContext.Changes.ToListAsync(cancellationToken: stoppingToken).Result ??
+                var changes = _changeService?.AsEnumerable().ToList() ??
                               throw new NullReferenceException();
-
-                if (changes.Count() == 0)
+                
+                if (!changes.Any())
                 {
                     Console.WriteLine("There is no changes. Create a change");
                     continue;
@@ -59,7 +61,7 @@ public class EventMonitor : BackgroundService
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
 
-                var configurations = _dbContext?.Configurations?.ToListAsync(cancellationToken: stoppingToken).Result ??
+                var configurations = _configurationService?.AsEnumerable().ToList() ??
                                      throw new NullReferenceException();
 
                 if (!configurations.Any())
@@ -70,7 +72,11 @@ public class EventMonitor : BackgroundService
 
                 foreach (var configuration in configurations)
                 {
-                    switch (configuration.ChangeType)
+                    // var configuration = _configurationService.AsQueryable()
+                    //         .Include(e => e.Group)
+                    //         .Include(e => e.Events)
+                    //         .FirstOrDefault(e => e.Id == item.Id);
+                    switch (configuration!.ChangeType)
                     {
                         case ChangeType.Creation:
                             if (counterCreation >= configuration.Threshold)
@@ -107,23 +113,24 @@ public class EventMonitor : BackgroundService
 
     private async Task ProcessingEvent(Configuration configuration, int counter)
     {
-        var eventItem = CreateEvent(configuration, counter);
-        await AddEventToRelativeChanges(configuration.ChangeType, eventItem);
-        var options = new JsonSerializerOptions
+        var eventItem = await CreateEvent(configuration, counter);
+        eventItem = await AddRelationShipToRelativeEntities(configuration, eventItem);
+        // var jsonString = JsonConvert.SerializeObject(eventItem, Formatting.Indented);
+        JsonSerializerSettings settings = new JsonSerializerSettings
         {
-            WriteIndented = true
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
-        var jsonString = JsonSerializer.Serialize(eventItem, options);
+        string jsonString = JsonConvert.SerializeObject(eventItem, settings);
         _rabbitMqService?.SendMessage(jsonString);
     }
 
-    private async Task AddEventToRelativeChanges(ChangeType changeType, Event eventItem)
+    private async Task<Event> AddRelationShipToRelativeEntities(Configuration configuration, Event eventItem)
     {
-        var collection = _dbContext?.Changes.Where(t =>
-            t.ChangeType == changeType &&
-            t.Timestamp.Date == DateTime.Now.Date &&
-            string.IsNullOrEmpty(t.EventId));
-
+        var collection = await _changeService!
+            .AsQueryable()
+            .Where(t => t.ChangeType == configuration.ChangeType && t.Timestamp.Date == DateTime.Now.Date && t.EventId == null)
+            .ToListAsync();
+        
         foreach (var item in collection!)
         {
             item.EventId = eventItem.Id;
@@ -131,56 +138,41 @@ public class EventMonitor : BackgroundService
             await _changeService!.UpdateAsync(item);
         }
 
-        await Task.CompletedTask;
+        var existEvent = await _dbContext!.Events.AsNoTracking().FirstOrDefaultAsync(e => e.Id == eventItem.Id);
+
+        existEvent!.ConfigurationId = configuration.Id;
+        existEvent.Configuration = configuration;
+
+        var entry = _eventService!.Update(existEvent);
+        return entry.Entity;
     }
 
 
-    private Event CreateEvent(Configuration configuration, int currentValue)
+    private async Task<Event> CreateEvent(Configuration configuration, int currentValue)
     {
+        var sequence = await _eventService!.GetAllAsync();
+        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+
         var model = new Event
         {
             EventName = $"{configuration.ChangeType} exceeded threshold",
-            EventDescription =
-                $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
+            EventDescription = $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
             CurrentThreshold = currentValue,
-            ConfigurationId = configuration.Id,
-            Configuration = configuration
+            // ConfigurationId = configuration.Id,
+            // Configuration = configuration,
+            Id = newId.ToString()
         };
 
-        var seequence = _eventService?.GetAllAsync().Result;
-        var size = seequence!.Count();
-        int[] anArray = new int[size];
-        if (size == 0)
+        try
         {
-            model.Id = "1";
+            var entity = _dbContext?.Add(model);
+            await _dbContext!.SaveChangesAsync();
+            return entity!.Entity;
         }
-        else
+        catch (Exception ex)
         {
-            var index = 0;
-            foreach (var element in seequence!)
-            {
-                anArray[index] = Convert.ToInt32(element.Id);
-                index++;
-            }
-
-            int maxValue = anArray.Max();
-            var newId = Convert.ToInt32(maxValue) + 1;
-            model.Id = newId.ToString();
+            Console.WriteLine(ex.Message);
+            throw;
         }
-
-        var entity = _eventService?.Create(model);
-        return entity!.Entity;
-        
-        // var existingEntity = _eventService?.GetByIdAsync(model.Id).Result;
-        //
-        // if (existingEntity != null)
-        // {
-        //     var entity = _eventService?.UpdateAsync(model);
-        //     return entity;
-        // }
-        // else
-        // {
-        //   
-        // }
     }
 }

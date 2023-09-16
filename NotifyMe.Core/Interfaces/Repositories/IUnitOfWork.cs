@@ -9,6 +9,7 @@
         IMessageRepository MessageRepository { get; }
         IGroupRepository GroupRepository { get; }
         IUserRepository UserRepository { get; }
+        INotificationUserRepository NotificationUserRepository { get; }
 
         Task CommitAsync();
         void Commit();

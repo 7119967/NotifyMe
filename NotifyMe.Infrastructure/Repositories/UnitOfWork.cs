@@ -17,6 +17,7 @@ namespace NotifyMe.Infrastructure.Repositories
         private readonly IMessageRepository _messageRepository = null!;
         private readonly IGroupRepository _groupRepository = null!;
         private readonly IUserRepository _userRepository = null!;
+        private readonly INotificationUserRepository _notificationUserRepository = null!;
 
         public IChangeRepository ChangeRepository => _changeRepository ?? new ChangeRepository(_dbContext);
         public IEventRepository EventRepository => _eventRepository ?? new EventRepository(_dbContext);
@@ -25,6 +26,7 @@ namespace NotifyMe.Infrastructure.Repositories
         public IMessageRepository MessageRepository => _messageRepository ?? new MessageRepository(_dbContext);
         public IGroupRepository GroupRepository => _groupRepository ?? new GroupRepository(_dbContext);
         public IUserRepository UserRepository => _userRepository ?? new UserRepository(_dbContext);
+        public INotificationUserRepository NotificationUserRepository => _notificationUserRepository ?? new NotificationUserRepository(_dbContext);
 
         public UnitOfWork(DatabaseContext dbContext)
         {

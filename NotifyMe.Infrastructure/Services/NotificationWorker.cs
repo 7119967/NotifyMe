@@ -13,8 +13,8 @@ namespace NotifyMe.Infrastructure.Services;
 
 public class NotificationWorker : BackgroundService
 {
-    private readonly IModel _channel;
-    private readonly EmailService _emailService;
+    private readonly IModel? _channel;
+    private readonly EmailService? _emailService;
 
     public NotificationWorker()
     {
@@ -39,10 +39,10 @@ public class NotificationWorker : BackgroundService
             if (notification != null)
             {
                 //Task.Run(() => _emailService.SendEmail(notification));
-                Task.Run(() => _emailService.SendSms(notification));
+                // Task.Run(() => _emailService!.SendSms(notification));
             }
 
-            _channel.BasicAck(e.DeliveryTag, false);
+            _channel!.BasicAck(e.DeliveryTag, false);
         };
 
         // _channel.BasicConsume("notifications", false, consumer);

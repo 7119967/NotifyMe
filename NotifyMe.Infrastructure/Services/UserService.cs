@@ -50,10 +50,11 @@ public class UserService : IUserService
 
     }
 
-    public void Update(User entity)
+    public EntityEntry<User> Update(User entity)
     {
-        _unitOfWork.UserRepository.Update(entity);
+        var entityEntry = _unitOfWork.UserRepository.Update(entity);
         _unitOfWork.Commit();
+        return entityEntry;
     }
 
     public async Task DeleteAsync(string entityId)
@@ -67,6 +68,16 @@ public class UserService : IUserService
         var entityEntry = _unitOfWork.UserRepository.Create(entity);
         _unitOfWork.CommitAsync();
         return entityEntry;
+    }
+
+    public IEnumerable<User> AsEnumerable()
+    {
+        return _unitOfWork.UserRepository.AsEnumerable();
+    }
+
+    public IQueryable<User> AsQueryable()
+    {
+        return _unitOfWork.UserRepository.AsQueryable();
     }
 
     public void ApplyChanges(Object source, Object target)

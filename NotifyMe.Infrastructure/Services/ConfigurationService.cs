@@ -60,5 +60,22 @@ namespace NotifyMe.Infrastructure.Services
             _unitOfWork.CommitAsync();
             return entityEntry;
         }
+
+        public IEnumerable<Configuration> AsEnumerable()
+        {
+            return _unitOfWork.ConfigurationRepository.AsEnumerable();
+        }
+
+        public IQueryable<Configuration> AsQueryable()
+        {
+            return _unitOfWork.ConfigurationRepository.AsQueryable();
+        }
+
+        public EntityEntry<Configuration> Update(Configuration entity)
+        {
+            var entityEntry = _unitOfWork.ConfigurationRepository.Update(entity);
+            _unitOfWork.CommitAsync();
+            return entityEntry;
+        }
     }
 }

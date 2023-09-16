@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
@@ -24,7 +26,9 @@ public class ChangesController  : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _changeService.GetAllAsync().Result);
+        //var entities = await Task.Run(() => _changeService.GetAllAsync().Result);
+        var entities = _databaseContext.Changes
+               .Include(e => e.Event);
         // var model = _mapper.Map<List<GroupListViewModel>>(entities);
         await Task.Yield();
         return View(entities);
@@ -67,26 +71,10 @@ public class ChangesController  : Controller
         {
             if (model != null)
             {
-                var seequence = _changeService.GetAllAsync().Result;
-                var size = seequence.Count();
-                int[] anArray = new int[size];
-                if (size == 0)
-                {
-                    model.Id = "1";
-                }
-                else
-                {
-                    var index = 0;
-                    foreach (var change in seequence)
-                    {
-                        anArray[index] = Convert.ToInt32(change.Id);
-                        index++;
-                    }
+                var sequence = await _changeService!.GetAllAsync();
+                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
 
-                    int maxValue = anArray.Max();
-                    var newId = Convert.ToInt32(maxValue) + 1;
-                    model.Id = newId.ToString();
-                }
+                model.Id = newId.ToString();
 
                 await _changeService.CreateAsync(model);
             }

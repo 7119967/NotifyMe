@@ -15,5 +15,7 @@ namespace NotifyMe.Core.Entities
         public string? GroupId { get; set; }
         [JsonIgnore]
         public virtual Group? Group { get; set; }
+            
+        public virtual ICollection<NotificationUser>? NotificationUsers { get; set; }
     }
 }

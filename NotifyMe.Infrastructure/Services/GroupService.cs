@@ -60,4 +60,20 @@ public class GroupService : IGroupService
         _unitOfWork.CommitAsync();
         return entityEntry;
     }
+
+    public IEnumerable<Group> AsEnumerable()
+    {
+        return _unitOfWork.GroupRepository.AsEnumerable();
+    }
+
+    public IQueryable<Group> AsQueryable()
+    {
+        return _unitOfWork.GroupRepository.AsQueryable();
+    }
+    public EntityEntry<Group> Update(Group entity)
+    {
+        var entityEntry = _unitOfWork.GroupRepository.Update(entity);
+        _unitOfWork.CommitAsync();
+        return entityEntry;
+    }
 }

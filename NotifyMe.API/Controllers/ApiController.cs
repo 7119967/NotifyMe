@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+﻿using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 
 namespace NotifyMe.API.Controllers;
 
-[Authorize(Roles = "admin, user")]
 [Route("api/changes")]
 [ApiController]
 public class ApiController : ControllerBase
@@ -24,16 +20,7 @@ public class ApiController : ControllerBase
     {
         return Ok(_changeService.GetAllAsync().Result);
     }
-    
-    // [Authorize(Roles = "admin, user")]
-    // [HttpGet]
-    // public IActionResult Index()
-    // { 
-    //     var content = _changeService.GetAllAsync().Result;
-    //     var json = JsonConvert.SerializeObject(content);
-    //     return Content(json, "text/html");
-    // }
-    
+
     [HttpGet("entity/fetch/id/{id}")]
     public async Task<IActionResult> GetById(string id)
     {
@@ -58,44 +45,10 @@ public class ApiController : ControllerBase
     {
         try
         {
-            // var entityEvent = await _changeService.GetByIdAsync(entity.Id);
-            // if (entityEvent != null)
-            // {
-            //     return BadRequest("The entity with the specified ID already exists");
-            // }
-           
-            var seequence = _changeService.GetAllAsync().Result;
-            var size = seequence.Count();
-            int[] anArray = new int[size];
-            if (size == 0)
-            {
-                entity.Id = "1";
-            }
-            else
-            {
-                var index = 0;
-                foreach (var change in seequence)
-                {
-                    anArray[index] = Convert.ToInt32(change.Id);
-                    index++;
-                }
+            var sequence = await _changeService!.GetAllAsync();
+            var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
 
-                int maxValue = anArray.Max();
-                var newId = Convert.ToInt32(maxValue) + 1;
-                entity.Id = newId.ToString();
-            }
-    
-
-            //var maxId = _changeService.GetAllAsync().Result.Max(e => e.Id);
-            //if (maxId is null)
-            //{
-            //    entity.Id = "1";
-            //}
-            //else 
-            //{
-            //    var newId = Convert.ToInt32(maxId) + 1;
-            //    entity.Id = newId.ToString(); 
-            //}
+            entity.Id = newId.ToString();
             
             await _changeService.CreateAsync(entity);
             return Ok(entity);

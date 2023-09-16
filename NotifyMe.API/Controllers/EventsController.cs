@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
@@ -30,7 +31,10 @@ public class EventsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _eventService.GetAllAsync().Result);
+        // var entities = await Task.Run(() => _eventService.GetAllAsync().Result);
+        var entities = _databaseContext.Events
+                .Include(e => e.Configuration);
+        
         // var model = _mapper.Map<List<GroupListViewModel>>(entities);
         await Task.Yield();
         return View(entities);
@@ -79,15 +83,15 @@ public class EventsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _eventService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _databaseContext.Events
+            .Include(e => e.Changes)
+            .FirstOrDefault(e => e.Id == entityId);
+       
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
-
-        //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
-        entity.Changes = _databaseContext.Changes.Where(e => e.EventId == entityId).ToList();
 
         await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);

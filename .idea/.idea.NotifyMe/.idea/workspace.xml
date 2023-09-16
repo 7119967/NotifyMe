@@ -19,24 +19,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/NotificationUser.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/INotificationUserRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/INotificationUserService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/NotificationUserRepository.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationUserService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913052124_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913052124_InitialCreate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913190534_AddPropCurrentThresholdinEvent.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230913190534_AddPropCurrentThresholdinEvent.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Migrations/DatabaseContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Login.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Account/Register.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/CreatePartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/CreatePartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/EditPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/PartialViews/EditPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Events/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Events/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/CreatePartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Shared/_Layout.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/EditPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Groups/PartialViews/EditPartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/CreatePartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/CreatePartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/DetailsPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/DetailsPartialView.cshtml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/EditPartialView.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/EditPartialView.cshtml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserListViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserListViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Consumer/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Consumer/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Consumer/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Consumer/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Notification.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Notification.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IUnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Repositories/IUnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/INotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/INotificationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/Services/IService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/UnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/UnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ChangeService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ChangeService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ConfigurationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ConfigurationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/GroupService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/GroupService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationWorker.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/NotificationWorker.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -59,11 +98,14 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/76dfe901c07040c4baa8619e21b27c0212878/93/3897344b/TagHelperExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2048d5b61a78bef52894eecf448e34a883cb22e1abb6711e0eb6d690a3b0/WebApplication.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2d65365881ce11f9bb776269d28fbe1dc6d0882bbe8615aafd4fa5a3d7ebc48e/Count.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/50c6dd77b885584dcd59d35a59203d3c986a699923eee7aac21bf50c89de1bc/SmtpClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/53581c25dbafcc363ace2a18ca8cb1be474f8e8b4187c320af6725d046cfb4/RazorPage.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/6a4abc33381932734b5fe8e665891a89f052eeee41e2debe188594bce29675c/ControllerActionInvoker.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/789b158a98468e474a2af1348cfd47e7792de2ae2344f55a03ddf85b16699b/WebApplicationBuilder.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/794bcfedceb3c6d957fbddf0e1c9a04afca77f9b5470c6859466cfba35e1ddb1/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/80ce3b5fced149e3854d9bd538ee1c7154f4cc4c4ece9eb1e3d71892fbd38b74/EventingBasicConsumer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/86c1e9dd2ad0a5d2c2bb47d6766dc32a341b357a3bc1f77355d4a7b128af5a/BackgroundService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/87629731af04bb03578c1b6aa46c564e8e7e4647ea8f1b844cfd9e658ab30/BackgroundService.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/878910279067a69744823f3ab1230c177a593e37dfe46787dbbce03d3d3799/ResourceInvoker.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/cea8f116d46ddf4be845bdf1d46ab3bb5bc4f06bc533db822f2d7999187e56f/Controller.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e74356f198b598e97eaeea83e8b7b1f2bfe27c0a39fedf86bb7dc44827fbda/ActionMethodExecutor.cs" root0="SKIP_HIGHLIGHTING" />
@@ -103,7 +145,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.Consumer: https">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -286,7 +328,10 @@
       <workItem from="1694618435839" duration="20754000" />
       <workItem from="1694648017782" duration="725000" />
       <workItem from="1694704072686" duration="1704000" />
-      <workItem from="1694706149556" duration="6661000" />
+      <workItem from="1694706149556" duration="19788000" />
+      <workItem from="1694836278244" duration="31896000" />
+      <workItem from="1694871854965" duration="26000" />
+      <workItem from="1694873626286" duration="5838000" />
     </task>
     <servers />
   </component>
@@ -346,81 +391,213 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs</url>
-          <line>62</line>
+          <line>79</line>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\NotificationsController.cs" initialLine="59" containingFunctionPresentation="Method 'Create'">
             <startOffsets>
-              <option value="1976" />
+              <option value="2766" />
             </startOffsets>
             <endOffsets>
-              <option value="1977" />
+              <option value="2767" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs</url>
-          <line>24</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqService.cs" initialLine="24" containingFunctionPresentation="Method 'SendMessage'">
-            <startOffsets>
-              <option value="708" />
-            </startOffsets>
-            <endOffsets>
-              <option value="773" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="53" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
-          <line>116</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="112" containingFunctionPresentation="Method 'ProcessingEvent'">
-            <startOffsets>
-              <option value="4844" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4886" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="54" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs</url>
-          <line>29</line>
+          <line>34</line>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqListener.cs" initialLine="29" containingFunctionPresentation="Method 'ExecuteAsync'">
             <startOffsets>
-              <option value="906" />
+              <option value="1208" />
             </startOffsets>
             <endOffsets>
-              <option value="957" />
+              <option value="1259" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
-          <line>138</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="138" containingFunctionPresentation="Method 'CreateEvent'">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs</url>
+          <line>25</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqService.cs" initialLine="11" containingFunctionPresentation="Method 'SendMessage'">
             <startOffsets>
-              <option value="5503" />
+              <option value="1000" />
             </startOffsets>
             <endOffsets>
-              <option value="5504" />
+              <option value="1001" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="57" />
+          <option name="timeStamp" value="61" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs</url>
+          <line>31</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqService.cs" initialLine="17" containingFunctionPresentation="Method 'SendMessage'">
+            <startOffsets>
+              <option value="1140" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1141" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="62" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/ChangeService.cs</url>
+          <line>57</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\ChangeService.cs" initialLine="57" containingFunctionPresentation="Method 'Create'">
+            <startOffsets>
+              <option value="1906" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1907" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>31</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="26" containingFunctionPresentation="Method 'SendEmail'">
+            <startOffsets>
+              <option value="1373" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1374" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/RabbitMqExtensions.cs</url>
+          <line>50</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.IoC.Configuration\DI\RabbitMqExtensions.cs" initialLine="44" containingFunctionPresentation="Lambda expression inside Method 'RabbitMqConsumer'">
+            <startOffsets>
+              <option value="2051" />
+              <option value="2077" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2121" />
+              <option value="2119" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="81" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>177</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="177" containingFunctionPresentation="Method 'CreateNotification'">
+            <startOffsets>
+              <option value="6132" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6133" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="83" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs</url>
+          <line>17</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqListener.cs" initialLine="17" containingFunctionPresentation="Constructor 'RabbitMqListener'">
+            <startOffsets>
+              <option value="480" />
+            </startOffsets>
+            <endOffsets>
+              <option value="507" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>201</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="196" containingFunctionPresentation="Method 'CreateNotification'">
+            <startOffsets>
+              <option value="6958" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7006" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Repositories/Repository.cs</url>
+          <line>83</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Repositories\Repository.cs" initialLine="83" containingFunctionPresentation="Method 'Create'">
+            <startOffsets>
+              <option value="2692" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2693" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>212</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="210" containingFunctionPresentation="Method 'CreateNotification'">
+            <startOffsets>
+              <option value="7330" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7373" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="96" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>189</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="189" containingFunctionPresentation="Method 'CreateNotification'">
+            <startOffsets>
+              <option value="6536" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6579" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="97" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
-          <line>166</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="166" containingFunctionPresentation="Method 'CreateEvent'">
+          <line>127</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="127" containingFunctionPresentation="Method 'AddRelationShipToRelativeEntities'">
             <startOffsets>
-              <option value="6390" />
+              <option value="5541" />
             </startOffsets>
             <endOffsets>
-              <option value="6432" />
+              <option value="5542" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="58" />
+          <option name="timeStamp" value="98" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>123</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="123" containingFunctionPresentation="Method 'ProcessingEvent'">
+            <startOffsets>
+              <option value="5377" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5419" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqService.cs</url>
+          <line>61</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqService.cs" initialLine="61" containingFunctionPresentation="Method 'SendMessage'">
+            <startOffsets>
+              <option value="2217" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2218" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="100" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

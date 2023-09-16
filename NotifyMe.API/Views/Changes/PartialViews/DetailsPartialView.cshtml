@@ -9,6 +9,7 @@
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
+    int count = 1;
 }
 <div class="modal fade" id="modal-details" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg p-5">
@@ -21,13 +22,13 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Id" class="control-label"></label>
+                            <label asp-for="Id" class="form-label"></label>
                             <input asp-for="Id" class="form-control" id="Id" readonly>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Timestamp" class="control-label"></label>
+                            <label asp-for="Timestamp" class="form-label"></label>
                             <input asp-for="Timestamp" class="form-control" id="Timestamp" readonly>
                         </div>
                     </div>
@@ -35,7 +36,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="ChangeType" class="control-label"></label>
+                            <label asp-for="ChangeType" class="form-label"></label>
                             <input asp-for="ChangeType" class="form-control" id="ChangeType" readonly>
                         </div>
                     </div>
@@ -43,28 +44,41 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="ChangeDescription" class="control-label"></label>
+                            <label asp-for="ChangeDescription" class="form-label"></label>
                             <textarea asp-for="ChangeDescription" class="form-control" id="ChangeDescription" readonly></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Event.EventName" class="control-label"></label>
-                            <input asp-for="Event.EventName" class="form-control" id="Event.EventName" readonly>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Event.EventDescription" class="control-label"></label>
-                            <input asp-for="Event.EventDescription" class="form-control" id="Event.EventDescription" readonly>
-                        </div>
+                        <h3>Events</h3>
+                        <br/>
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-row=">@Model.Event?.Id">
+                                <th scope="row">@count</th>
+                                <td>
+                                    <a class="btn link-primary p-0" 
+                                       data-bs-toggle="ajax-modal" 
+                                       data-bs-target="#modal-details" 
+                                       onclick="previewing('@Model.Event?.Id')">@Model.Event?.EventName</a>
+                                </td>
+                                <td>@Model.Event?.EventDescription</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
     </div>

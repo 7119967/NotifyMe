@@ -1,12 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Notification;
+using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
@@ -18,19 +20,22 @@ public class NotificationsController : Controller
     private readonly ILogger<NotificationsController> _logger;
     private readonly IEventLogger _eventLogger;
     private readonly INotificationService _notificationService;
+    private readonly DatabaseContext _databaseContext;
 
     public NotificationsController(
         UserManager<User> userManager,
         IMapper mapper,
         ILogger<NotificationsController> logger,
         IEventLogger eventLogger,
-        INotificationService notificationService)
+        INotificationService notificationService,
+        DatabaseContext databaseContext)
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
         _eventLogger = eventLogger;
         _notificationService = notificationService;
+        _databaseContext = databaseContext;
     }
 
     [HttpPost]
@@ -44,16 +49,28 @@ public class NotificationsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _notificationService.GetAllAsync().Result);
         // var model = _mapper.Map<List<NotificationListViewModel>>(entities);
         await Task.Yield();
-        return View(entities);
+        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
+        if (await _userManager.IsInRoleAsync(user!, "admin"))
+        {
+            var entities = await Task.Run(() => _notificationService.GetAllAsync().Result);
+            return View(entities);
+        }
+        
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userMessages = await _databaseContext.Notifications
+            .Include(m => m.NotificationUsers!)
+            .ThenInclude(mu => mu.User)
+            .Where(m => m.NotificationUsers!.Any(mu => mu.UserId == userId))
+            .ToListAsync();
+        return View(userMessages);
     }
     
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
+        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
         return PartialView("PartialViews/CreatePartialView", new Notification());
     }
     
@@ -65,17 +82,10 @@ public class NotificationsController : Controller
         {
             if (model != null)
             {
-                var maxId = _notificationService.GetAllAsync().Result.Max(e => e.Id) ;
-                // var entity = _mapper.Map<NotificationCreateViewModel, Notification>(model);
-                if (maxId is null)
-                {
-                    model.Id = "1";
-                }
-                else 
-                {
-                    var newId = Convert.ToInt32(maxId) + 1;
-                    model.Id = newId.ToString(); 
-                }
+                var sequence = await _notificationService!.GetAllAsync();
+                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+
+                model.Id = newId.ToString();
                
                 await _notificationService.CreateAsync(model);
             }

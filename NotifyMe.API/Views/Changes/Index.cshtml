@@ -1,8 +1,11 @@
 ﻿@using AutoMapper
-@using NotifyMe.Core.Interfaces.Services;
+@using NotifyMe.Core.Interfaces.Services
+@using Microsoft.EntityFrameworkCore.Query
+
 @inject IMapper Mapper;
 @inject IGroupService GroupService;
-@model ICollection<Change>
+@* @model ICollection<Change> *@
+@model IIncludableQueryable<Change, Event>
 
 @{
     Layout = "_Layout";

@@ -1,8 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using NotifyMe.Core.Entities;
-
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -14,13 +13,19 @@ public class RabbitMqListener : BackgroundService
     private IModel _channel;
     private EmailService _emailService;
 
-    public RabbitMqListener(EmailService emailService)
+    public RabbitMqListener(IConfiguration configuration, EmailService emailService)
     {
-        var factory = new ConnectionFactory { HostName = "localhost" };
+        var config = configuration;
+        _emailService = emailService;
+        
+        var rabbitMqHost = config!["RabbitMq:Host"] ?? throw new NullReferenceException();
+        var rabbitMqQueueName = config["RabbitMq:QueueName"] ?? throw new NullReferenceException();
+        
+        var factory = new ConnectionFactory { HostName = rabbitMqHost };
         _connection = factory.CreateConnection();
         _channel = _connection.CreateModel();
-        _channel.QueueDeclare(queue: "MyQueue", durable: false, exclusive: false, autoDelete: false, arguments: null);
-        _emailService = emailService;
+        _channel.QueueDeclare(queue: rabbitMqQueueName, durable: false, exclusive: false, autoDelete: false, arguments: null);
+      
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -31,11 +36,8 @@ public class RabbitMqListener : BackgroundService
         consumer.Received += (ch, ea) =>
         {
             var content = Encoding.UTF8.GetString(ea.Body.ToArray());
-            
-            _emailService.SendEmail(content);
-
+            Task.Run(async () => await _emailService.SendEmail(content));
             Debug.WriteLine($"A message received: {content}");
-
             _channel.BasicAck(ea.DeliveryTag, false);
         };
 

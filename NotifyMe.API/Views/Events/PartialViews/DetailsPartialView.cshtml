@@ -9,6 +9,7 @@
 @{
     ViewBag.Title = "Preview";
     Layout = "_Layout";
+    int count = 1;
 }
 <div class="modal fade" id="modal-details" tabindex="-1" aria-labelledby="modalDetailsLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg p-5">
@@ -21,13 +22,13 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Id" class="control-label"></label>
+                            <label asp-for="Id" class="form-label"></label>
                             <input asp-for="Id" class="form-control" id="Id" readonly>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="Timestamp" class="control-label"></label>
+                            <label asp-for="Timestamp" class="form-label"></label>
                             <input asp-for="Timestamp" class="form-control" id="Timestamp" readonly>
                         </div>
                     </div>
@@ -35,7 +36,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="EventName" class="control-label"></label>
+                            <label asp-for="EventName" class="form-label"></label>
                             <input asp-for="EventName" class="form-control" id="Name" readonly>
                         </div>
                     </div>
@@ -43,7 +44,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="EventDescription" class="control-label"></label>
+                            <label asp-for="EventDescription" class="form-label"></label>
                             <textarea asp-for="EventDescription" class="form-control" id="Description" readonly></textarea>
                         </div>
                     </div>
@@ -51,7 +52,7 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="CurrentThreshold" class="control-label"></label>
+                            <label asp-for="CurrentThreshold" class="form-label"></label>
                             <input asp-for="CurrentThreshold" class="form-control" id="CurrentThreshold" readonly>
                         </div>
                     </div>
@@ -59,22 +60,41 @@
                 <div class="row mb-3">
                     <div class="col">
                         <div class="form-group">
-                            <label asp-for="ConfigurationId" class="control-label"></label>
+                            <label asp-for="ConfigurationId" class="form-label"></label>
                             <input asp-for="ConfigurationId" class="form-control" id="ConfigurationId" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row mb-3">
                     <div class="col">
-                        <div class="form-group">
-                            <label asp-for="Changes" class="control-label"></label>
-                            <ul id="Changes">
-                                @foreach (Change change in Model.Changes)
-                                {
-                                    <li readonly>@change.Id @change.Timestamp @change.ChangeType @change.ChangeDescription</li>
-                                }
-                            </ul>
-                        </div>
+                        <h5>Changes</h5>
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Timestamp</th>
+                                <th scope="col">Change</th>
+                                <th scope="col">Description</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach (var item in Model.Changes!)
+                            {
+                                <tr data-row=">@item.Id" readonly>
+                                    <th scope="row">@count</th>
+                                    <td>
+                                        <a class="btn link-primary p-0" 
+                                           data-bs-toggle="ajax-modal" 
+                                           data-bs-target="#modal-details" 
+                                           onclick="previewing('@item.Id')">@item.Timestamp</a>
+                                    </td>
+                                    <td>@item.ChangeType</td>
+                                    <td>@item.ChangeDescription</td>
+                                </tr>
+                                count++;
+                            }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

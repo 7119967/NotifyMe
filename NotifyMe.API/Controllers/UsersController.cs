@@ -24,7 +24,7 @@ public class UsersController : Controller
     private readonly UploadFileService _uploadFileService;
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
-    private readonly IUnitOfWork _unitOfWork;
+    // private readonly IUnitOfWork? _unitOfWork;
     private readonly DatabaseContext _databaseContext;
 
   
@@ -176,7 +176,7 @@ public class UsersController : Controller
             var pathImage = $"/img/{model.Email}.jpg";
             model.Avatar = pathImage;
         }
-        var user = _userManager.FindByNameAsync(model.UserName).Result;
+        var user = _userManager.FindByNameAsync(model.UserName!).Result;
         if (user == null)
         {
             return NotFound();

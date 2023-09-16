@@ -60,4 +60,21 @@ public class MessageService: IMessageService
         _unitOfWork.CommitAsync();
         return entityEntry;
     }
+
+    public IEnumerable<Message> AsEnumerable()
+    {
+        return _unitOfWork.MessageRepository.AsEnumerable();
+    }
+
+    public IQueryable<Message> AsQueryable()
+    {
+        return _unitOfWork.MessageRepository.AsQueryable();
+    }
+
+    public EntityEntry<Message> Update(Message entity)
+    {
+        var entityEntry = _unitOfWork.MessageRepository.Update(entity);
+        _unitOfWork.CommitAsync();
+        return entityEntry;
+    }
 }

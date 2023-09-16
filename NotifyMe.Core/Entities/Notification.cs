@@ -8,5 +8,8 @@ namespace NotifyMe.Core.Entities
         public string? EventId { get; set; }
         [JsonIgnore] 
         public virtual Event? Event { get; set; }
+
+        public virtual ICollection<NotificationUser>? NotificationUsers { get; set; } =
+            new List<NotificationUser>();
     }
 }

@@ -45,12 +45,27 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task UpdateAsync(T entity)
         {
+            var entry = _entities.Entry(entity);
+            if (entry.State != EntityState.Detached) return;
             await Task.Run(() => _entities.Update(entity));
         }
 
-        public void Update(T entity)
+        public  EntityEntry<T> Update(T entity)
         {
-            _entities.Update(entity);
+            var entityEntry = _entities.Entry(entity);
+            if (entityEntry.State == EntityState.Detached)
+            {
+                _context.ChangeTracker.Clear();
+                entityEntry = _entities.Update(entity);
+                _context.SaveChanges();   
+            }
+            else
+            {
+                entityEntry = _entities.Update(entity);
+            }
+            // _entities.Attach(entity);
+            // _entities.Entry(entity).State = EntityState.Modified;
+            return entityEntry;
         }
 
         public async Task DeleteAsync(string entityId)
@@ -67,8 +82,33 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public EntityEntry<T> Create(T entity)
         {
-            var entityEntry = _entities.AddAsync(entity).Result;
+            var entityEntry = _entities.Entry(entity);
+            if (entityEntry.State == EntityState.Detached)
+            {
+                _context.ChangeTracker.Clear();
+                entityEntry = _entities.AddAsync(entity).Result;
+                _context.SaveChanges();   
+            }
+            else
+            {
+                entityEntry = _entities.AddAsync(entity).Result;
+            }
+            // _entities.Attach(entity);
+            // _entities.Entry(entity).State = EntityState.Modified;
             return entityEntry;
+            
+            // var entityEntry = _entities.AddAsync(entity).Result;
+            // return entityEntry;
+        }
+
+        public IEnumerable<T> AsEnumerable()
+        {
+            return _entities.AsEnumerable();
+        }
+
+        public IQueryable<T> AsQueryable()
+        {
+            return _entities.AsQueryable();
         }
     }
 }

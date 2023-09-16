@@ -13,4 +13,7 @@ public interface IService<T> where T : class
     Task UpdateAsync(T entity);
     Task DeleteAsync(string entityId);
     EntityEntry<T> Create(T entity);
+    IEnumerable<T> AsEnumerable();
+    IQueryable<T> AsQueryable();
+    EntityEntry<T> Update(T entity);
 }

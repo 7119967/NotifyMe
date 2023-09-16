@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Infrastructure.Context
@@ -13,6 +14,7 @@ namespace NotifyMe.Infrastructure.Context
         public DbSet<Configuration> Configurations { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<NotificationUser> NotificationUsers { get; set; }
  
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
@@ -22,6 +24,8 @@ namespace NotifyMe.Infrastructure.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
+            // optionsBuilder.ConfigureWarnings(warnings => 
+            //     warnings.Ignore(CoreEventId.DetachedLazyLoadingWarning));
         }
 
         // protected override void OnModelCreating(ModelBuilder modelBuilder)

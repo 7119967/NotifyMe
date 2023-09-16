@@ -11,8 +11,10 @@ namespace NotifyMe.Core.Interfaces.Repositories
         Task<T> GetByIdAsync(string entityId);
         Task CreateAsync(T entity);
         Task UpdateAsync(T entity);
-        void Update(T entity);
+        EntityEntry<T> Update(T entity);
         Task DeleteAsync(string entityId);
         EntityEntry<T> Create(T entity);
+        IEnumerable<T> AsEnumerable();
+        IQueryable<T> AsQueryable();
     }
 }

@@ -15,6 +15,15 @@ namespace NotifyMe.Consumer
             var builder = WebApplication.CreateBuilder(args);
             
             // Services
+            // builder.Services.AddHostedService<RabbitMqListener>(_ =>
+            // {
+            //     var rabbitMqHost = configuration!["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
+            //     var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
+            //     var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
+            //     var rabbitMqQueueName = configuration["ConnectionStrings:RabbitMQQueueName"] ?? throw new NullReferenceException();
+            //     return new RabbitMqListener(rabbitMqHost, rabbitMqQueueName);
+            // });  
+            
             builder.Services.AddHostedService<RabbitMqListener>();
             builder.Services.ConfigureBusinessServices(configuration);
 
