@@ -38,7 +38,7 @@
                         <td>
                             <a class="btn link-primary" data-bs-toggle="ajax-modal" data-bs-target="#modal-details" onclick="previewing('@item.Id')">@item.Message</a>
                         </td>
-                        <td>@item.Event</td>
+                        <td>@item?.EventId</td>
                         <td>
                             @{ await Html.RenderPartialAsync("PartialViews/ActionsPartialView", item); }
                         </td>
