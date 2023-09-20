@@ -19,6 +19,7 @@ public class EmailService
     private readonly IGroupService? _groupService;
     private readonly INotificationService? _notificationService;
     private readonly INotificationUserService? _notificationUserService;
+    
     public EmailService(IServiceProvider serviceProvider)
     {
         var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
@@ -28,6 +29,7 @@ public class EmailService
         _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
         _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
     }
+    
     public async Task SendEmail(string eventId)
     {
         var originalEvent = _dbContext?.Events.FirstOrDefault(e => e.Id == eventId);
@@ -98,21 +100,25 @@ public class EmailService
 
         return Task.CompletedTask;
     }   
+    
     public void SendNotification(string eventId)
     {
-        var originalEvent = _dbContext?.Events.FirstOrDefault(e => e.Id == eventId);
+        var originalEvent = _dbContext?.Events.AsNoTracking().FirstOrDefault(e => e.Id == eventId);
                 
         var configuration = _configurationService!
             .AsQueryable()
+            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId).Result; 
         
         var group = _groupService!
             .AsQueryable()
+            .AsNoTracking()
             .Include(g => g.Users)
-            .FirstOrDefaultAsync(t => t.Id == configuration!.Id).Result;
+            .FirstOrDefaultAsync(t => t.Id == configuration!.Id)
+            .Result
+            ;
         
         CreateNotification(group!, originalEvent!);
-       
         
         // await Task.CompletedTask;
     }
@@ -174,9 +180,14 @@ public class EmailService
             return entity!.Entity;
         }
     }
+    
     private void CreateNotification(Group group, Event eventItem)
     {
-        var sequence = _notificationService!.GetAllAsync().Result;
+        var sequence = _notificationService!
+            .AsQueryable()
+            .AsNoTracking()
+            .ToList();
+        
         var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
 
         var notification = new Notification
@@ -189,27 +200,66 @@ public class EmailService
 
         _notificationService?.Create(notification);
         
-        var usersToReceiveNotification = new List<User>();
+        var notificationToUpdate = _notificationService!
+            .AsQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(t => t.Id == newId.ToString()).Result;
 
-        foreach (var user in group.Users)
+        if (notificationToUpdate != null)
         {
-            usersToReceiveNotification.Add(user);
+            notificationToUpdate.Message = eventItem.EventDescription;
+            notificationToUpdate.EventId = eventItem.Id;
+            notificationToUpdate.Event = eventItem;
+            
+            _notificationService?.Update(notificationToUpdate);
         }
         
-        var sequence2 = _notificationService!.GetAllAsync().Result;
-        var newId2 = (sequence2?.Any() == true) ? (sequence2.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        var usersToReceiveNotification = group.Users.ToList();
         
         foreach (var user in usersToReceiveNotification)
         {
-            notification.NotificationUsers!.Add(new NotificationUser
+            var sequence2 = _notificationUserService!
+                .AsQueryable()
+                .AsNoTracking()
+                .ToList();
+            
+            var newId2 = (sequence2?.Any() == true) ? (sequence2.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+            
+            var notificationUser = new NotificationUser
             {
-                Id = newId.ToString(),
-                User = user,
-                UserId = user.Id,
-                NotificationId = notification.Id,
-                Notification = notification
-            });
+                Id = newId2.ToString(),
+                // User = user,
+                // UserId = user.Id,
+                // NotificationId = notification.Id,
+                // Notification = notification
+            };
+            
+            _notificationUserService?.Create(notificationUser);
+            
+            var notificationUserToUpdate = _notificationUserService!
+                .AsQueryable()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(t => t.Id == newId2.ToString()).Result;
+
+            if (notificationUserToUpdate != null)
+            {
+                notificationUserToUpdate.User = user;
+                notificationUserToUpdate.UserId = user.Id;
+                notificationUserToUpdate.NotificationId = notification.Id;
+                notificationUserToUpdate.Notification = notification;
+                
+                _notificationUserService?.Update(notificationUser);
+            }
         }
-        _notificationService?.Update(notification);
+        
+        
+        // notification.NotificationUsers!.Add(new NotificationUser
+        // {
+        //     Id = newId2.ToString(),
+        //     User = user,
+        //     UserId = user.Id,
+        //     NotificationId = notification.Id,
+        //     Notification = notification
+        // });
     }
 }

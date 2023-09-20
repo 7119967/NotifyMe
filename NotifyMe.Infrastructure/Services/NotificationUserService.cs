@@ -61,7 +61,7 @@ public class NotificationUserService : INotificationUserService
     public EntityEntry<NotificationUser> Create(NotificationUser entity)
     {
         var entityEntry = _unitOfWork.NotificationUserRepository.Create(entity);
-        _unitOfWork.CommitAsync();
+        _unitOfWork.CommitAsync().Wait();
         return entityEntry;
     }
 
@@ -78,7 +78,7 @@ public class NotificationUserService : INotificationUserService
     public EntityEntry<NotificationUser> Update(NotificationUser entity)
     {
         var entityEntry = _unitOfWork.NotificationUserRepository.Update(entity);
-        _unitOfWork.CommitAsync();
+        _unitOfWork.CommitAsync().Wait();
         return entityEntry;
     }
 }

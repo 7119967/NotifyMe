@@ -82,7 +82,7 @@ namespace NotifyMe.Infrastructure.Services
         public EntityEntry<Notification> Create(Notification entity)
         {
             var entityEntry = _unitOfWork.NotificationRepository.Create(entity);
-            _unitOfWork.CommitAsync();
+            _unitOfWork.CommitAsync().Wait();
             return entityEntry;
         }
 
@@ -99,7 +99,7 @@ namespace NotifyMe.Infrastructure.Services
         public EntityEntry<Notification> Update(Notification entity)
         {
             var entityEntry = _unitOfWork.NotificationRepository.Update(entity);
-            _unitOfWork.CommitAsync();
+            _unitOfWork.CommitAsync().Wait();
             return entityEntry;
         }
     }

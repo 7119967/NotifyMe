@@ -87,7 +87,7 @@ namespace NotifyMe.Infrastructure.Repositories
             {
                 _context.ChangeTracker.Clear();
                 entityEntry = _entities.AddAsync(entity).Result;
-                _context.SaveChanges();   
+                // _context.SaveChanges();   
             }
             else
             {
