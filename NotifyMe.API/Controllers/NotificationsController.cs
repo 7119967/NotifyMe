@@ -19,23 +19,28 @@ public class NotificationsController : Controller
     private readonly UserManager<User> _userManager;
     private readonly ILogger<NotificationsController> _logger;
     private readonly IEventLogger _eventLogger;
-    private readonly INotificationService _notificationService;
-    private readonly DatabaseContext _databaseContext;
+    private readonly INotificationService? _notificationService;
+    private readonly INotificationUserService? _notificationUserService;
+    // private readonly DatabaseContext _databaseContext;
 
-    public NotificationsController(
+    public NotificationsController(IServiceProvider serviceProvider,
         UserManager<User> userManager,
         IMapper mapper,
-        ILogger<NotificationsController> logger,
-        IEventLogger eventLogger,
-        INotificationService notificationService,
-        DatabaseContext databaseContext)
+        ILogger<NotificationsController> logger
+        // IEventLogger eventLogger,
+        // INotificationService notificationService,
+        // DatabaseContext databaseContext
+        )
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
-        _eventLogger = eventLogger;
-        _notificationService = notificationService;
-        _databaseContext = databaseContext;
+        // _eventLogger = eventLogger;
+        // _notificationService = notificationService;
+        // _databaseContext = databaseContext;
+        var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
+        _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
+        _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
     }
 
     [HttpPost]
@@ -54,23 +59,24 @@ public class NotificationsController : Controller
         var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
         if (await _userManager.IsInRoleAsync(user!, "admin"))
         {
-            var entities = await Task.Run(() => _notificationService.GetAllAsync().Result);
+            var entities = await Task.Run(() => _notificationService!.GetAllAsync().Result);
             return View(entities);
         }
         
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var userMessages = await _databaseContext.Notifications
-            .Include(m => m.NotificationUsers!)
-            .ThenInclude(mu => mu.User)
-            .Where(m => m.NotificationUsers!.Any(mu => mu.UserId == userId))
-            .ToListAsync();
-        return View(userMessages);
+
+        var notifications = from m in _notificationService!.AsQueryable()
+            join u in _notificationUserService?.AsQueryable() on m.Id equals u.NotificationId
+            where u.UserId == userId
+            select m;
+        
+        return View(notifications);
     }
     
     [HttpGet]
     public async Task<IActionResult> Create()
     {
-        var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
+        // var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
         return PartialView("PartialViews/CreatePartialView", new Notification());
     }
     
@@ -102,7 +108,7 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity is null)
         {
             NotFound();
@@ -118,7 +124,7 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity == null)
         {
             return NotFound();
@@ -136,7 +142,7 @@ public class NotificationsController : Controller
         // var entity = _mapper.Map<NotificationEditViewModel, Notification>(model);
         try
         {
-            await _notificationService.UpdateAsync(model);
+            await _notificationService!.UpdateAsync(model);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -149,7 +155,7 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
         if (entity == null)
         {
             return NotFound();
@@ -164,7 +170,7 @@ public class NotificationsController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(Notification model)
     {
-        var entity = _notificationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
         if (entity == null)
         {
             return NotFound();

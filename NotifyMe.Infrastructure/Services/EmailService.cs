@@ -19,6 +19,8 @@ public class EmailService
     private readonly IGroupService? _groupService;
     private readonly INotificationService? _notificationService;
     private readonly INotificationUserService? _notificationUserService;
+    private readonly IEventService? _eventService;
+    private readonly IMessageService? _messageService;
     
     public EmailService(IServiceProvider serviceProvider)
     {
@@ -28,6 +30,8 @@ public class EmailService
         _groupService = scope?.ServiceProvider.GetRequiredService<IGroupService>();
         _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
         _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
+        _eventService = scope?.ServiceProvider.GetRequiredService<IEventService>();
+        _messageService = scope?.ServiceProvider.GetRequiredService<IMessageService>();
     }
     
     public async Task SendEmail(string eventId)
@@ -71,7 +75,47 @@ public class EmailService
 
         await Task.CompletedTask;
     }
+    
+    private Message CreateMessage(Event eventItem)
+    {
+        var receivers = new List<string>();
 
+        foreach (var user in eventItem.Configuration!.Group!.Users)
+        {
+            if (!string.IsNullOrEmpty(user.Email))
+            {
+                receivers.Add(user.Email);
+            }
+        }
+
+        var model = new Message
+        {
+            Sender = "",
+            Receivers = string.Join(";", receivers),
+            EventId = eventItem.Id,
+            Event = eventItem,
+            Subject = $"ALERT: {eventItem.Configuration.ChangeType} exceeded threshold",
+            ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {eventItem.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
+        };
+
+        var sequence = _messageService!.AsEnumerable();
+        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        model.Id = newId.ToString();
+
+        var existingEntity = _messageService?
+            .AsQueryable()
+            .AsNoTracking()
+            .FirstOrDefault(m => m.Id == model.Id)
+            ;
+       
+        if (existingEntity != null)
+        {
+            return _messageService!.Update(model).Entity;
+        }
+        
+        return _messageService!.Create(model).Entity;
+    }
+    
     public Task SendSms(Notification notification)
     {
         const string accountSid = "ACXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
@@ -103,82 +147,26 @@ public class EmailService
     
     public void SendNotification(string eventId)
     {
-        var originalEvent = _dbContext?.Events.AsNoTracking().FirstOrDefault(e => e.Id == eventId);
+        var originalEvent = _eventService!
+            .AsQueryable()
+            .AsNoTracking()
+            .FirstOrDefault(e => e.Id == eventId)
+            ;
                 
         var configuration = _configurationService!
             .AsQueryable()
             .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId).Result; 
+            .FirstOrDefault(t => t.Id == originalEvent!.ConfigurationId)
+            ; 
         
         var group = _groupService!
             .AsQueryable()
             .AsNoTracking()
             .Include(g => g.Users)
-            .FirstOrDefaultAsync(t => t.Id == configuration!.Id)
-            .Result
+            .FirstOrDefault(t => t.Id == configuration!.Id)
             ;
         
         CreateNotification(group!, originalEvent!);
-        
-        // await Task.CompletedTask;
-    }
-
-    private Message CreateMessage(Event eventItem)
-    {
-        var receivers = new List<string>();
-
-        foreach (var user in eventItem.Configuration!.Group!.Users)
-        {
-            if (!string.IsNullOrEmpty(user.Email))
-            {
-                receivers.Add(user.Email);
-            }
-        }
-
-        var model = new Message
-        {
-            Sender = "",
-            Receivers = string.Join(";", receivers),
-            EventId = eventItem.Id,
-            Event = eventItem,
-            Subject = $"ALERT: {eventItem.Configuration.ChangeType} exceeded threshold",
-            ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {eventItem.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
-        };
-
-        var seequence = _dbContext?.Messages.AsEnumerable();
-        var size = seequence!.Count();
-        int[] anArray = new int[size];
-        if (size == 0)
-        {
-            model.Id = "1";
-        }
-        else
-        {
-            var index = 0;
-            foreach (var element in seequence!)
-            {
-                anArray[index] = Convert.ToInt32(element.Id);
-                index++;
-            }
-
-            int maxValue = anArray.Max();
-            var newId = Convert.ToInt32(maxValue) + 1;
-            model.Id = newId.ToString();
-        }
-
-        var existingEntity = _dbContext?.Messages.Find(model.Id);
-        if (existingEntity != null)
-        {
-            var entity = _dbContext?.Messages.Update(model);
-            _dbContext?.SaveChanges();
-            return entity!.Entity;
-        }
-        else
-        {
-            var entity = _dbContext?.Messages.AddAsync(model).Result;
-            _dbContext?.SaveChanges();
-            return entity!.Entity;
-        }
     }
     
     private void CreateNotification(Group group, Event eventItem)
@@ -193,26 +181,11 @@ public class EmailService
         var notification = new Notification
         {
             Id = newId.ToString(),
-            // Message = eventItem.EventDescription,
-            // EventId = eventItem.Id,
-            // Event = eventItem
+            Message = eventItem.EventDescription,
+            EventId = eventItem.Id
         };
 
         _notificationService?.Create(notification);
-        
-        var notificationToUpdate = _notificationService!
-            .AsQueryable()
-            .AsNoTracking()
-            .FirstOrDefaultAsync(t => t.Id == newId.ToString()).Result;
-
-        if (notificationToUpdate != null)
-        {
-            notificationToUpdate.Message = eventItem.EventDescription;
-            notificationToUpdate.EventId = eventItem.Id;
-            notificationToUpdate.Event = eventItem;
-            
-            _notificationService?.Update(notificationToUpdate);
-        }
         
         var usersToReceiveNotification = group.Users.ToList();
         
@@ -228,38 +201,11 @@ public class EmailService
             var notificationUser = new NotificationUser
             {
                 Id = newId2.ToString(),
-                // User = user,
-                // UserId = user.Id,
-                // NotificationId = notification.Id,
-                // Notification = notification
+                UserId = user.Id,
+                NotificationId = notification.Id
             };
             
             _notificationUserService?.Create(notificationUser);
-            
-            var notificationUserToUpdate = _notificationUserService!
-                .AsQueryable()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == newId2.ToString()).Result;
-
-            if (notificationUserToUpdate != null)
-            {
-                notificationUserToUpdate.User = user;
-                notificationUserToUpdate.UserId = user.Id;
-                notificationUserToUpdate.NotificationId = notification.Id;
-                notificationUserToUpdate.Notification = notification;
-                
-                _notificationUserService?.Update(notificationUser);
-            }
         }
-        
-        
-        // notification.NotificationUsers!.Add(new NotificationUser
-        // {
-        //     Id = newId2.ToString(),
-        //     User = user,
-        //     UserId = user.Id,
-        //     NotificationId = notification.Id,
-        //     Notification = notification
-        // });
     }
 }
