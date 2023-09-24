@@ -47,6 +47,7 @@ public static class RabbitMqExtensions
             {
                 if (newEvent != null)
                 {
+                    emailService.SendEmail(newEvent.Id).Wait();
                     emailService.SendNotification(newEvent.Id);
                     // Task.Run(async() => await emailService.SendNotification(newEvent.Id));
                     // Task.Run(async () => await emailService.SendEmail(newEvent.Id));

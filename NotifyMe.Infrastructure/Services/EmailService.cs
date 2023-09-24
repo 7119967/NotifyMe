@@ -46,9 +46,6 @@ public class EmailService
                 .AsQueryable()
                 .Include(g => g.Users)
                 .FirstOrDefaultAsync(t => t.Id == configuration!.Id);
-        
-        // var originalMessage = CreateMessage(originalEvent!);
-        // var receivers = new List<string>();
 
         var message = new MailMessage();
         foreach (var receiver in group!.Users)
@@ -60,20 +57,24 @@ public class EmailService
         message.Subject = "Subject";
         message.Body = "Content";
 
-        Console.WriteLine("Enter the password of your email");
-        var password = Console.ReadLine();
+        // Console.WriteLine("Enter the password of your email");
+        // var password = Console.ReadLine();
+        var password = $"07H9Sd7mJ5kNvCsyuA9F";
         
         using (var smtp = new SmtpClient())
         {
             smtp.Host = "smtp.mail.ru";
             smtp.Port = 587;
             smtp.EnableSsl = true;
+            smtp.UseDefaultCredentials = false;
             smtp.Credentials = new NetworkCredential("7119967@mail.ru", $"{password}");
-            await smtp.SendMailAsync(message);
+            var result = smtp.SendMailAsync(message).Status;
+            if (result == TaskStatus.Faulted)
+            {
+                Console.WriteLine(result);
+            }
             smtp.Dispose();
         }
-
-        await Task.CompletedTask;
     }
     
     private Message CreateMessage(Event eventItem)
@@ -98,8 +99,12 @@ public class EmailService
             ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {eventItem.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
         };
 
-        var sequence = _messageService!.AsEnumerable();
-        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        var sequence = _messageService!
+            .AsQueryable()
+            .AsNoTracking()
+            .ToList();
+        
+        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
         model.Id = newId.ToString();
 
         var existingEntity = _messageService?
@@ -176,7 +181,7 @@ public class EmailService
             .AsNoTracking()
             .ToList();
         
-        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
 
         var notification = new Notification
         {
@@ -196,7 +201,7 @@ public class EmailService
                 .AsNoTracking()
                 .ToList();
             
-            var newId2 = (sequence2?.Any() == true) ? (sequence2.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+            var newId2 = sequence2.Any() ? sequence2.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
             
             var notificationUser = new NotificationUser
             {

@@ -40,7 +40,7 @@ public class EventMonitor : BackgroundService
                 
                 if (!changes.Any())
                 {
-                    Console.WriteLine("There is no changes. Create a change");
+                    Console.WriteLine("There are no changes. Please, create at least one change or more");
                     continue;
                 }
 
@@ -61,21 +61,19 @@ public class EventMonitor : BackgroundService
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
 
-                var configurations = _configurationService?.AsEnumerable().ToList() ??
+                var configurations = _configurationService?
+                                         .AsEnumerable()
+                                         .ToList() ??
                                      throw new NullReferenceException();
 
                 if (!configurations.Any())
                 {
-                    await Console.Out.WriteLineAsync("There is no configurations. Create a Configuration");
+                    await Console.Out.WriteLineAsync("There are no configurations. Please, create at least one configuration or more");
                     continue;
                 }
 
                 foreach (var configuration in configurations)
                 {
-                    // var configuration = _configurationService.AsQueryable()
-                    //         .Include(e => e.Group)
-                    //         .Include(e => e.Events)
-                    //         .FirstOrDefault(e => e.Id == item.Id);
                     switch (configuration!.ChangeType)
                     {
                         case ChangeType.Creation:
@@ -120,16 +118,19 @@ public class EventMonitor : BackgroundService
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
-        string jsonString = JsonConvert.SerializeObject(eventItem, settings);
+        var jsonString = JsonConvert.SerializeObject(eventItem, settings);
         _rabbitMqService?.SendMessage(jsonString);
     }
 
     private async Task<Event> AddRelationShipToRelativeEntities(Configuration configuration, Event eventItem)
     {
-        var collection = await _changeService!
+        var collection = _changeService!
             .AsQueryable()
-            .Where(t => t.ChangeType == configuration.ChangeType && t.Timestamp.Date == DateTime.Now.Date && t.EventId == null)
-            .ToListAsync();
+            .Where(t => 
+                t.ChangeType == configuration.ChangeType && 
+                t.Timestamp.Date == DateTime.Now.Date &&
+                t.EventId == null)
+            .ToList();
         
         foreach (var item in collection!)
         {
@@ -138,7 +139,10 @@ public class EventMonitor : BackgroundService
             await _changeService!.UpdateAsync(item);
         }
 
-        var existEvent = await _dbContext!.Events.AsNoTracking().FirstOrDefaultAsync(e => e.Id == eventItem.Id);
+        var existEvent = await _eventService!
+            .AsQueryable()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Id == eventItem.Id);
 
         existEvent!.ConfigurationId = configuration.Id;
         existEvent.Configuration = configuration;
@@ -150,23 +154,24 @@ public class EventMonitor : BackgroundService
 
     private async Task<Event> CreateEvent(Configuration configuration, int currentValue)
     {
-        var sequence = await _eventService!.GetAllAsync();
-        var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+        var sequence = _eventService!
+            .AsQueryable()
+            .AsNoTracking()
+            .ToList();
+        
+        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
 
         var model = new Event
         {
             EventName = $"{configuration.ChangeType} exceeded threshold",
             EventDescription = $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
             CurrentThreshold = currentValue,
-            // ConfigurationId = configuration.Id,
-            // Configuration = configuration,
             Id = newId.ToString()
         };
 
         try
         {
-            var entity = _dbContext?.Add(model);
-            await _dbContext!.SaveChangesAsync();
+            var entity = await Task.Run(() => _eventService?.Create(model));
             return entity!.Entity;
         }
         catch (Exception ex)

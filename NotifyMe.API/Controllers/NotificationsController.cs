@@ -3,12 +3,9 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Core.Models.Notification;
-using NotifyMe.Infrastructure.Context;
 
 namespace NotifyMe.API.Controllers;
 
