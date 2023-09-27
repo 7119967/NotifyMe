@@ -155,26 +155,25 @@ public class EmailService
         var originalEvent = _eventService!
             .AsQueryable()
             .AsNoTracking()
-            .FirstOrDefault(e => e.Id == eventId)
-            ;
+            .FirstOrDefault(e => e.Id == eventId);
                 
         var configuration = _configurationService!
             .AsQueryable()
             .AsNoTracking()
-            .FirstOrDefault(t => t.Id == originalEvent!.ConfigurationId)
-            ; 
+            .FirstOrDefault(c => c.Id == originalEvent!.ConfigurationId); 
         
         var group = _groupService!
             .AsQueryable()
             .AsNoTracking()
             .Include(g => g.Users)
-            .FirstOrDefault(t => t.Id == configuration!.Id)
-            ;
+            .FirstOrDefault(g => g.Id == configuration!.Id);
         
-        CreateNotification(group!, originalEvent!);
+        string notificationId;
+        CreateNotification(originalEvent!, out notificationId);
+        CreateNotificationUser(group!, notificationId);
     }
     
-    private void CreateNotification(Group group, Event eventItem)
+    private void CreateNotification(Event eventItem, out string notificationId)
     {
         var sequence = _notificationService!
             .AsQueryable()
@@ -191,23 +190,27 @@ public class EmailService
         };
 
         _notificationService?.Create(notification);
-        
+        notificationId = notification.Id;
+    }
+
+    private void CreateNotificationUser(Group group, string notificationId)
+    {
         var usersToReceiveNotification = group.Users.ToList();
         
         foreach (var user in usersToReceiveNotification)
         {
-            var sequence2 = _notificationUserService!
+            var sequence = _notificationUserService!
                 .AsQueryable()
                 .AsNoTracking()
                 .ToList();
             
-            var newId2 = sequence2.Any() ? sequence2.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+            var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
             
             var notificationUser = new NotificationUser
             {
-                Id = newId2.ToString(),
+                Id = newId.ToString(),
                 UserId = user.Id,
-                NotificationId = notification.Id
+                NotificationId = notificationId
             };
             
             _notificationUserService?.Create(notificationUser);
