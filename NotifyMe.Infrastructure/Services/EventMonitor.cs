@@ -35,7 +35,10 @@ public class EventMonitor : BackgroundService
 
             try
             {
-                var changes = _changeService?.AsEnumerable().ToList() ??
+                var changes = _changeService?
+                                  .AsQueryable()
+                                  .AsNoTracking()
+                                  .ToList() ??
                               throw new NullReferenceException();
                 
                 if (!changes.Any())
@@ -48,21 +51,25 @@ public class EventMonitor : BackgroundService
                     t.ChangeType == ChangeType.Creation &&
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
+               
                 var counterUpdate = changes.Count(t =>
                     t.ChangeType == ChangeType.Update &&
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
+                
                 var counterDeletion = changes.Count(t =>
                     t.ChangeType == ChangeType.Deletion &&
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
+                
                 var counterView = changes.Count(t =>
                     t.ChangeType == ChangeType.View &&
                     t.Timestamp.Date == DateTime.Now.Date &&
                     string.IsNullOrEmpty(t.EventId));
 
                 var configurations = _configurationService?
-                                         .AsEnumerable()
+                                         .AsQueryable()
+                                         .AsNoTracking()
                                          .ToList() ??
                                      throw new NullReferenceException();
 
@@ -74,7 +81,7 @@ public class EventMonitor : BackgroundService
 
                 foreach (var configuration in configurations)
                 {
-                    switch (configuration!.ChangeType)
+                    switch (configuration.ChangeType)
                     {
                         case ChangeType.Creation:
                             if (counterCreation >= configuration.Threshold)
@@ -126,6 +133,7 @@ public class EventMonitor : BackgroundService
     {
         var collection = _changeService!
             .AsQueryable()
+            .AsNoTracking()
             .Where(t => 
                 t.ChangeType == configuration.ChangeType && 
                 t.Timestamp.Date == DateTime.Now.Date &&
@@ -159,7 +167,8 @@ public class EventMonitor : BackgroundService
             .AsNoTracking()
             .ToList();
         
-        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+        // var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+        var newId = Helpers.GetNewIdEntity(sequence);
 
         var model = new Event
         {

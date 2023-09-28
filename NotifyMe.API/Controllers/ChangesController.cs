@@ -8,6 +8,7 @@ using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
+using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
@@ -71,11 +72,10 @@ public class ChangesController  : Controller
         {
             if (model != null)
             {
-                var sequence = await _changeService!.GetAllAsync();
-                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
-
+                var sequence = _changeService!.GetAllAsync().Result.ToList();
+                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
-
                 await _changeService.CreateAsync(model);
             }
             

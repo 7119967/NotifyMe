@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
+using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
@@ -85,9 +86,9 @@ public class NotificationsController : Controller
         {
             if (model != null)
             {
-                var sequence = await _notificationService!.GetAllAsync();
-                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
-
+                var sequence = _notificationService!.GetAllAsync().Result.ToList();
+                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
                
                 await _notificationService.CreateAsync(model);

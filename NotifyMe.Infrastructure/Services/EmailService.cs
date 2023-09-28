@@ -40,10 +40,12 @@ public class EmailService
                 
         var configuration = await _configurationService!
                 .AsQueryable()
+                .AsNoTracking()
                 .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId); 
         
         var group = await _groupService!
                 .AsQueryable()
+                .AsNoTracking()
                 .Include(g => g.Users)
                 .FirstOrDefaultAsync(t => t.Id == configuration!.Id);
 
@@ -56,9 +58,7 @@ public class EmailService
         message.From = new MailAddress("7119967@mail.ru");
         message.Subject = "Subject";
         message.Body = "Content";
-
-        // Console.WriteLine("Enter the password of your email");
-        // var password = Console.ReadLine();
+        
         var password = $"07H9Sd7mJ5kNvCsyuA9F";
         
         using (var smtp = new SmtpClient())
@@ -180,8 +180,9 @@ public class EmailService
             .AsNoTracking()
             .ToList();
         
-        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
-
+        // var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+        var newId = Helpers.GetNewIdEntity(sequence);
+        
         var notification = new Notification
         {
             Id = newId.ToString(),
@@ -204,7 +205,8 @@ public class EmailService
                 .AsNoTracking()
                 .ToList();
             
-            var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+            // var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
+            var newId = Helpers.GetNewIdEntity(sequence);
             
             var notificationUser = new NotificationUser
             {

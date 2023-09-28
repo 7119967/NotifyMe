@@ -10,6 +10,7 @@ using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Core.Models.Group;
 using NotifyMe.Infrastructure.Context;
+using NotifyMe.Infrastructure.Services;
 
 
 namespace NotifyMe.API.Controllers;
@@ -59,13 +60,11 @@ public class GroupsController : Controller
         {
             if (model != null)
             {
-                var sequence = await _groupService!.GetAllAsync();
-                var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
-
+                var sequence = _groupService!.GetAllAsync().Result.ToList();
+                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
-
                 var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
-
                 await _groupService.CreateAsync(entity);
             }
             

@@ -19,8 +19,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Helpers.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -286,6 +294,9 @@
       <workItem from="1695460525890" duration="591000" />
       <workItem from="1695570686561" duration="8491000" />
       <workItem from="1695834065768" duration="1058000" />
+      <workItem from="1695835707715" duration="106000" />
+      <workItem from="1695909796988" duration="440000" />
+      <workItem from="1695911810243" duration="8299000" />
     </task>
     <servers />
   </component>
@@ -344,19 +355,6 @@
           <option name="timeStamp" value="41" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs</url>
-          <line>87</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\NotificationsController.cs" initialLine="59" containingFunctionPresentation="Method 'Create'">
-            <startOffsets>
-              <option value="3356" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3357" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="44" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqListener.cs</url>
           <line>34</line>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqListener.cs" initialLine="29" containingFunctionPresentation="Method 'ExecuteAsync'">
@@ -409,43 +407,17 @@
           <option name="timeStamp" value="92" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs</url>
-          <line>52</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\NotificationsController.cs" initialLine="50" containingFunctionPresentation="Method 'Index'">
-            <startOffsets>
-              <option value="1935" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1936" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="102" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
           <line>61</line>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="61" containingFunctionPresentation="Method 'SendEmail'">
             <startOffsets>
-              <option value="2580" />
+              <option value="2540" />
             </startOffsets>
             <endOffsets>
-              <option value="2619" />
+              <option value="2579" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="104" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
-          <line>176</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="177" containingFunctionPresentation="Method 'CreateNotification'">
-            <startOffsets>
-              <option value="6267" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6268" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="109" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
@@ -459,6 +431,58 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="110" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>170</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="170" containingFunctionPresentation="Method 'SendNotification'">
+            <startOffsets>
+              <option value="5989" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6011" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="111" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>132</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="125" containingFunctionPresentation="Method 'AddRelationShipToRelativeEntities'">
+            <startOffsets>
+              <option value="5644" />
+            </startOffsets>
+            <endOffsets>
+              <option value="5645" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="112" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs</url>
+          <line>58</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\Helpers.cs" initialLine="58" containingFunctionPresentation="Method 'GetNewIdEntity'">
+            <startOffsets>
+              <option value="2388" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2389" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="114" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs</url>
+          <line>181</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EventMonitor.cs" initialLine="181" containingFunctionPresentation="Method 'CreateEvent'">
+            <startOffsets>
+              <option value="7227" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7228" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="115" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
