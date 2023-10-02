@@ -74,12 +74,12 @@ public class UsersController : Controller
     public IActionResult Search(string search)
     {
         var searchUsers = _userService.GetAllAsync().Result.Where(t =>
-            t.UserName!.Contains(search)
-            || t.FirstName!.Contains(search)
-            || t.LastName!.Contains(search)
-            || t.Email!.Contains(search)
-            || t.PhoneNumber!.Contains(search)
-            || t.Info!.Contains(search)).ToList();
+            t.UserName!.Contains(search) || 
+            t.FirstName!.Contains(search) || 
+            t.LastName!.Contains(search) || 
+            t.Email!.Contains(search) || 
+            t.PhoneNumber!.Contains(search) || 
+            t.Info!.Contains(search)).ToList();
 
         var users = _mapper.Map<List<UserListViewModel>>(searchUsers);
 

@@ -72,8 +72,7 @@ public class ChangesController  : Controller
         {
             if (model != null)
             {
-                var sequence = _changeService!.GetAllAsync().Result.ToList();
-                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var sequence = _changeService.GetAllAsync().Result;
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
                 await _changeService.CreateAsync(model);

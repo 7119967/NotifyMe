@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Services;
@@ -46,8 +47,7 @@ public class ApiController : ControllerBase
     {
         try
         {
-            var sequence = _changeService.GetAllAsync().Result.ToList();
-            // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+            var sequence = await _changeService.AsQueryable().ToListAsync();
             var newId = Helpers.GetNewIdEntity(sequence);
             entity.Id = newId.ToString();
             await _changeService.CreateAsync(entity);

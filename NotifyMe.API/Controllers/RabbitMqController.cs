@@ -9,18 +9,18 @@ namespace NotifyMe.API.Controllers;
 [ApiController]
 public class RabbitMqController : ControllerBase
 {
-    private readonly IRabbitMqService _mqService;
+    private readonly IRabbitMqPublisher _rabbitMqPublisher;
 
-    public RabbitMqController(IRabbitMqService mqService)
+    public RabbitMqController(IRabbitMqPublisher rabbitMqPublisher)
     {
-        _mqService = mqService;
+        _rabbitMqPublisher = rabbitMqPublisher;
     }
 
     [Route("[action]/{message}")]
     [HttpGet]
     public IActionResult SendMessage(string message)
     {
-        _mqService.SendMessage(message);
+        _rabbitMqPublisher.PublishMessage(message);
 
         return Ok("The message was sent");
     }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using NotifyMe.Core.Entities;
 
 namespace NotifyMe.Infrastructure.Context
@@ -14,7 +13,7 @@ namespace NotifyMe.Infrastructure.Context
         public DbSet<Configuration> Configurations { get; set; } = null!;
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
-        public DbSet<NotificationUser> NotificationUsers { get; set; }
+        public DbSet<NotificationUser> NotificationUsers { get; set; } = null!;
  
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)

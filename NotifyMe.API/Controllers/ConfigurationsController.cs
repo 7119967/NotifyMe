@@ -41,9 +41,9 @@ public class ConfigurationsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = _databaseContext.Configurations
-            .Include(e => e.Group)
-            ;
+        var entities = _configurationService
+                .AsQueryable()
+                .Include(e => e.Group);
         
         // var model = _mapper.Map<List<ConfigurationListViewModel>>(entities);
         await Task.Yield();
@@ -76,8 +76,7 @@ public class ConfigurationsController : Controller
         {
             if (model != null)
             {
-                var sequence = _configurationService!.GetAllAsync().Result.ToList();
-                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var sequence = _configurationService.GetAllAsync().Result;
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
                 await _configurationService.CreateAsync(model);
@@ -95,13 +94,13 @@ public class ConfigurationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _databaseContext.Configurations
+        var entity = _configurationService
+                .AsQueryable()
                 .Include(e => e.Group)
                 .Include(e => e.Events)
                 .FirstOrDefault(e => e.Id == entityId)
             ;
         if (entity is null)
-            
         {
             NotFound();
             return RedirectToAction("Index");

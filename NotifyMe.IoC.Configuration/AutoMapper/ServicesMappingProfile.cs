@@ -1,7 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Net.Mail;
+using AutoMapper;
 
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Models;
 using NotifyMe.Core.Models.User;
 using NotifyMe.Core.Models.Group;
 using NotifyMe.Core.Models.Notification;
@@ -220,6 +220,13 @@ public class ServicesMappingProfile : Profile
             // .ForMember(d => d.Recipient, s => s.MapFrom(o => o.Recipient))
             .ForMember(d => d.Message, s => s.MapFrom(o => o.Message))
             // .ForMember(d => d.ChangedElements, s => s.MapFrom(o => o.ChangedElements))
+            ;     
+        
+        CreateMap<MailMessage, Message>()
+            .ForMember(d => d.Sender, s => s.MapFrom(o => o.From))
+            .ForMember(d => d.Receivers, s => s.MapFrom(o => o.To))
+            .ForMember(d => d.Subject, s => s.MapFrom(o => o.Subject))
+            .ForMember(d => d.ContentBody, s => s.MapFrom(o => o.Body))
             ;
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
+using Microsoft.Extensions.Hosting;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
@@ -53,7 +53,6 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
-        
         services.AddTransient<IUserService, UserService>();
         services.AddTransient<IEventLogger, EventLogger>();
         services.AddTransient<IEventService, EventService>();
@@ -63,34 +62,14 @@ public static class ServiceCollectionExtensions
         services.AddTransient<INotificationService, NotificationService>();
         services.AddTransient<IConfigurationService, ConfigurationService>();
         services.AddTransient<INotificationUserService, NotificationUserService>();
-
-        services.AddSingleton<ServicesMappingProfile>();
-        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-        
-        services.AddSingleton<IRabbitMqService, RabbitMqService>();
-        // services.AddSingleton<RabbitMqService>(_ =>
-        // {
-        //     var rabbitMqHost = configuration!["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
-        //     var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
-        //     var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-        //     var rabbitMqQueueName = configuration["ConnectionStrings:RabbitMQQueueName"] ?? throw new NullReferenceException();
-        //     return new RabbitMqService(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, rabbitMqQueueName);
-        // });
-        
-        // services.AddSingleton<RabbitMQService1>(_ =>
-        // {
-        //     var rabbitMqHost = configuration!["ConnectionStrings:RabbitMQHost"] ?? throw new NullReferenceException();
-        //     var rabbitMqUsername = configuration["ConnectionStrings:RabbitMQUsername"] ?? throw new NullReferenceException();
-        //     var rabbitMqPassword = configuration["ConnectionStrings:RabbitMQPassword"] ?? throw new NullReferenceException();
-        //     return new RabbitMQService1(rabbitMqHost, rabbitMqUsername, rabbitMqPassword, "notification_queue");
-        // });
-
+        // services.AddTransient<IHostedService, EventMonitor>();
         services.AddTransient<EmailService>();
         services.AddTransient<UploadFileService>();
-
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        
+        services.AddSingleton<ServicesMappingProfile>();
+        services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+        services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
+        services.AddHostedService<RabbitMqConsumer>();
         services.AddHostedService<EventMonitor>();
-        // services.AddHostedService<NotificationWorker>();
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System.Net;
 using System.Net.Mail;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Infrastructure.Context;
-
 using Twilio;
 using Twilio.Exceptions;
 using Twilio.Rest.Api.V2010.Account;
@@ -14,51 +13,29 @@ namespace NotifyMe.Infrastructure.Services;
 
 public class EmailService
 {
-    private readonly DatabaseContext? _dbContext;
-    private readonly IConfigurationService? _configurationService;
+    private readonly IMapper _mapper;
     private readonly IGroupService? _groupService;
-    private readonly INotificationService? _notificationService;
-    private readonly INotificationUserService? _notificationUserService;
     private readonly IEventService? _eventService;
     private readonly IMessageService? _messageService;
+    private readonly INotificationService? _notificationService;
+    private readonly IConfigurationService? _configurationService;
+    private readonly INotificationUserService? _notificationUserService;
     
-    public EmailService(IServiceProvider serviceProvider)
+    public EmailService(IServiceScopeFactory scopeFactory)
     {
-        var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
-        _dbContext = scope?.ServiceProvider.GetRequiredService<DatabaseContext>();
-        _configurationService = scope?.ServiceProvider.GetRequiredService<IConfigurationService>();
-        _groupService = scope?.ServiceProvider.GetRequiredService<IGroupService>();
-        _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
-        _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
-        _eventService = scope?.ServiceProvider.GetRequiredService<IEventService>();
-        _messageService = scope?.ServiceProvider.GetRequiredService<IMessageService>();
+        var scope = scopeFactory.CreateScope();
+        _configurationService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
+        _groupService = scope.ServiceProvider.GetRequiredService<IGroupService>();
+        _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+        _notificationUserService = scope.ServiceProvider.GetRequiredService<INotificationUserService>();
+        _eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
+        _messageService = scope.ServiceProvider.GetRequiredService<IMessageService>();
+        _mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
     }
     
     public async Task SendEmail(string eventId)
     {
-        var originalEvent = _dbContext?.Events.FirstOrDefault(e => e.Id == eventId);
-                
-        var configuration = await _configurationService!
-                .AsQueryable()
-                .AsNoTracking()
-                .FirstOrDefaultAsync(t => t.Id == originalEvent!.ConfigurationId); 
-        
-        var group = await _groupService!
-                .AsQueryable()
-                .AsNoTracking()
-                .Include(g => g.Users)
-                .FirstOrDefaultAsync(t => t.Id == configuration!.Id);
-
-        var message = new MailMessage();
-        foreach (var receiver in group!.Users)
-        {
-            message.To.Add(receiver.Email ?? throw new InvalidOperationException());
-        }
-       
-        message.From = new MailAddress("7119967@mail.ru");
-        message.Subject = "Subject";
-        message.Body = "Content";
-        
+        var message = await CreateMessageAsync(eventId);
         var password = $"07H9Sd7mJ5kNvCsyuA9F";
         
         using (var smtp = new SmtpClient())
@@ -77,48 +54,129 @@ public class EmailService
         }
     }
     
-    private Message CreateMessage(Event eventItem)
+    private async Task<MailMessage> CreateMessageAsync(string eventId)
     {
-        var receivers = new List<string>();
+        var originalEvent = await _eventService!.AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == eventId) ?? new Event();
+                
+        var configuration = await _configurationService!.AsQueryable()
+            .FirstOrDefaultAsync(t => t.Id == originalEvent.ConfigurationId) ?? new Configuration(); 
+        
+        var group = await _groupService!.AsQueryable()
+            .Include(g => g.Users)
+            .FirstOrDefaultAsync(t => t.Id == configuration.Id) ?? new Group();
 
-        foreach (var user in eventItem.Configuration!.Group!.Users)
+        var mailMessage = new MailMessage();
+        
+        foreach (var receiver in group.Users)
         {
-            if (!string.IsNullOrEmpty(user.Email))
-            {
-                receivers.Add(user.Email);
-            }
+            mailMessage.To.Add(receiver.Email ?? throw new InvalidOperationException());
         }
+       
+        mailMessage.From = new MailAddress("7119967@mail.ru");
+        mailMessage.Subject = $"ALERT: {originalEvent.Configuration!.ChangeType} exceeded threshold";
+        mailMessage.Body = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {originalEvent.Configuration.Threshold}";
+        
+        
+        // var receivers = new List<string>();
+        //
+        // foreach (var user in eventItem.Configuration!.Group!.Users)
+        // {
+        //     if (!string.IsNullOrEmpty(user.Email))
+        //     {
+        //         receivers.Add(user.Email);
+        //     }
+        // }
+        
+        // var model = new Message
+        // {
+        //     Sender = "",
+        //     Receivers = string.Join(";", receivers),
+        //     EventId = originalEvent.Id,
+        //     Event = originalEvent,
+        //     Subject = $"ALERT: {originalEvent.Configuration.ChangeType} exceeded threshold",
+        //     ContentBody = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
+        // };
 
-        var model = new Message
+        var model = _mapper.Map<MailMessage, Message>(mailMessage);
+        var sequence = _messageService!.GetAllAsync().Result;
+        var newId = Helpers.GetNewIdEntity(sequence);
+        
+        model.Id = newId.ToString();
+        model.EventId = originalEvent.Id;
+        model.Event = originalEvent;
+        
+        // var existingEntity = _messageService?
+        //     .AsQueryable()
+        //     .AsNoTracking()
+        //     .FirstOrDefault(m => m.Id == model.Id)
+        //     ;
+        //
+        // if (existingEntity != null)
+        // {
+        //     _messageService!.Update(model).Entity;
+        // }
+        
+        _messageService!.Create(model);
+
+        return mailMessage;
+    }
+    
+    
+    public void SendNotification(string eventId)
+    {
+        var originalEvent = _eventService!
+            .AsQueryable()
+            .FirstOrDefault(e => e.Id == eventId);
+                
+        var configuration = _configurationService!
+            .AsQueryable()
+            .FirstOrDefault(c => c.Id == originalEvent!.ConfigurationId); 
+        
+        var group = _groupService!
+            .AsQueryable()
+            .Include(g => g.Users)
+            .FirstOrDefault(g => g.Id == configuration!.Id);
+        
+        string notificationId;
+        CreateNotification(originalEvent!, out notificationId);
+        CreateNotificationUser(group!, notificationId);
+    }
+    
+    private void CreateNotification(Event eventItem, out string notificationId)
+    {
+        var sequence = _notificationService!
+            .GetAllAsync()
+            .Result.ToList();
+        
+        var newId = Helpers.GetNewIdEntity(sequence);
+        var notification = new Notification
         {
-            Sender = "",
-            Receivers = string.Join(";", receivers),
-            EventId = eventItem.Id,
-            Event = eventItem,
-            Subject = $"ALERT: {eventItem.Configuration.ChangeType} exceeded threshold",
-            ContentBody = $"{eventItem.Configuration.Message}. \nCurrent value: {eventItem.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
+            Id = newId.ToString(),
+            Message = eventItem.EventDescription,
+            EventId = eventItem.Id
         };
 
-        var sequence = _messageService!
-            .AsQueryable()
-            .AsNoTracking()
-            .ToList();
-        
-        var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
-        model.Id = newId.ToString();
+        _notificationService?.Create(notification);
+        notificationId = notification.Id;
+    }
 
-        var existingEntity = _messageService?
-            .AsQueryable()
-            .AsNoTracking()
-            .FirstOrDefault(m => m.Id == model.Id)
-            ;
-       
-        if (existingEntity != null)
+    private void CreateNotificationUser(Group group, string notificationId)
+    {
+        foreach (var user in group.Users.ToList())
         {
-            return _messageService!.Update(model).Entity;
+            var sequence = _notificationUserService!.GetAllAsync().Result;
+            
+            var newId = Helpers.GetNewIdEntity(sequence);
+            var notificationUser = new NotificationUser
+            {
+                Id = newId.ToString(),
+                UserId = user.Id,
+                NotificationId = notificationId
+            };
+            
+            _notificationUserService?.Create(notificationUser);
         }
-        
-        return _messageService!.Create(model).Entity;
     }
     
     public Task SendSms(Notification notification)
@@ -149,73 +207,4 @@ public class EmailService
 
         return Task.CompletedTask;
     }   
-    
-    public void SendNotification(string eventId)
-    {
-        var originalEvent = _eventService!
-            .AsQueryable()
-            .AsNoTracking()
-            .FirstOrDefault(e => e.Id == eventId);
-                
-        var configuration = _configurationService!
-            .AsQueryable()
-            .AsNoTracking()
-            .FirstOrDefault(c => c.Id == originalEvent!.ConfigurationId); 
-        
-        var group = _groupService!
-            .AsQueryable()
-            .AsNoTracking()
-            .Include(g => g.Users)
-            .FirstOrDefault(g => g.Id == configuration!.Id);
-        
-        string notificationId;
-        CreateNotification(originalEvent!, out notificationId);
-        CreateNotificationUser(group!, notificationId);
-    }
-    
-    private void CreateNotification(Event eventItem, out string notificationId)
-    {
-        var sequence = _notificationService!
-            .AsQueryable()
-            .AsNoTracking()
-            .ToList();
-        
-        // var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
-        var newId = Helpers.GetNewIdEntity(sequence);
-        
-        var notification = new Notification
-        {
-            Id = newId.ToString(),
-            Message = eventItem.EventDescription,
-            EventId = eventItem.Id
-        };
-
-        _notificationService?.Create(notification);
-        notificationId = notification.Id;
-    }
-
-    private void CreateNotificationUser(Group group, string notificationId)
-    {
-        var usersToReceiveNotification = group.Users.ToList();
-        
-        foreach (var user in usersToReceiveNotification)
-        {
-            var sequence = _notificationUserService!
-                .AsQueryable()
-                .AsNoTracking()
-                .ToList();
-            
-            // var newId = sequence.Any() ? sequence.Max(e => Convert.ToInt32(e.Id)) + 1 : 1;
-            var newId = Helpers.GetNewIdEntity(sequence);
-            
-            var notificationUser = new NotificationUser
-            {
-                Id = newId.ToString(),
-                UserId = user.Id,
-                NotificationId = notificationId
-            };
-            
-            _notificationUserService?.Create(notificationUser);
-        }
-    }
 }

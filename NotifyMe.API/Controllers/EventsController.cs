@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 
@@ -32,8 +31,9 @@ public class EventsController : Controller
     public async Task<IActionResult> Index()
     {
         // var entities = await Task.Run(() => _eventService.GetAllAsync().Result);
-        var entities = _databaseContext.Events
-                .Include(e => e.Configuration);
+        var entities = _eventService
+            .AsQueryable()
+            .Include(e => e.Configuration);
         
         // var model = _mapper.Map<List<GroupListViewModel>>(entities);
         await Task.Yield();
@@ -83,7 +83,8 @@ public class EventsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _databaseContext.Events
+        var entity = _eventService
+            .AsQueryable()
             .Include(e => e.Changes)
             .FirstOrDefault(e => e.Id == entityId);
        

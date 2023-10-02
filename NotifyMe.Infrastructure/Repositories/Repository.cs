@@ -25,7 +25,9 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task<ICollection<T>> GetAllAsync()
         {
-            return await _entities.ToListAsync() ?? throw new NullReferenceException();
+            return await _entities
+                .AsNoTracking()
+                .ToListAsync() ?? throw new NullReferenceException();
         }
 
         public async Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)
@@ -57,14 +59,12 @@ namespace NotifyMe.Infrastructure.Repositories
             {
                 _context.ChangeTracker.Clear();
                 entityEntry = _entities.Update(entity);
-                _context.SaveChanges();   
             }
             else
             {
                 entityEntry = _entities.Update(entity);
             }
-            // _entities.Attach(entity);
-            // _entities.Entry(entity).State = EntityState.Modified;
+
             return entityEntry;
         }
 
@@ -87,18 +87,13 @@ namespace NotifyMe.Infrastructure.Repositories
             {
                 _context.ChangeTracker.Clear();
                 entityEntry = _entities.AddAsync(entity).Result;
-                // _context.SaveChanges();   
             }
             else
             {
                 entityEntry = _entities.AddAsync(entity).Result;
             }
-            // _entities.Attach(entity);
-            // _entities.Entry(entity).State = EntityState.Modified;
+
             return entityEntry;
-            
-            // var entityEntry = _entities.AddAsync(entity).Result;
-            // return entityEntry;
         }
 
         public IEnumerable<T> AsEnumerable()
@@ -108,7 +103,9 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public IQueryable<T> AsQueryable()
         {
-            return _entities.AsQueryable();
+            return _entities
+                .AsQueryable()
+                .AsNoTracking();
         }
     }
 }

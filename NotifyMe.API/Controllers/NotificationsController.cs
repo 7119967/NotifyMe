@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
@@ -16,7 +17,7 @@ public class NotificationsController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly ILogger<NotificationsController> _logger;
-    private readonly IEventLogger _eventLogger;
+    // private readonly IEventLogger _eventLogger;
     private readonly INotificationService? _notificationService;
     private readonly INotificationUserService? _notificationUserService;
     // private readonly DatabaseContext _databaseContext;
@@ -44,7 +45,7 @@ public class NotificationsController : Controller
     [HttpPost]
     public IActionResult SendNotification(Notification notification)
     {
-        _eventLogger.LogEvent(notification);
+        // _eventLogger.LogEvent(notification);
         // _notificationService.SendNotification(notification);
 
         return RedirectToAction("");
@@ -64,7 +65,7 @@ public class NotificationsController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var notifications = from m in _notificationService!.AsQueryable()
-            join u in _notificationUserService?.AsQueryable() on m.Id equals u.NotificationId
+            join u in await _notificationUserService!.AsQueryable().ToListAsync() on m.Id equals u.NotificationId
             where u.UserId == userId
             select m;
         
@@ -75,6 +76,7 @@ public class NotificationsController : Controller
     public async Task<IActionResult> Create()
     {
         // var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
+        await Task.CompletedTask;
         return PartialView("PartialViews/CreatePartialView", new Notification());
     }
     
@@ -86,11 +88,9 @@ public class NotificationsController : Controller
         {
             if (model != null)
             {
-                var sequence = _notificationService!.GetAllAsync().Result.ToList();
-                // var newId = (sequence?.Any() == true) ? (sequence.Max(e => Convert.ToInt32(e.Id)) + 1) : 1;
+                var sequence = _notificationService!.GetAllAsync().Result;
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
-               
                 await _notificationService.CreateAsync(model);
             }
             
