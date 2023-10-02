@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Newtonsoft.Json;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
@@ -13,9 +15,12 @@ public class EventMonitor : BackgroundService
     private readonly IChangeService? _changeService;
     private readonly IEventService? _eventService;
     private readonly IConfigurationService? _configurationService;
+    private readonly IServiceScopeFactory? _scopeFactory;
 
     public EventMonitor(IServiceScopeFactory scopeFactory)
     {
+        _scopeFactory = scopeFactory;
+        
         var scope = scopeFactory.CreateScope();
         _rabbitMqPublisher = scope.ServiceProvider.GetRequiredService<IRabbitMqPublisher>();
         _changeService = scope.ServiceProvider.GetRequiredService<IChangeService>();
@@ -47,8 +52,7 @@ public class EventMonitor : BackgroundService
 
                 if (!configurations.Any())
                 {
-                    await Console.Out.WriteLineAsync(
-                        "There are no configurations. Please, create at least one configuration or more");
+                    Console.WriteLine("There are no configurations. Please, create at least one configuration or more");
                     continue;
                 }
 
@@ -81,31 +85,31 @@ public class EventMonitor : BackgroundService
         }
     }
 
-    private async Task ProcessingEvent(Configuration configuration, int counter)
+    private void ProcessingEvent(Configuration configuration, int counter)
     {
-        var eventItem = CreateEvent(configuration, counter);
-        eventItem = UpdateEventAndRelativeEntities(configuration, eventItem);
+        var eventItem = CreateEvent(configuration, counter).Result;
+        eventItem = UpdateEventAndRelativeEntities(configuration, eventItem).Result;
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
         var jsonString = JsonConvert.SerializeObject(eventItem, settings);
-        await Task.Run(() => _rabbitMqPublisher?.PublishMessage(jsonString));
+        _rabbitMqPublisher?.PublishMessage(jsonString);
     }
 
-    private Event UpdateEventAndRelativeEntities(Configuration configuration, Event eventItem)
+    private async Task<Event> UpdateEventAndRelativeEntities(Configuration configuration, Event eventItem)
     {
-        var collection = from c in _changeService!.AsEnumerable()
+        var changes = from c in await _changeService!.GetAllAsync()
             where c.ChangeType == configuration.ChangeType &&
                   c.Timestamp.Date == DateTime.Now.Date &&
                   c.EventId == null
             select c;
 
-        foreach (var item in collection)
+        foreach (var change in changes)
         {
-            item.EventId = eventItem.Id;
-            item.Event = eventItem;
-            _changeService!.UpdateAsync(item);
+            change.EventId = eventItem.Id;
+            change.Event = eventItem;
+            _changeService!.Update(change);
         }
 
         var existEvent = _eventService!
@@ -119,9 +123,9 @@ public class EventMonitor : BackgroundService
         return entry.Entity;
     }
 
-    private Event CreateEvent(Configuration configuration, int currentValue)
+    private async Task<Event> CreateEvent(Configuration configuration, int currentValue)
     {
-        var sequence = _eventService!.AsEnumerable().ToList();
+        var sequence = await _eventService!.GetAllAsync();
         var newId = Helpers.GetNewIdEntity(sequence);
         var model = new Event
         {
@@ -134,8 +138,14 @@ public class EventMonitor : BackgroundService
 
         try
         {
-            var entity = _eventService!.Create(model);
-            return entity.Entity;
+           using (var scope = _scopeFactory?.CreateScope())
+           {
+               var dbContext = scope?.ServiceProvider.GetRequiredService<IEventService>();
+               var entity = dbContext?.Create(model);
+               return entity!.Entity;
+           }
+            // var entity = _eventService!.Create(model);
+            // return entity.Entity;
         }
         catch (Exception ex)
         {
@@ -156,7 +166,7 @@ public class EventMonitor : BackgroundService
     {
         if (counter >= configuration.Threshold)
         {
-            await ProcessingEvent(configuration, counter);
+            await Task.Run(() => ProcessingEvent(configuration, counter));
         }
     }
 }

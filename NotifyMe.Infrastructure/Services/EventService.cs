@@ -26,14 +26,14 @@ namespace NotifyMe.Infrastructure.Services
             _unitOfWork.CommitAsync();
         }
 
-        public async Task<ICollection<Event>> GetListEntitiesAsync(Expression<Func<Event, bool>> filter)
+        public Task<ICollection<Event>> GetListEntitiesAsync(Expression<Func<Event, bool>> filter)
         {
-            return await _unitOfWork.EventRepository.GetAllAsync();
+            return _unitOfWork.EventRepository.GetAllAsync();
         }
 
-        public async Task<ICollection<Event>> GetAllAsync()
+        public Task<ICollection<Event>> GetAllAsync()
         {
-            return await _unitOfWork.EventRepository.GetAllAsync();
+            return _unitOfWork.EventRepository.GetAllAsync();
         }
 
         public async Task<Event> GetEntityAsync(Expression<Func<Event, bool>> filter)
@@ -41,10 +41,10 @@ namespace NotifyMe.Infrastructure.Services
             return await _unitOfWork.EventRepository.GetEntityAsync(filter) ?? throw new Exception();
         }
 
-        public async Task<Event?> GetByIdAsync(string entityId)
+        public Task<Event?> GetByIdAsync(string entityId)
         {
             Expression<Func<Event, bool>> filter = i => i.Id == entityId;
-            return await _unitOfWork.EventRepository.GetEntityAsync(filter);
+            return _unitOfWork.EventRepository.GetEntityAsync(filter);
         }
 
         public async Task CreateAsync(Event entity)
@@ -65,13 +65,6 @@ namespace NotifyMe.Infrastructure.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public EntityEntry<Event> Create(Event entity)
-        {
-            var entityEntry = _unitOfWork.EventRepository.Create(entity);
-            _unitOfWork.CommitAsync();
-            return entityEntry;
-        }
-
         public IEnumerable<Event> AsEnumerable()
         {
             return _unitOfWork.EventRepository.AsEnumerable();
@@ -82,10 +75,17 @@ namespace NotifyMe.Infrastructure.Services
             return _unitOfWork.EventRepository.AsQueryable();
         }
 
+        public EntityEntry<Event> Create(Event entity)
+        {
+            var entityEntry = _unitOfWork.EventRepository.Create(entity);
+            _unitOfWork.CommitAsync().Wait();
+            return entityEntry;
+        }
+
         public EntityEntry<Event> Update(Event entity)
         {
             var entityEntry = _unitOfWork.EventRepository.Update(entity);
-            _unitOfWork.CommitAsync();
+            _unitOfWork.CommitAsync().Wait();
             return entityEntry;
         }
     }

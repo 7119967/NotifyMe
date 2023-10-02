@@ -79,13 +79,6 @@ namespace NotifyMe.Infrastructure.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public EntityEntry<Notification> Create(Notification entity)
-        {
-            var entityEntry = _unitOfWork.NotificationRepository.Create(entity);
-            _unitOfWork.CommitAsync().Wait();
-            return entityEntry;
-        }
-
         public IEnumerable<Notification> AsEnumerable()
         {
             return _unitOfWork.NotificationRepository.AsEnumerable();
@@ -94,6 +87,13 @@ namespace NotifyMe.Infrastructure.Services
         public IQueryable<Notification> AsQueryable()
         {
             return _unitOfWork.NotificationRepository.AsQueryable();
+        }
+
+        public EntityEntry<Notification> Create(Notification entity)
+        {
+            var entityEntry = _unitOfWork.NotificationRepository.Create(entity);
+            _unitOfWork.CommitAsync().Wait();
+            return entityEntry;
         }
 
         public EntityEntry<Notification> Update(Notification entity)

@@ -54,13 +54,6 @@ public class GroupService : IGroupService
         await _unitOfWork.CommitAsync();
     }
 
-    public EntityEntry<Group> Create(Group entity)
-    {
-        var entityEntry = _unitOfWork.GroupRepository.Create(entity);
-        _unitOfWork.CommitAsync();
-        return entityEntry;
-    }
-
     public IEnumerable<Group> AsEnumerable()
     {
         return _unitOfWork.GroupRepository.AsEnumerable();
@@ -70,10 +63,18 @@ public class GroupService : IGroupService
     {
         return _unitOfWork.GroupRepository.AsQueryable();
     }
+
+    public EntityEntry<Group> Create(Group entity)
+    {
+        var entityEntry = _unitOfWork.GroupRepository.Create(entity);
+        _unitOfWork.CommitAsync().Wait();
+        return entityEntry;
+    }
+
     public EntityEntry<Group> Update(Group entity)
     {
         var entityEntry = _unitOfWork.GroupRepository.Update(entity);
-        _unitOfWork.CommitAsync();
+        _unitOfWork.CommitAsync().Wait();
         return entityEntry;
     }
 }

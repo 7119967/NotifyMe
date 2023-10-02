@@ -54,13 +54,6 @@ public class MessageService: IMessageService
         await _unitOfWork.CommitAsync();
     }
 
-    public EntityEntry<Message> Create(Message entity)
-    {
-        var entityEntry = _unitOfWork.MessageRepository.Create(entity);
-        _unitOfWork.CommitAsync();
-        return entityEntry;
-    }
-
     public IEnumerable<Message> AsEnumerable()
     {
         return _unitOfWork.MessageRepository.AsEnumerable();
@@ -71,10 +64,17 @@ public class MessageService: IMessageService
         return _unitOfWork.MessageRepository.AsQueryable();
     }
 
+    public EntityEntry<Message> Create(Message entity)
+    {
+        var entityEntry = _unitOfWork.MessageRepository.Create(entity);
+        _unitOfWork.CommitAsync().Wait();
+        return entityEntry;
+    }
+
     public EntityEntry<Message> Update(Message entity)
     {
         var entityEntry = _unitOfWork.MessageRepository.Update(entity);
-        _unitOfWork.CommitAsync();
+        _unitOfWork.CommitAsync().Wait();
         return entityEntry;
     }
 }

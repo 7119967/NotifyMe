@@ -30,9 +30,9 @@ namespace NotifyMe.Infrastructure.Repositories
                 .ToListAsync() ?? throw new NullReferenceException();
         }
 
-        public async Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)
+        public Task<T?> GetEntityAsync(Expression<Func<T, bool>> filter)
         {
-            return await _entities.FirstOrDefaultAsync(filter);
+            return _entities.FirstOrDefaultAsync(filter);
         }
 
         public async Task<T> GetByIdAsync(string entityId)
@@ -42,6 +42,8 @@ namespace NotifyMe.Infrastructure.Repositories
 
         public async Task CreateAsync(T entity)
         {
+            var entry = _entities.Entry(entity);
+            if (entry.State != EntityState.Detached) return;
             await _entities.AddAsync(entity);
         }
 
@@ -50,6 +52,18 @@ namespace NotifyMe.Infrastructure.Repositories
             var entry = _entities.Entry(entity);
             if (entry.State != EntityState.Detached) return;
             await Task.Run(() => _entities.Update(entity));
+        }
+
+        public async Task DeleteAsync(string entityId)
+        {
+            var entity = await _entities.FindAsync(entityId);
+            if (entity == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            _entities.Entry(entity).State = EntityState.Deleted;
+            await Task.Run(() => _entities.Remove(entity));
         }
 
         public  EntityEntry<T> Update(T entity)
@@ -66,18 +80,6 @@ namespace NotifyMe.Infrastructure.Repositories
             }
 
             return entityEntry;
-        }
-
-        public async Task DeleteAsync(string entityId)
-        {
-            var entity = await _entities.FindAsync(entityId);
-            if (entity == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            _entities.Entry(entity).State = EntityState.Deleted;
-            await Task.Run(() => _entities.Remove(entity));
         }
 
         public EntityEntry<T> Create(T entity)

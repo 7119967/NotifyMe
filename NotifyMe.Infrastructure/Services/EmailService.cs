@@ -57,6 +57,7 @@ public class EmailService
     private async Task<MailMessage> CreateMessageAsync(string eventId)
     {
         var originalEvent = await _eventService!.AsQueryable()
+            .Include(e => e.Configuration)
             .FirstOrDefaultAsync(e => e.Id == eventId) ?? new Event();
                 
         var configuration = await _configurationService!.AsQueryable()
@@ -68,60 +69,36 @@ public class EmailService
 
         var mailMessage = new MailMessage();
         
-        foreach (var receiver in group.Users)
+        foreach (var user in group.Users)
         {
-            mailMessage.To.Add(receiver.Email ?? throw new InvalidOperationException());
+            mailMessage.To.Add(user.Email ?? throw new InvalidOperationException());
         }
        
         mailMessage.From = new MailAddress("7119967@mail.ru");
         mailMessage.Subject = $"ALERT: {originalEvent.Configuration!.ChangeType} exceeded threshold";
         mailMessage.Body = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {originalEvent.Configuration.Threshold}";
-        
-        
-        // var receivers = new List<string>();
-        //
-        // foreach (var user in eventItem.Configuration!.Group!.Users)
-        // {
-        //     if (!string.IsNullOrEmpty(user.Email))
-        //     {
-        //         receivers.Add(user.Email);
-        //     }
-        // }
-        
-        // var model = new Message
-        // {
-        //     Sender = "",
-        //     Receivers = string.Join(";", receivers),
-        //     EventId = originalEvent.Id,
-        //     Event = originalEvent,
-        //     Subject = $"ALERT: {originalEvent.Configuration.ChangeType} exceeded threshold",
-        //     ContentBody = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {eventItem.Configuration.Threshold}"
-        // };
+ 
 
-        var model = _mapper.Map<MailMessage, Message>(mailMessage);
+        var message = _mapper.Map<MailMessage, Message>(mailMessage);
         var sequence = _messageService!.GetAllAsync().Result;
         var newId = Helpers.GetNewIdEntity(sequence);
+        message.Id = newId.ToString();
         
-        model.Id = newId.ToString();
-        model.EventId = originalEvent.Id;
-        model.Event = originalEvent;
+        _messageService!.Create(message);
         
-        // var existingEntity = _messageService?
-        //     .AsQueryable()
-        //     .AsNoTracking()
-        //     .FirstOrDefault(m => m.Id == model.Id)
-        //     ;
-        //
-        // if (existingEntity != null)
-        // {
-        //     _messageService!.Update(model).Entity;
-        // }
+        var existingEntity = _messageService?
+            .AsQueryable()
+            .FirstOrDefault(m => m.Id == message.Id);
         
-        _messageService!.Create(model);
+        if (existingEntity != null)
+        {
+            existingEntity.EventId = originalEvent.Id;
+            existingEntity.Event = originalEvent;
+            _messageService!.Update(existingEntity);
+        }
 
         return mailMessage;
     }
-    
     
     public void SendNotification(string eventId)
     {

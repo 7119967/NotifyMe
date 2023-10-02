@@ -58,13 +58,6 @@ public class NotificationUserService : INotificationUserService
         await _unitOfWork.CommitAsync();
     }
 
-    public EntityEntry<NotificationUser> Create(NotificationUser entity)
-    {
-        var entityEntry = _unitOfWork.NotificationUserRepository.Create(entity);
-        _unitOfWork.CommitAsync().Wait();
-        return entityEntry;
-    }
-
     public IEnumerable<NotificationUser> AsEnumerable()
     {
         return _unitOfWork.NotificationUserRepository.AsEnumerable();
@@ -73,6 +66,13 @@ public class NotificationUserService : INotificationUserService
     public IQueryable<NotificationUser> AsQueryable()
     {
         return _unitOfWork.NotificationUserRepository.AsQueryable();
+    }
+
+    public EntityEntry<NotificationUser> Create(NotificationUser entity)
+    {
+        var entityEntry = _unitOfWork.NotificationUserRepository.Create(entity);
+        _unitOfWork.CommitAsync().Wait();
+        return entityEntry;
     }
 
     public EntityEntry<NotificationUser> Update(NotificationUser entity)

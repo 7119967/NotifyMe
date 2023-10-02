@@ -54,13 +54,6 @@ namespace NotifyMe.Infrastructure.Services
             await _unitOfWork.CommitAsync();
         }
 
-        public EntityEntry<Configuration> Create(Configuration entity)
-        {
-            var entityEntry = _unitOfWork.ConfigurationRepository.Create(entity);
-            _unitOfWork.CommitAsync();
-            return entityEntry;
-        }
-
         public IEnumerable<Configuration> AsEnumerable()
         {
             return _unitOfWork.ConfigurationRepository.AsEnumerable();
@@ -71,10 +64,17 @@ namespace NotifyMe.Infrastructure.Services
             return _unitOfWork.ConfigurationRepository.AsQueryable();
         }
 
+        public EntityEntry<Configuration> Create(Configuration entity)
+        {
+            var entityEntry = _unitOfWork.ConfigurationRepository.Create(entity);
+            _unitOfWork.CommitAsync().Wait();
+            return entityEntry;
+        }
+
         public EntityEntry<Configuration> Update(Configuration entity)
         {
             var entityEntry = _unitOfWork.ConfigurationRepository.Update(entity);
-            _unitOfWork.CommitAsync();
+            _unitOfWork.CommitAsync().Wait();
             return entityEntry;
         }
     }

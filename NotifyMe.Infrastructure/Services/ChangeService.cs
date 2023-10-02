@@ -53,13 +53,6 @@ namespace NotifyMe.Infrastructure.Services
             await _unitOfWork.ChangeRepository.DeleteAsync(entityId);
             await _unitOfWork.CommitAsync();
         }
-                
-        public EntityEntry<Change> Create(Change entity)
-        {
-            var entityEntry = _unitOfWork.ChangeRepository.Create(entity);
-            _unitOfWork.CommitAsync();
-            return entityEntry;
-        }
 
         public IEnumerable<Change> AsEnumerable()
         {
@@ -70,10 +63,18 @@ namespace NotifyMe.Infrastructure.Services
         {
             return _unitOfWork.ChangeRepository.AsQueryable();
         }
+                
+        public EntityEntry<Change> Create(Change entity)
+        {
+            var entityEntry = _unitOfWork.ChangeRepository.Create(entity);
+            _unitOfWork.CommitAsync().Wait();
+            return entityEntry;
+        }
+        
         public EntityEntry<Change> Update(Change entity)
         {
             var entityEntry = _unitOfWork.ChangeRepository.Update(entity);
-            _unitOfWork.CommitAsync();
+            _unitOfWork.CommitAsync().Wait();
             return entityEntry;
         }
     }
