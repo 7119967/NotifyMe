@@ -18,20 +18,20 @@ namespace NotifyMe.Infrastructure.Context
         public DatabaseContext(DbContextOptions<DatabaseContext> options)
             : base(options)
         {
-            try
-            {
-                if (Database.CanConnect())
-                {
-                    //Database.EnsureDeleted();
-                    //Database.EnsureCreated();
-                }
-                else 
-                    throw new InvalidOperationException();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }  
+            //try
+            //{
+            //    if (Database.CanConnect())
+            //    {
+            //        Database.EnsureDeleted();
+            //        Database.EnsureCreated();
+            //    }
+            //    else 
+            //        throw new InvalidOperationException();
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}  
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

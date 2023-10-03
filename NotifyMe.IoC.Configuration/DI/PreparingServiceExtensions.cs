@@ -20,9 +20,9 @@ namespace NotifyMe.IoC.Configuration.DI
                     logger?.LogInformation("Yes, I've got connected to the DatabaseContext");
 
                     logger?.LogInformation("Migrations started");
-                    dbContext.Database.EnsureDeleted();
+                    //dbContext.Database.EnsureDeleted();
                     //dbContext.Database.EnsureCreated();
-                    dbContext.Database.Migrate();
+                    //dbContext.Database.Migrate();
                     logger?.LogInformation("Migrations finished");
                 }
                 else

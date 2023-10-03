@@ -18,9 +18,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -96,7 +94,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Docker.NotifyMe.API/Dockerfile">
+  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -298,8 +296,9 @@
       <workItem from="1696091584280" duration="4865000" />
       <workItem from="1696132689626" duration="20236000" />
       <workItem from="1696265684415" duration="965000" />
-      <workItem from="1696267139972" duration="1737000" />
-      <workItem from="1696311474230" duration="1331000" />
+      <workItem from="1696267139972" duration="2121000" />
+      <workItem from="1696345283664" duration="2344000" />
+      <workItem from="1696352827671" duration="311000" />
     </task>
     <servers />
   </component>
@@ -332,19 +331,6 @@
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs</url>
-          <line>48</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\AccountController.cs" initialLine="48" containingFunctionPresentation="Method 'Register'">
-            <startOffsets>
-              <option value="1423" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1424" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Views/_ViewImports.cshtml</url>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Views\_ViewImports.cshtml" initialLine="0" isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
@@ -356,19 +342,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="41" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqPublisher.cs</url>
-          <line>45</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\RabbitMqPublisher.cs" initialLine="45" containingFunctionPresentation="Method 'ExecuteAsync'">
-            <startOffsets>
-              <option value="1672" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1673" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="117" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
