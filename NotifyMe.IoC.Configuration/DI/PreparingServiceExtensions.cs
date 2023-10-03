@@ -18,14 +18,17 @@ namespace NotifyMe.IoC.Configuration.DI
                 if (dbContext.Database.CanConnect())
                 {
                     logger?.LogInformation("Yes, I've got connected to the DatabaseContext");
+
+                    logger?.LogInformation("Migrations started");
+                    dbContext.Database.EnsureDeleted();
+                    //dbContext.Database.EnsureCreated();
+                    dbContext.Database.Migrate();
+                    logger?.LogInformation("Migrations finished");
                 }
                 else
                 {
                     logger?.LogInformation("No, I haven't connected to the DatabaseContext");
                 }
-
-                logger?.LogInformation("Migrations started");
-                dbContext.Database.Migrate();
             }
         }
     }

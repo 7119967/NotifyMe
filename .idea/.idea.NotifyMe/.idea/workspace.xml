@@ -20,14 +20,6 @@
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230914170019_InitialCreate.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230914170019_InitialCreate.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230916103353_AddNotificationUsers.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Migrations/20230916103353_AddNotificationUsers.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/Message.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/Message.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -104,7 +96,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
+  <component name="RunManager" selected="Docker.NotifyMe.API/Dockerfile">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -307,7 +299,7 @@
       <workItem from="1696132689626" duration="20236000" />
       <workItem from="1696265684415" duration="965000" />
       <workItem from="1696267139972" duration="1737000" />
-      <workItem from="1696311474230" duration="314000" />
+      <workItem from="1696311474230" duration="1331000" />
     </task>
     <servers />
   </component>
