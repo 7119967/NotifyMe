@@ -12,7 +12,7 @@ using NotifyMe.Infrastructure.Context;
 namespace NotifyMe.API.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230914170019_InitialCreate")]
+    [Migration("20231003034818_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -319,6 +319,29 @@ namespace NotifyMe.API.Migrations
                     b.ToTable("Notifications");
                 });
 
+            modelBuilder.Entity("NotifyMe.Core.Entities.NotificationUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("NotificationId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NotificationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("NotificationUsers");
+                });
+
             modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -497,6 +520,21 @@ namespace NotifyMe.API.Migrations
                     b.Navigation("Event");
                 });
 
+            modelBuilder.Entity("NotifyMe.Core.Entities.NotificationUser", b =>
+                {
+                    b.HasOne("NotifyMe.Core.Entities.Notification", "Notification")
+                        .WithMany("NotificationUsers")
+                        .HasForeignKey("NotificationId");
+
+                    b.HasOne("NotifyMe.Core.Entities.User", "User")
+                        .WithMany("NotificationUsers")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
                 {
                     b.HasOne("NotifyMe.Core.Entities.Group", "Group")
@@ -525,6 +563,16 @@ namespace NotifyMe.API.Migrations
                     b.Navigation("Configurations");
 
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.Notification", b =>
+                {
+                    b.Navigation("NotificationUsers");
+                });
+
+            modelBuilder.Entity("NotifyMe.Core.Entities.User", b =>
+                {
+                    b.Navigation("NotificationUsers");
                 });
 #pragma warning restore 612, 618
         }

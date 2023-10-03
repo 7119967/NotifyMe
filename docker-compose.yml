@@ -3,7 +3,7 @@ name: notifyme-project
 
 services:
     mssql-server:
-        image: mcr.microsoft.com/mssql/server:2019-latest
+        image: mcr.microsoft.com/mssql/server:latest
         container_name: mssql-server
         hostname: mssql-server
         restart: always
@@ -29,8 +29,8 @@ services:
         image: rabbitmq:management
         container_name: rabbitmq
         ports:
-          - "5672:5672"  # RabbitMQ main port for AMQP.
-          - "15672:15672"  # RabbitMQ management plugin port for web UI.
+          - "5672:5672"  
+          - "15672:15672" 
         environment:
           RABBITMQ_DEFAULT_USER: guest
           RABBITMQ_DEFAULT_PASS: guest

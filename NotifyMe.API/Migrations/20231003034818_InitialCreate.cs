@@ -285,6 +285,30 @@ namespace NotifyMe.API.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.CreateTable(
+                name: "NotificationUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    NotificationId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotificationUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NotificationUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_NotificationUsers_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "Id");
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -353,6 +377,16 @@ namespace NotifyMe.API.Migrations
                 name: "IX_Notifications_EventId",
                 table: "Notifications",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationUsers_NotificationId",
+                table: "NotificationUsers",
+                column: "NotificationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NotificationUsers_UserId",
+                table: "NotificationUsers",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -380,13 +414,16 @@ namespace NotifyMe.API.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "Notifications");
+                name: "NotificationUsers");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "Events");

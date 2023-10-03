@@ -267,22 +267,18 @@ namespace NotifyMe.API.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ContentBody")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EventId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Receivers")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Sender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Subject")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Timestamp")

@@ -9,7 +9,7 @@ namespace NotifyMe.API
     public class Program
     {
         private static IConfiguration? _configuration;
-        // private static readonly ILogger? _logger;
+        private static readonly ILogger? _logger;
 
         public static void Main(string[] args)
         {
@@ -24,6 +24,8 @@ namespace NotifyMe.API
             builder.Services.AddSwaggerGen();
             
             var app = builder.Build();
+
+            app.InitializeDatabase(_logger);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
