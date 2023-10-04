@@ -8,24 +8,22 @@ namespace NotifyMe.API
 {
     public class Program
     {
-        private static IConfiguration? _configuration;
-        private static readonly ILogger? _logger;
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            _configuration = builder.Configuration;
+            var configuration = builder.Configuration;
 
             // Services
-            builder.Services.ConfigureBusinessServices(_configuration);
+            builder.Services.ConfigureBusinessServices(configuration);
 
             // Controllers and Views
             builder.Services.AddControllersWithViews();
             builder.Services.AddSwaggerGen();
             
             var app = builder.Build();
+            var logger = app.Services.GetService<ILogger<Program>>();
 
-            app.InitializeDatabase(_logger);
+            app.InitializeDatabase(logger);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -63,8 +61,7 @@ namespace NotifyMe.API
             }
             catch (Exception ex)
             {
-                var logger = services.GetRequiredService<ILogger<Program>>();
-                logger.LogError(ex, "An error occurred while seeding the database.");
+                logger?.LogError(ex, "An error occurred while seeding the database.");
             }
 
             app.Run();
