@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NotifyMe.Core.Interfaces.Services;
 using RabbitMQ.Client;
@@ -15,11 +16,23 @@ public class RabbitMqPublisher: BackgroundService, IRabbitMqPublisher
     private readonly ConcurrentQueue<string> _messageQueue = new ConcurrentQueue<string>();
 
     
-    public RabbitMqPublisher(IConfiguration configuration)
+    public RabbitMqPublisher(IConfiguration configuration, IServiceScopeFactory scopeFactory)
     {
+        var scope = scopeFactory.CreateScope();
+        var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
+
         var config = configuration;
-        
-        var rabbitMqHost = config["RabbitMq:Host"] ?? throw new NullReferenceException();
+        var rabbitMqHost = "";
+
+        if (env.IsProduction())
+        {
+            rabbitMqHost = config["RabbitMq:ServerHost"] ?? throw new NullReferenceException();
+        }
+        else
+        {
+            rabbitMqHost = config["RabbitMq:LocalHost"] ?? throw new NullReferenceException();
+        }
+
         var rabbitMqUsername = config["RabbitMq:Username"] ?? throw new NullReferenceException();
         var rabbitMqPassword = config["RabbitMq:Password"] ?? throw new NullReferenceException();
         _rabbitMqQueueName = config["RabbitMq:QueueName"] ?? throw new NullReferenceException();

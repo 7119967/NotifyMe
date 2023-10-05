@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces;
@@ -24,16 +26,34 @@ public static class ServiceCollectionExtensions
 {
     public static void ConfigureBusinessServices(this IServiceCollection services, IConfiguration? configuration)
     {
-        var connection = configuration?.GetConnectionString("DefaultConnection");
+        var serviceProvider = services.BuildServiceProvider();
+        var env = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-        services.AddDbContext<DatabaseContext>(options =>
+
+        if (env.IsProduction())
         {
-            options
-                .UseSqlServer(connection, op => op.MigrationsAssembly("NotifyMe.API"))
-                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                .EnableSensitiveDataLogging()
-                .UseLazyLoadingProxies();
-        });
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options
+                    .UseSqlServer(configuration?.GetConnectionString("ServerConnection"),
+                    op => op.MigrationsAssembly("NotifyMe.API"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                    .EnableSensitiveDataLogging()
+                    .UseLazyLoadingProxies();
+            });
+        }
+        else
+        {
+            services.AddDbContext<DatabaseContext>(options =>
+            {
+                options
+                    .UseSqlServer(configuration?.GetConnectionString("LocalConnection"),
+                    op => op.MigrationsAssembly("NotifyMe.API"))
+                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                    .EnableSensitiveDataLogging()
+                    .UseLazyLoadingProxies();
+            });
+        }
 
         services.AddIdentity<User, IdentityRole>(option =>
             {
@@ -74,5 +94,10 @@ public static class ServiceCollectionExtensions
 
         services.AddHostedService<RabbitMqConsumer>();
         services.AddHostedService<EventMonitor>();
+
+
+        // Controllers and Views
+        services.AddControllersWithViews();
+        services.AddSwaggerGen();
     }
 }

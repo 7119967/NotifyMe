@@ -1,10 +1,14 @@
 ﻿using System.Text;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Newtonsoft.Json;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
+
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
@@ -20,11 +24,21 @@ public class RabbitMqConsumer: BackgroundService, IRabbitMqConsumer
     public RabbitMqConsumer(IConfiguration configuration, IServiceScopeFactory scopeFactory)
     {
         var scope = scopeFactory.CreateScope();
+        var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
         _emailService = scope.ServiceProvider.GetRequiredService<EmailService>();
-        
+
         var config = configuration;
-        
-        var rabbitMqHost = config["RabbitMq:Host"] ?? throw new NullReferenceException();
+        var rabbitMqHost = "";
+
+        if (env.IsProduction())
+        {
+            rabbitMqHost = config["RabbitMq:ServerHost"] ?? throw new NullReferenceException();
+        }
+        else 
+        {
+            rabbitMqHost = config["RabbitMq:LocalHost"] ?? throw new NullReferenceException();
+        }
+     
         var rabbitMqUsername = config["RabbitMq:Username"] ?? throw new NullReferenceException();
         var rabbitMqPassword = config["RabbitMq:Password"] ?? throw new NullReferenceException();
         _rabbitMqQueueName = config["RabbitMq:QueueName"] ?? throw new NullReferenceException();
