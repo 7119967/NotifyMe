@@ -19,6 +19,20 @@ FROM build AS publish
 RUN dotnet publish "NotifyMe.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
+
+#added the following string
+RUN apt-get update && apt-get install -y curl
+
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+#added the following strings
+RUN dotnet --info
+RUN dotnet dev-certs https --clean
+RUN dotnet dev-certs https
+RUN dotnet dev-certs https --trust
+RUN dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+RUN update-ca-certificates
+#end
+
 ENTRYPOINT ["dotnet", "NotifyMe.API.dll"]

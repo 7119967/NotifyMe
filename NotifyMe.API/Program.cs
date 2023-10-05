@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 using NotifyMe.Core.Entities;
+using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 using NotifyMe.IoC.Configuration.DI;
 
@@ -16,14 +18,9 @@ namespace NotifyMe.API
             // Services
             builder.Services.ConfigureBusinessServices(configuration);
 
-            // Controllers and Views
-            builder.Services.AddControllersWithViews();
-            builder.Services.AddSwaggerGen();
             
             var app = builder.Build();
             var logger = app.Services.GetService<ILogger<Program>>();
-
-            app.InitializeDatabase(logger);
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -53,8 +50,11 @@ namespace NotifyMe.API
 
             using var scope = app.Services.CreateScope();
             var services = scope.ServiceProvider;
+
             try
             {
+                InitializeDatabase(services, logger);
+
                 var userManager = services.GetRequiredService<UserManager<User>>();
                 var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                 Task.Run(() => AdminInitializer.SeedAdminUser(rolesManager, userManager));
@@ -65,6 +65,24 @@ namespace NotifyMe.API
             }
 
             app.Run();
+        }
+
+        private static void InitializeDatabase(IServiceProvider sp, ILogger<Program>? logger)
+        {
+            using (var scope = sp.GetService<IServiceScopeFactory>()!.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+                if (dbContext.Database.CanConnect())
+                {
+                    logger?.LogDebug($"Yes, I've got connected to the {dbContext.Database.ProviderName}");
+                    logger?.LogDebug("Migrations started");
+                    dbContext.Database.Migrate();
+                }
+                else
+                    logger?.LogDebug($"No, I haven't connected to the {dbContext.Database.ProviderName}");
+
+            }
         }
     }
 }
