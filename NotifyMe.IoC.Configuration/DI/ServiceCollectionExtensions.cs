@@ -89,6 +89,7 @@ public static class ServiceCollectionExtensions
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddSingleton<ServicesMappingProfile>();
+
         services.AddSingleton<IConnectionFactory, ConnectionFactory>();
         services.AddSingleton<IRabbitMqPublisher, RabbitMqPublisher>();
 
