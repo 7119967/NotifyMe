@@ -35,7 +35,7 @@ public class EmailService
     
     public async Task SendEmail(string eventId)
     {
-        var message = await CreateMessageAsync(eventId);
+        var message = await CreateMailMessageAsync(eventId);
         var password = $"07H9Sd7mJ5kNvCsyuA9F";
         
         using (var smtp = new SmtpClient())
@@ -54,52 +54,56 @@ public class EmailService
         }
     }
     
-    private async Task<MailMessage> CreateMessageAsync(string eventId)
+    private async Task<MailMessage> CreateMailMessageAsync(string eventId)
     {
         var originalEvent = await _eventService!.AsQueryable()
             .Include(e => e.Configuration)
             .FirstOrDefaultAsync(e => e.Id == eventId) ?? new Event();
-                
+
         var configuration = await _configurationService!.AsQueryable()
-            .FirstOrDefaultAsync(t => t.Id == originalEvent.ConfigurationId) ?? new Configuration(); 
-        
+            .FirstOrDefaultAsync(t => t.Id == originalEvent.ConfigurationId) ?? new Configuration();
+
         var group = await _groupService!.AsQueryable()
             .Include(g => g.Users)
             .FirstOrDefaultAsync(t => t.Id == configuration.Id) ?? new Group();
 
         var mailMessage = new MailMessage();
-        
+
         foreach (var user in group.Users)
         {
             mailMessage.To.Add(user.Email ?? throw new InvalidOperationException());
         }
-       
+
         mailMessage.From = new MailAddress("7119967@mail.ru");
         mailMessage.Subject = $"ALERT: {originalEvent.Configuration!.ChangeType} exceeded threshold";
         mailMessage.Body = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {originalEvent.Configuration.Threshold}";
- 
 
+        CreateMessage(originalEvent, mailMessage);
+
+        return mailMessage;
+    }
+
+    private void CreateMessage(Event originalEvent, MailMessage mailMessage)
+    {
         var message = _mapper.Map<MailMessage, Message>(mailMessage);
         var sequence = _messageService!.GetAllAsync().Result;
         var newId = Helpers.GetNewIdEntity(sequence);
         message.Id = newId.ToString();
-        
+
         _messageService!.Create(message);
-        
+
         var existingEntity = _messageService?
             .AsQueryable()
             .FirstOrDefault(m => m.Id == message.Id);
-        
+
         if (existingEntity != null)
         {
             existingEntity.EventId = originalEvent.Id;
             existingEntity.Event = originalEvent;
             _messageService!.Update(existingEntity);
         }
-
-        return mailMessage;
     }
-    
+
     public void SendNotification(string eventId)
     {
         var originalEvent = _eventService!
