@@ -50,6 +50,7 @@ public class EmailService
             {
                 Console.WriteLine(result);
             }
+
             smtp.Dispose();
         }
     }
@@ -67,16 +68,17 @@ public class EmailService
             .Include(g => g.Users)
             .FirstOrDefaultAsync(t => t.Id == configuration.Id) ?? new Group();
 
-        var mailMessage = new MailMessage();
+        var mailMessage = new MailMessage
+        {
+            From = new MailAddress("7119967@mail.ru"),
+            Subject = $"ALERT: {originalEvent.Configuration!.ChangeType} exceeded threshold",
+            Body = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {originalEvent.Configuration.Threshold}"
+        };
 
         foreach (var user in group.Users)
         {
             mailMessage.To.Add(user.Email ?? throw new InvalidOperationException());
         }
-
-        mailMessage.From = new MailAddress("7119967@mail.ru");
-        mailMessage.Subject = $"ALERT: {originalEvent.Configuration!.ChangeType} exceeded threshold";
-        mailMessage.Body = $"{originalEvent.Configuration.Message}. \nCurrent value: {originalEvent.CurrentThreshold}, Threshold: {originalEvent.Configuration.Threshold}";
 
         CreateMessage(originalEvent, mailMessage);
 
@@ -119,8 +121,7 @@ public class EmailService
             .Include(g => g.Users)
             .FirstOrDefault(g => g.Id == configuration!.Id);
         
-        string notificationId;
-        CreateNotification(originalEvent!, out notificationId);
+        CreateNotification(originalEvent!, out string notificationId);
         CreateNotificationUser(group!, notificationId);
     }
     
@@ -151,7 +152,7 @@ public class EmailService
             var newId = Helpers.GetNewIdEntity(sequence);
             var notificationUser = new NotificationUser
             {
-                Id = newId.ToString(),
+                Id = newId.ToString(), 
                 UserId = user.Id,
                 NotificationId = notificationId
             };
