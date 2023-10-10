@@ -30,6 +30,14 @@ public class EventMonitor : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var processingActions = new Dictionary<ChangeType, Action<int, Configuration>>
+        {
+            { ChangeType.Creation, InvokeProcessing },
+            { ChangeType.Update, InvokeProcessing },
+            { ChangeType.Deletion, InvokeProcessing },
+            { ChangeType.View, InvokeProcessing }
+        };
+
         while (!stoppingToken.IsCancellationRequested)
         {
             await Task.Delay(10000, stoppingToken);
@@ -43,11 +51,6 @@ public class EventMonitor : BackgroundService
                     continue;
                 }
 
-                var counterView = CountChangesByType(changes, ChangeType.View);
-                var counterUpdate = CountChangesByType(changes, ChangeType.Update);
-                var counterDeletion = CountChangesByType(changes, ChangeType.Deletion);
-                var counterCreation = CountChangesByType(changes, ChangeType.Creation);
-
                 var configurations = _configurationService!.AsQueryable().ToList() ?? throw new NullReferenceException();
 
                 if (!configurations.Any())
@@ -58,22 +61,13 @@ public class EventMonitor : BackgroundService
 
                 foreach (var configuration in configurations)
                 {
-                    switch (configuration.ChangeType)
+                    if (processingActions.TryGetValue(configuration.ChangeType, out var action))
                     {
-                        case ChangeType.Creation:
-                            await InvokeProcessing(counterCreation, configuration);
-                            break;
-                        case ChangeType.Update:
-                            await InvokeProcessing(counterUpdate, configuration);
-                            break;
-                        case ChangeType.Deletion:
-                            await InvokeProcessing(counterDeletion, configuration);
-                            break;
-                        case ChangeType.View:
-                            await InvokeProcessing(counterView, configuration);
-                            break;
-                        default:
-                            throw new ArgumentOutOfRangeException();
+                        action(GetCounterByChangeType(changes, configuration.ChangeType), configuration);
+                    }
+                    else
+                    {
+                        throw new ArgumentOutOfRangeException();
                     }
                 }
             }
@@ -88,39 +82,24 @@ public class EventMonitor : BackgroundService
     private void ProcessingEvent(Configuration configuration, int counter)
     {
         var eventItem = CreateEvent(configuration, counter).Result;
-        eventItem = UpdateEventAndRelativeEntities(configuration, eventItem).Result;
+        eventItem = UpdateRelatedEntities(configuration, eventItem).Result;
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
+
         var jsonString = JsonConvert.SerializeObject(eventItem, settings);
         _rabbitMqPublisher?.PublishMessage(jsonString);
     }
 
-    private async Task<Event> UpdateEventAndRelativeEntities(Configuration configuration, Event eventItem)
+    private async Task<Event> UpdateRelatedEntities(Configuration configuration, Event eventItem)
     {
-        var changes = from c in await _changeService!.GetAllAsync()
-            where c.ChangeType == configuration.ChangeType &&
-                  c.Timestamp.Date == DateTime.Now.Date &&
-                  c.EventId == null
-            select c;
+        var currentDate = DateTime.Now.Date;
+        
+        await UpdateEventChanges(configuration, eventItem, currentDate);
+        await UpdateEventConfiguration(configuration, eventItem);
 
-        foreach (var change in changes)
-        {
-            change.EventId = eventItem.Id;
-            change.Event = eventItem;
-            _changeService!.Update(change);
-        }
-
-        var existEvent = _eventService!
-            .AsEnumerable()
-            .FirstOrDefault(e => e.Id == eventItem.Id);
-
-        existEvent!.ConfigurationId = configuration.Id;
-        existEvent.Configuration = configuration;
-
-        var entry = _eventService!.Update(existEvent);
-        return entry.Entity;
+        return eventItem;
     }
 
     private async Task<Event> CreateEvent(Configuration configuration, int currentValue)
@@ -154,19 +133,71 @@ public class EventMonitor : BackgroundService
         }
     }
 
-    private int CountChangesByType(IEnumerable<Change> changes, ChangeType changeType)
+    private int CountChangesByType(IEnumerable<Change> changes, ChangeType type)
     {
         return changes.Count(t =>
-            t.ChangeType == changeType &&
+            t.ChangeType == type &&
             t.Timestamp.Date == DateTime.Now.Date &&
             string.IsNullOrEmpty(t.EventId));
     }
 
-    private async Task InvokeProcessing(int counter, Configuration configuration)
+    private void InvokeProcessing(int counter, Configuration configuration)
     {
-        if (counter >= configuration.Threshold)
+        if (counter < configuration.Threshold) return;
+        var thread = new Thread(() => ProcessingEvent(configuration, counter));
+        thread.Start();
+        //await Task.Run(() => ProcessingEvent(configuration, counter));
+    }
+    
+    private int GetCounterByChangeType(IEnumerable<Change> changes, ChangeType type)
+    {
+        int counter;
+        
+        switch (type)
         {
-            await Task.Run(() => ProcessingEvent(configuration, counter));
+            case ChangeType.View:
+                counter = CountChangesByType(changes, ChangeType.View);
+                return counter;
+            case ChangeType.Update:
+                counter = CountChangesByType(changes, ChangeType.Update);
+                return counter;
+            case ChangeType.Deletion:
+                counter = CountChangesByType(changes, ChangeType.Deletion);
+                return counter;
+            case ChangeType.Creation:
+                counter = CountChangesByType(changes, ChangeType.Creation);
+                return counter;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
+    
+    private async Task UpdateEventChanges(Configuration configuration, Event eventItem, DateTime currentDate)
+    {
+        var changes = await _changeService!.GetAllAsync();
+
+        foreach (var change in changes.Where(c => 
+                     c.ChangeType == configuration.ChangeType &&
+                     c.Timestamp.Date == currentDate &&
+                     c.EventId == null))
+        {
+            change.EventId = eventItem.Id;
+            change.Event = eventItem;
+            _changeService!.Update(change);
+        }
+    }
+
+    private async Task UpdateEventConfiguration(Configuration configuration, Event eventItem)
+    {
+        var existEvent = _eventService!
+            .AsEnumerable()
+            .FirstOrDefault(e => e.Id == eventItem.Id);
+
+        if (existEvent != null)
+        {
+            existEvent.ConfigurationId = configuration.Id;
+            existEvent.Configuration = configuration;
+            await Task.Run(() => _eventService!.Update(existEvent));
         }
     }
 }
