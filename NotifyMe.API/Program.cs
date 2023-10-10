@@ -23,12 +23,12 @@ namespace NotifyMe.API
             var logger = app.Services.GetService<ILogger<Program>>();
 
             // Configure the HTTP request pipeline.
-            app.UseCors(x => x
-               //.WithOrigins("http://localhost:3000")
-               .AllowAnyMethod()
-               .AllowAnyHeader()
-               .SetIsOriginAllowed(_ => true)
-               .AllowCredentials());
+            //app.UseCors(x => x
+            //   //.WithOrigins("http://localhost:3000")
+            //   .AllowAnyMethod()
+            //   .AllowAnyHeader()
+            //   .SetIsOriginAllowed(_ => true)
+            //   .AllowCredentials());
 
             if (app.Environment.IsDevelopment())
             {
@@ -42,9 +42,9 @@ namespace NotifyMe.API
             
             app.UseSwagger();
             app.UseSwaggerUI();
-            
+
             //app.UseHttpsRedirection();
-            //app.UseStaticFiles();
+            app.UseStaticFiles();
 
             app.UseRouting();
 
