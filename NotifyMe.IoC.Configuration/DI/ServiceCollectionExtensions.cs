@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
@@ -29,32 +28,16 @@ public static class ServiceCollectionExtensions
         var serviceProvider = services.BuildServiceProvider();
         var env = serviceProvider.GetRequiredService<IWebHostEnvironment>();
 
-
-        if (env.IsProduction())
+        services.AddDbContext<DatabaseContext>(options =>
         {
-            services.AddDbContext<DatabaseContext>(options =>
-            {
-                options
-                    .UseSqlServer(configuration?.GetConnectionString("ServerConnection"),
+            options
+                .UseSqlServer(GetDbConnection(configuration!, env),
                     op => op.MigrationsAssembly("NotifyMe.API"))
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                    .EnableSensitiveDataLogging()
-                    .UseLazyLoadingProxies();
-            });
-        }
-        else
-        {
-            services.AddDbContext<DatabaseContext>(options =>
-            {
-                options
-                    .UseSqlServer(configuration?.GetConnectionString("LocalConnection"),
-                    op => op.MigrationsAssembly("NotifyMe.API"))
-                    .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
-                    .EnableSensitiveDataLogging()
-                    .UseLazyLoadingProxies();
-            });
-        }
-
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
+                .EnableSensitiveDataLogging()
+                .UseLazyLoadingProxies();
+        });
+        
         services.AddIdentity<User, IdentityRole>(option =>
             {
                 option.Password.RequireDigit = false;
@@ -75,7 +58,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddTransient<IUserService, UserService>();
-        services.AddTransient<IEventLogger, EventLogger>();
         services.AddTransient<IEventService, EventService>();
         services.AddTransient<IGroupService, GroupService>();
         services.AddTransient<IChangeService, ChangeService>();
@@ -95,10 +77,15 @@ public static class ServiceCollectionExtensions
 
         services.AddHostedService<RabbitMqConsumer>();
         services.AddHostedService<EventMonitor>();
-
-
-        // Controllers and Views
+        
         services.AddControllersWithViews();
         services.AddSwaggerGen();
+    }
+    
+    private static string GetDbConnection(IConfiguration configuration, IWebHostEnvironment env)
+    {
+        return (env.IsDevelopment()
+            ? configuration.GetConnectionString("LocalConnection")
+            : configuration.GetConnectionString("ServerConnection"))!;
     }
 }

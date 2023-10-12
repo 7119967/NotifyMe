@@ -43,21 +43,10 @@ public class EventMonitor : BackgroundService
             await Task.Delay(10000, stoppingToken);
             try
             {
-                var changes = _changeService?.AsQueryable().ToList() ?? throw new NullReferenceException();
-
-                if (!changes.Any())
-                {
-                    Console.WriteLine("There are no changes. Please, create at least one change or more");
-                    continue;
-                }
-
-                var configurations = _configurationService!.AsQueryable().ToList() ?? throw new NullReferenceException();
-
-                if (!configurations.Any())
-                {
-                    Console.WriteLine("There are no configurations. Please, create at least one configuration or more");
-                    continue;
-                }
+                var changes = await GetChangesAsListAsync(_changeService!);
+                if (changes == null) throw new ArgumentNullException(nameof(changes));
+                var configurations = await GetConfigurationsAsListAsync(_configurationService!);
+                if (configurations == null) throw new ArgumentNullException(nameof(configurations));
 
                 foreach (var configuration in configurations)
                 {
@@ -79,10 +68,10 @@ public class EventMonitor : BackgroundService
         }
     }
 
-    private void ProcessingEvent(Configuration configuration, int counter)
+    private async Task ProcessingEvent(Configuration configuration, int counter)
     {
-        var eventItem = CreateEvent(configuration, counter).Result;
-        eventItem = UpdateRelatedEntities(configuration, eventItem).Result;
+        var eventItem = await CreateEvent(configuration, counter);
+        eventItem = await UpdateRelatedEntities(configuration, eventItem);
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -94,9 +83,7 @@ public class EventMonitor : BackgroundService
 
     private async Task<Event> UpdateRelatedEntities(Configuration configuration, Event eventItem)
     {
-        var currentDate = DateTime.Now.Date;
-        
-        await UpdateEventChanges(configuration, eventItem, currentDate);
+        await UpdateEventChanges(configuration, eventItem);
         await UpdateEventConfiguration(configuration, eventItem);
 
         return eventItem;
@@ -117,12 +104,10 @@ public class EventMonitor : BackgroundService
 
         try
         {
-           using (var scope = _scopeFactory?.CreateScope())
-           {
-               var dbContext = scope?.ServiceProvider.GetRequiredService<IEventService>();
-               var entity = dbContext?.Create(model);
-               return entity!.Entity;
-           }
+            using var scope = _scopeFactory?.CreateScope();
+            var dbContext = scope?.ServiceProvider.GetRequiredService<IEventService>();
+            var entity = dbContext?.Create(model);
+            return entity!.Entity;
             // var entity = _eventService!.Create(model);
             // return entity.Entity;
         }
@@ -144,7 +129,7 @@ public class EventMonitor : BackgroundService
     private void InvokeProcessing(int counter, Configuration configuration)
     {
         if (counter < configuration.Threshold) return;
-        var thread = new Thread(() => ProcessingEvent(configuration, counter));
+        var thread = new Thread(() => ProcessingEvent(configuration, counter).Wait());
         thread.Start();
         //await Task.Run(() => ProcessingEvent(configuration, counter));
     }
@@ -172,8 +157,9 @@ public class EventMonitor : BackgroundService
         }
     }
     
-    private async Task UpdateEventChanges(Configuration configuration, Event eventItem, DateTime currentDate)
+    private async Task UpdateEventChanges(Configuration configuration, Event eventItem)
     {
+        var currentDate = DateTime.Now.Date;
         var changes = await _changeService!.GetAllAsync();
 
         foreach (var change in changes.Where(c => 
@@ -199,5 +185,26 @@ public class EventMonitor : BackgroundService
             existEvent.Configuration = configuration;
             await Task.Run(() => _eventService!.Update(existEvent));
         }
+    }
+
+    private async Task<List<Change>> GetChangesAsListAsync(IChangeService changeService)
+    {
+        var changes = await Task.Run(() => changeService.AsQueryable().ToList() ?? throw new NullReferenceException());
+
+        if (changes.Any()) return changes;
+        
+        Console.WriteLine("There are no changes. Please, create at least one change or more");
+        return changes;
+    }
+    
+    private async Task<List<Configuration>> GetConfigurationsAsListAsync(IConfigurationService configurationService)
+    {
+        var configurations = await Task.Run(() => configurationService.AsQueryable().ToList() ?? throw new NullReferenceException());
+
+        if (configurations.Any()) return configurations;
+        
+        Console.WriteLine("There are no configurations. Please, create at least one configuration or more");
+        return configurations;
+
     }
 }

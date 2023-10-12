@@ -19,7 +19,6 @@ public class ConfigurationsController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly ILogger<ConfigurationsController> _logger;
-    private readonly IEventLogger _eventLogger;
     private readonly IConfigurationService _configurationService;
     private readonly DatabaseContext _databaseContext;
 
@@ -27,14 +26,12 @@ public class ConfigurationsController : Controller
         UserManager<User> userManager,
         IMapper mapper,
         ILogger<ConfigurationsController> logger,
-        IEventLogger eventLogger,
         IConfigurationService configurationService,
         DatabaseContext databaseContext)
     {
         _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
-        _eventLogger = eventLogger;
         _configurationService = configurationService;
         _databaseContext = databaseContext;
     }
