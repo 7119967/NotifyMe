@@ -19,14 +19,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserAvator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/img/7119967@mail.ru.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/img/7119967@mail.ru.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Interfaces/IEventLogger.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventLogger.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.Development.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/NotifyMe.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/NotifyMe.Infrastructure.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/NotifyMe.IoC.Configuration.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/NotifyMe.IoC.Configuration.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Tests/NotifyMe.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Tests/NotifyMe.Tests.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +114,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected=".NET Launch Settings Profile.NotifyMe.API: https">
+  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -309,7 +320,9 @@
       <workItem from="1696345283664" duration="2344000" />
       <workItem from="1696352827671" duration="311000" />
       <workItem from="1696909904270" duration="3082000" />
-      <workItem from="1697124871244" duration="8926000" />
+      <workItem from="1697124871244" duration="9644000" />
+      <workItem from="1697261454766" duration="531000" />
+      <workItem from="1697265613052" duration="21133000" />
     </task>
     <servers />
   </component>
@@ -392,6 +405,19 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="46" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs</url>
+          <line>220</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\UsersController.cs" initialLine="241" containingFunctionPresentation="Method 'GetPathImage'">
+            <startOffsets>
+              <option value="7209" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7210" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

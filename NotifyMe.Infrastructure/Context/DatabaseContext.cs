@@ -8,11 +8,11 @@ namespace NotifyMe.Infrastructure.Context
     {
         public override DbSet<User> Users { get; set; } = null!;
         public DbSet<Group> Groups { get; set; } = null!;
-        public DbSet<Change> Changes { get; set; } = null!;
         public DbSet<Event> Events { get; set; } = null!;
-        public DbSet<Configuration> Configurations { get; set; } = null!;
-        public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<Change> Changes { get; set; } = null!;
         public DbSet<Message> Messages { get; set; } = null!;
+        public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<Configuration> Configurations { get; set; } = null!;
         public DbSet<NotificationUser> NotificationUsers { get; set; } = null!;
  
         public DatabaseContext(DbContextOptions<DatabaseContext> options)

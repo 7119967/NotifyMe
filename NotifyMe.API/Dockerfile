@@ -27,12 +27,12 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 #added the following strings
-RUN dotnet --info
-RUN dotnet dev-certs https --clean
-RUN dotnet dev-certs https
-RUN dotnet dev-certs https --trust
-RUN dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
-RUN update-ca-certificates
+RUN #dotnet --info
+#RUN dotnet dev-certs https --clean
+#RUN dotnet dev-certs https
+#RUN dotnet dev-certs https --trust
+#RUN dotnet dev-certs https -ep /usr/local/share/ca-certificates/aspnet/https.crt --format PEM
+#RUN update-ca-certificates
 #end
 
 ENTRYPOINT ["dotnet", "NotifyMe.API.dll"]

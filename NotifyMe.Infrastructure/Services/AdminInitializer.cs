@@ -10,9 +10,9 @@ public class AdminInitializer
         RoleManager<IdentityRole> roleManager,
         UserManager<User> userManager)
     {
-        string adminLogin = "admin";
-        string adminPassword = "pass";     
-        string adminEmail = "admin@admin.com";
+        var adminLogin = "admin";
+        var adminPassword = "pass";     
+        var adminEmail = "admin@admin.com";
 
         var roles = new[]
         {

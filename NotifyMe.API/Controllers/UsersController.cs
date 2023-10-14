@@ -14,7 +14,7 @@ using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
-[Authorize(Roles = "admin, user")]
+[Authorize(Roles = "admin")]
 public class UsersController : Controller
 {
     private readonly UserManager<User> _userManager;
@@ -101,17 +101,9 @@ public class UsersController : Controller
                 return RedirectToAction("Index");
             }
                 
-            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
-            if (model.File != null)
-            {
-                _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
-            }
-
-            var pathImage = $"/img/{model.Email}.jpg";
-                
             var entity = _mapper.Map<UserCreateViewModel, User>(model);
             entity.Id = Guid.NewGuid().ToString();
-            entity.Avatar = pathImage;
+            entity.Avatar =  model.File != null ? GetPathImage(model) : string.Empty;
             var result = await _userManager.CreateAsync(entity, model.Password!);
 
             if (!result.Succeeded) return RedirectToAction("Index");
@@ -169,24 +161,13 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(UserEditViewModel model)
     {
-        if (model.File != null)
-        {
-            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
-            _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
-            var pathImage = $"/img/{model.Email}.jpg";
-            model.Avatar = pathImage;
-        }
+        model.Avatar = model.File != null ? GetPathImage(model) : string.Empty;
         var user = _userManager.FindByNameAsync(model.UserName!).Result;
-        if (user == null)
-        {
-            return NotFound();
-        }
+        if (user == null) return NotFound();
         var editUser = _mapper.Map<User, UserEditViewModel>(user);
         var target = _mapper.Map<UserEditViewModel, User>(editUser);
         var source = _mapper.Map<UserEditViewModel, User>(model);
-        
         _userService.ApplyChanges(source, target);
-
         try
         {
             await _userService.UpdateAsync(target);
@@ -234,5 +215,20 @@ public class UsersController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
+    }
+
+    private string GetPathImage(object argument)
+    {
+        UserAvator model = new();
+        var path = Path.Combine(_environment.ContentRootPath, "wwwroot/img/avators/");
+
+        if (argument is UserCreateViewModel)
+            model = _mapper.Map<UserCreateViewModel, UserAvator>((UserCreateViewModel)argument);
+        
+        if (argument is UserEditViewModel)
+            model = _mapper.Map<UserEditViewModel, UserAvator>((UserEditViewModel)argument);
+        
+        _uploadFileService.Upload(path, $"{model!.Email}.jpg", model.File!);
+        return $"/img/avators/{model.Email}.jpg";
     }
 }

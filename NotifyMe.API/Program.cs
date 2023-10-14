@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Certificate;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-
 using NotifyMe.Core.Entities;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
@@ -17,11 +18,17 @@ namespace NotifyMe.API
 
             // Services
             builder.Services.ConfigureBusinessServices(configuration);
-
+            
+            builder.Services.AddAuthentication(CertificateAuthenticationDefaults.AuthenticationScheme)
+                .AddCertificate(options =>
+                {
+                    options.AllowedCertificateTypes = CertificateTypes.All;
+                    options.RevocationMode = X509RevocationMode.NoCheck;
+                });
             
             var app = builder.Build();
             var logger = app.Services.GetService<ILogger<Program>>();
-
+   
             // Configure the HTTP request pipeline.
             //app.UseCors(x => x
             //   //.WithOrigins("http://localhost:3000")
@@ -45,9 +52,7 @@ namespace NotifyMe.API
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -60,36 +65,40 @@ namespace NotifyMe.API
 
             try
             {
-                InitializeDatabase(services, logger);
-
-                var userManager = services.GetRequiredService<UserManager<User>>();
-                var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                Task.Run(() => AdminInitializer.SeedAdminUser(rolesManager, userManager));
+                if (IsInitializedDatabase(services, logger))
+                {
+                    var userManager = services.GetRequiredService<UserManager<User>>();
+                    var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    Task.Run(() => AdminInitializer.SeedAdminUser(rolesManager, userManager));
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {
-                logger?.LogError(ex, "An error occurred while seeding the database.");
+                logger?.LogError(ex, "An error occurred while initializing or seeding the database.");
             }
 
             app.Run();
         }
 
-        private static void InitializeDatabase(IServiceProvider sp, ILogger<Program>? logger)
+        private static bool IsInitializedDatabase(IServiceProvider sp, ILogger<Program>? logger)
         {
-            using (var scope = sp.GetService<IServiceScopeFactory>()!.CreateScope())
+            using var scope = sp.GetService<IServiceScopeFactory>()!.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+            if (dbContext.Database.CanConnect())
             {
-                var dbContext = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-
-                if (dbContext.Database.CanConnect())
-                {
-                    logger?.LogDebug($"Yes, I've got connected to the {dbContext.Database.ProviderName}");
-                    logger?.LogDebug("Migrations started");
-                    dbContext.Database.Migrate();
-                }
-                else
-                    logger?.LogDebug($"No, I haven't connected to the {dbContext.Database.ProviderName}");
-
+                logger?.LogDebug($"Yes, I've got connected to the {dbContext.Database.ProviderName}");
+                logger?.LogDebug("Migrations started");
+                dbContext.Database.Migrate();
+                return true;
             }
+            
+            logger?.LogDebug($"No, I haven't connected to the {dbContext.Database.ProviderName}");
+            return false;
         }
     }
 }

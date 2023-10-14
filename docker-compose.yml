@@ -10,14 +10,12 @@ services:
         environment:
             - ACCEPT_EULA=Y
             - SA_PASSWORD=qXz999W7M#
-            - MSSQL_PID=Express
-            - MSSQL_DB_NAME=NotifyMeDb
-            # ACCEPT_EULA: Y
-            # MSSQL_DB_NAME: NotifyMeDb
-            # SA_PASSWORD: qXz999W7M#
+            - MSSQL_PID=Developer
+            - MSSQL_DB_NAME=master
         ports:
             - "1433:1433"
         volumes:
+            - mssql:/var/lib/mssql/data
             - sqlsystem:/var/opt/mssql
             - sqldata:/var/opt/sqlserver/data
             - /etc/timezone:/etc/timezone:ro
@@ -54,7 +52,8 @@ services:
         restart: always
         environment:
             - ASPNETCORE_ENVIRONMENT=Production
-            - ASPNETCORE_URLS=https://+:443;http://+:80
+#            - ASPNETCORE_URLS=https://+:443;http://+:80
+            - ASPNETCORE_URLS=http://+:80
         volumes:
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro
@@ -73,6 +72,7 @@ services:
             - notifyme-network
 
 volumes:
+  mssql:
   sqlsystem:
   sqldata:
   rabbitmq_data:

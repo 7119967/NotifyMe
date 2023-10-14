@@ -1,9 +1,11 @@
 ﻿using System.Reflection;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +39,12 @@ public static class ServiceCollectionExtensions
                 .EnableSensitiveDataLogging()
                 .UseLazyLoadingProxies();
         });
+
+        // var assembly = Assembly.GetEntryAssembly();
+        // var projectName = assembly!.GetName().Name;
+        // var dataProtectionBuilder = services.AddDataProtection();
+        // dataProtectionBuilder.SetApplicationName($"{projectName}");
+        // dataProtectionBuilder.ProtectKeysWithDpapi(protectToLocalMachine: false);
         
         services.AddIdentity<User, IdentityRole>(option =>
             {

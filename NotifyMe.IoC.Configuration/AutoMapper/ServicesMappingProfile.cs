@@ -228,5 +228,15 @@ public class ServicesMappingProfile : Profile
             .ForMember(d => d.Subject, s => s.MapFrom(o => o.Subject))
             .ForMember(d => d.ContentBody, s => s.MapFrom(o => o.Body))
             ;
+        
+        CreateMap<UserCreateViewModel, UserAvator>()
+            .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
+            .ForMember(d => d.File, s => s.MapFrom(o => o.File))
+            ;
+        
+        CreateMap<UserEditViewModel, UserAvator>()
+            .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
+            .ForMember(d => d.File, s => s.MapFrom(o => o.File))
+            ;
     }
 }

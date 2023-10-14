@@ -11,11 +11,11 @@ namespace NotifyMe.Infrastructure.Services;
 
 public class EventMonitor : BackgroundService
 {
-    private readonly IRabbitMqPublisher? _rabbitMqPublisher;
-    private readonly IChangeService? _changeService;
     private readonly IEventService? _eventService;
-    private readonly IConfigurationService? _configurationService;
+    private readonly IChangeService? _changeService;
     private readonly IServiceScopeFactory? _scopeFactory;
+    private readonly IRabbitMqPublisher? _rabbitMqPublisher;
+    private readonly IConfigurationService? _configurationService;
 
     public EventMonitor(IServiceScopeFactory scopeFactory)
     {
@@ -33,8 +33,8 @@ public class EventMonitor : BackgroundService
         var processingActions = new Dictionary<ChangeType, Action<int, Configuration>>
         {
             { ChangeType.Creation, InvokeProcessing },
-            { ChangeType.Update, InvokeProcessing },
             { ChangeType.Deletion, InvokeProcessing },
+            { ChangeType.Update, InvokeProcessing },
             { ChangeType.View, InvokeProcessing }
         };
 
