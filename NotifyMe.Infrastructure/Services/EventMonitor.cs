@@ -189,7 +189,7 @@ public class EventMonitor : BackgroundService
 
     private async Task<List<Change>> GetChangesAsListAsync(IChangeService changeService)
     {
-        var changes = await Task.Run(() => changeService.AsQueryable().ToList() ?? throw new NullReferenceException());
+        var changes = await Task.Run(() => changeService.AsQueryable().ToList());
 
         if (changes.Any()) return changes;
         
@@ -199,7 +199,7 @@ public class EventMonitor : BackgroundService
     
     private async Task<List<Configuration>> GetConfigurationsAsListAsync(IConfigurationService configurationService)
     {
-        var configurations = await Task.Run(() => configurationService.AsQueryable().ToList() ?? throw new NullReferenceException());
+        var configurations = await Task.Run(() => configurationService.AsQueryable().ToList());
 
         if (configurations.Any()) return configurations;
         

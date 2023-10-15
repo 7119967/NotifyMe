@@ -1,4 +1,7 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace NotifyMe.Core.Entities
@@ -13,6 +16,9 @@ namespace NotifyMe.Core.Entities
         public string? Info { get; set; }
         public string? Avatar { get; set; }
         public string? GroupId { get; set; }
+
+        [NotMapped] 
+        public IFormFile? File { get; set; }
         [JsonIgnore]
         public virtual Group? Group { get; set; }
             

@@ -1,11 +1,8 @@
 ﻿using System.Security.Claims;
-using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Services;
 
@@ -14,41 +11,21 @@ namespace NotifyMe.API.Controllers;
 [Authorize(Roles = "admin, user")]
 public class NotificationsController : Controller
 {
-    private readonly IMapper _mapper;
     private readonly UserManager<User> _userManager;
     private readonly ILogger<NotificationsController> _logger;
-    // private readonly IEventLogger _eventLogger;
     private readonly INotificationService? _notificationService;
     private readonly INotificationUserService? _notificationUserService;
-    // private readonly DatabaseContext _databaseContext;
 
     public NotificationsController(IServiceProvider serviceProvider,
         UserManager<User> userManager,
-        IMapper mapper,
         ILogger<NotificationsController> logger
-        // IEventLogger eventLogger,
-        // INotificationService notificationService,
-        // DatabaseContext databaseContext
         )
     {
         _userManager = userManager;
-        _mapper = mapper;
         _logger = logger;
-        // _eventLogger = eventLogger;
-        // _notificationService = notificationService;
-        // _databaseContext = databaseContext;
         var scope = serviceProvider.GetService<IServiceScopeFactory>()?.CreateScope();
         _notificationService = scope?.ServiceProvider.GetRequiredService<INotificationService>();
         _notificationUserService = scope?.ServiceProvider.GetRequiredService<INotificationUserService>();
-    }
-
-    [HttpPost]
-    public IActionResult SendNotification(Notification notification)
-    {
-        // _eventLogger.LogEvent(notification);
-        // _notificationService.SendNotification(notification);
-
-        return RedirectToAction("");
     }
 
     public async Task<IActionResult> Index()
@@ -58,14 +35,14 @@ public class NotificationsController : Controller
         var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
         if (await _userManager.IsInRoleAsync(user!, "admin"))
         {
-            var entities = await Task.Run(() => _notificationService!.GetAllAsync().Result);
+            var entities = _notificationService!.AsEnumerable().ToList();
             return View(entities);
         }
         
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        var notifications = from m in _notificationService!.AsQueryable()
-            join u in await _notificationUserService!.AsQueryable().ToListAsync() on m.Id equals u.NotificationId
+        var notifications = from m in _notificationService!.AsEnumerable().ToList()
+            join u in _notificationUserService!.AsEnumerable().ToList() on m.Id equals u.NotificationId
             where u.UserId == userId
             select m;
         

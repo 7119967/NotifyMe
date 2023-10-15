@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;

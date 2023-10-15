@@ -1,10 +1,11 @@
 ﻿using System.Net.Mail;
+
 using AutoMapper;
 
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Models.User;
 using NotifyMe.Core.Models.Group;
 using NotifyMe.Core.Models.Notification;
+using NotifyMe.Core.Models.User;
 
 namespace NotifyMe.IoC.Configuration.AutoMapper;
 
@@ -235,6 +236,11 @@ public class ServicesMappingProfile : Profile
             ;
         
         CreateMap<UserEditViewModel, UserAvator>()
+            .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
+            .ForMember(d => d.File, s => s.MapFrom(o => o.File))
+            ;
+
+        CreateMap<User, UserAvator>()
             .ForMember(d => d.Email, s => s.MapFrom(o => o.Email))
             .ForMember(d => d.File, s => s.MapFrom(o => o.File))
             ;

@@ -6,36 +6,32 @@ using Microsoft.AspNetCore.Mvc;
 
 using NotifyMe.API.ViewModels;
 using NotifyMe.Core.Entities;
-using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
 
 namespace NotifyMe.API.Controllers;
 
 public class AccountController : Controller
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<User> _signInManager;
-    private DatabaseContext _db;
-    private readonly IHostEnvironment _environment;
-    private readonly UploadFileService _uploadFileService;
     private readonly IMapper _mapper;
+    private readonly IHostEnvironment _env;
+    private readonly UploadFileService _uploader;
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     public AccountController(UserManager<User> userManager,
-        RoleManager<IdentityRole> roleManager,
-        SignInManager<User> signInManager,
-        DatabaseContext db,
-        IHostEnvironment environment,
         IMapper mapper,
+        IHostEnvironment environment,
+        SignInManager<User> signInManager,
+        RoleManager<IdentityRole> roleManager,
         UploadFileService uploadFileService)
     {
+        _mapper = mapper;
+        _env = environment;
         _userManager = userManager;
         _roleManager = roleManager;
+        _uploader = uploadFileService;
         _signInManager = signInManager;
-        _db = db;
-        _environment = environment;
-        _mapper = mapper;
-        _uploadFileService = uploadFileService;
     }
 
     [HttpGet]
@@ -47,33 +43,26 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<IActionResult> Register(RegisterViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid) return View(model);
+        var user = new User
         {
-            var path = Path.Combine(_environment.ContentRootPath, "wwwroot\\img\\");
-            _uploadFileService.Upload(path, $"{model.Email}.jpg", model.File!);
-            var pathImage = $"/img/{model.Email}.jpg";
-
-            var user = new User
-            {
-                Id = Guid.NewGuid().ToString(),
-                UserName = model.UserName,
-                Email = model.Email,
-                PhoneNumber = model.PhoneNumber,
-                Avatar = pathImage
-            };
-            
-            var result = await _userManager.CreateAsync(user, model.Password!);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, "user");
-                await _signInManager.SignInAsync(user, false);
-                return View("Login");
-            }
-
-            foreach (var error in result.Errors)
-                ModelState.AddModelError(string.Empty, error.Description);
+            Id = Guid.NewGuid().ToString(),
+            Email = model.Email,
+            UserName = model.UserName,
+            PhoneNumber = model.PhoneNumber,
+            File = model.File
+        };
+        user.Avatar = model.File != null ? Helpers.GetPathImage(_env, _mapper, _uploader, user) : string.Empty;
+        var result = await _userManager.CreateAsync(user, model.Password!);
+        if (result.Succeeded)
+        {
+            await _userManager.AddToRoleAsync(user, "user");
+            await _signInManager.SignInAsync(user, false);
+            return View("Login");
         }
+
+        foreach (var error in result.Errors)
+            ModelState.AddModelError(string.Empty, error.Description);
 
         return View(model);
     }
@@ -106,7 +95,7 @@ public class AccountController : Controller
                         return Redirect(model.ReturnUrl);
                     }
 
-                    return RedirectToAction("Index", "Users");
+                    return RedirectToAction("Index", "Changes");
                 }
             }
 

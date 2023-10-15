@@ -30,13 +30,13 @@ public class RegisterViewModel
     public IFormFile? File { get; set; }
 
     [Required(ErrorMessage = "No password specified")]
-    [StringLength(16, MinimumLength = 5, ErrorMessage = "The password must be at least 5 characters long")]
+    [StringLength(16, MinimumLength = 4, ErrorMessage = "The password must be at least 4 characters long")]
     [Display(Name = "Password")]
     [DataType(DataType.Password)]
     public string? Password { get; set; }
 
     [Required(ErrorMessage = "No password specified")]
-    [StringLength(16, MinimumLength = 5, ErrorMessage = "The password must be at least 5 characters long")]
+    [StringLength(16, MinimumLength = 4, ErrorMessage = "The password must be at least 4 characters long")]
     [Compare("Password", ErrorMessage = "The password doesn't match")]
     [Display(Name = "Confirm your password")]
     [DataType(DataType.Password)]

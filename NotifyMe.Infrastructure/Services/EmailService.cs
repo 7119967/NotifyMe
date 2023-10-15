@@ -24,13 +24,13 @@ public class EmailService
     public EmailService(IServiceScopeFactory scopeFactory)
     {
         var scope = scopeFactory.CreateScope();
-        _configurationService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
+        _mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
         _groupService = scope.ServiceProvider.GetRequiredService<IGroupService>();
-        _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
-        _notificationUserService = scope.ServiceProvider.GetRequiredService<INotificationUserService>();
         _eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
         _messageService = scope.ServiceProvider.GetRequiredService<IMessageService>();
-        _mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
+        _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+        _configurationService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
+        _notificationUserService = scope.ServiceProvider.GetRequiredService<INotificationUserService>();
     }
     
     public async Task SendEmail(string eventId)

@@ -19,24 +19,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/NotifyMe.Core/Models/User/UserAvator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.Development.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.Development.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/NotifyMe.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Context/DatabaseContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/NotifyMe.Infrastructure.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/NotifyMe.Infrastructure.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/AdminInitializer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/ViewModels/RegisterViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/ViewModels/RegisterViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UploadFileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UploadFileService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/NotifyMe.IoC.Configuration.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/NotifyMe.IoC.Configuration.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Tests/NotifyMe.Tests.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Tests/NotifyMe.Tests.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,6 +61,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/789b158a98468e474a2af1348cfd47e7792de2ae2344f55a03ddf85b16699b/WebApplicationBuilder.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/794bcfedceb3c6d957fbddf0e1c9a04afca77f9b5470c6859466cfba35e1ddb1/Task.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7b3b6985aad11c5d633d75b545f5f5f4fc7e50918ad1cb9f6b615682f5bfb76d/SingleQueryingEnumerable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/7e42f17e6a464bd2814c023d0ce4ea2eb1d8a0/_13f9f/IList.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/80ce3b5fced149e3854d9bd538ee1c7154f4cc4c4ece9eb1e3d71892fbd38b74/EventingBasicConsumer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/816dbaba8a29ece3dd3dc326642858d27d2d19142f9a2109bb04617985ec9/ExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/86c1e9dd2ad0a5d2c2bb47d6766dc32a341b357a3bc1f77355d4a7b128af5a/BackgroundService.cs" root0="SKIP_HIGHLIGHTING" />
@@ -164,56 +159,11 @@
         <option name="Build" />
       </method>
     </configuration>
-    <configuration name="NotifyMe.Consumer: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="IIS Express" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="NotifyMe.Consumer: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="http" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
-    <configuration name="NotifyMe.Consumer: https" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
-      <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/NotifyMe.Consumer/NotifyMe.Consumer.csproj" />
-      <option name="LAUNCH_PROFILE_TFM" value="net7.0" />
-      <option name="LAUNCH_PROFILE_NAME" value="https" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="USE_MONO" value="0" />
-      <option name="RUNTIME_ARGUMENTS" value="" />
-      <option name="GENERATE_APPLICATIONHOST_CONFIG" value="1" />
-      <option name="SHOW_IIS_EXPRESS_OUTPUT" value="0" />
-      <option name="SEND_DEBUG_REQUEST" value="1" />
-      <option name="ADDITIONAL_IIS_EXPRESS_ARGUMENTS" value="" />
-      <method v="2">
-        <option name="Build" />
-      </method>
-    </configuration>
     <configuration name="NotifyMe.API/Dockerfile" type="docker-deploy" factoryName="dockerfile" server-name="Docker">
       <deployment type="dockerfile">
         <settings>
           <option name="containerName" value="notifyme.api" />
-          <option name="contextFolderPath" value="C:\dev\NotifyMe" />
+          <option name="contextFolderPath" value="." />
           <option name="publishAllPorts" value="true" />
           <option name="sourceFilePath" value="NotifyMe.API/Dockerfile" />
         </settings>
@@ -238,9 +188,10 @@
     <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
+          <option name="envFilePath" value="" />
           <option name="secondarySourceFiles">
             <list>
-              <option value="C:\dev\NotifyMe\docker-compose.override.yml" />
+              <option value="docker-compose.override.yml" />
             </list>
           </option>
           <option name="sourceFilePath" value="docker-compose.yml" />
@@ -250,9 +201,6 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: IIS Express" />
-      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: http" />
-      <item itemvalue=".NET Launch Settings Profile.NotifyMe.Consumer: https" />
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: http" />
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: https" />
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: IIS Express" />
@@ -322,7 +270,8 @@
       <workItem from="1696909904270" duration="3082000" />
       <workItem from="1697124871244" duration="9644000" />
       <workItem from="1697261454766" duration="531000" />
-      <workItem from="1697265613052" duration="21133000" />
+      <workItem from="1697265613052" duration="23800000" />
+      <workItem from="1697383748856" duration="6631000" />
     </task>
     <servers />
   </component>
@@ -405,19 +354,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="46" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs</url>
-          <line>220</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\UsersController.cs" initialLine="241" containingFunctionPresentation="Method 'GetPathImage'">
-            <startOffsets>
-              <option value="7209" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7210" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="49" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

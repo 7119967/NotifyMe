@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
-using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Core.Models;
 using NotifyMe.Core.Models.User;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
@@ -17,33 +17,32 @@ namespace NotifyMe.API.Controllers;
 [Authorize(Roles = "admin")]
 public class UsersController : Controller
 {
-    private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly IHostEnvironment _environment;
-    private readonly UploadFileService _uploadFileService;
     private readonly IMapper _mapper;
+    private readonly IHostEnvironment _env;
     private readonly IUserService _userService;
-    // private readonly IUnitOfWork? _unitOfWork;
+    private readonly UploadFileService _uploader;
+    private readonly UserManager<User> _userManager;
     private readonly DatabaseContext _databaseContext;
+    private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
   
     public UsersController(UserManager<User> userManager,
-        RoleManager<IdentityRole> roleManager,
-        SignInManager<User> signInManager,
-        IHostEnvironment environment,
         IMapper mapper,
         IUserService userService,
+        IHostEnvironment environment,
+        SignInManager<User> signInManager,
         UploadFileService uploadFileService,
+        RoleManager<IdentityRole> roleManager,
         DatabaseContext databaseContext)
     {
+        _mapper = mapper;
+        _env = environment;
+        _userService = userService;
         _userManager = userManager;
         _roleManager = roleManager;
+        _uploader = uploadFileService;
         _signInManager = signInManager;
-        _environment = environment;
-        _mapper = mapper;
-        _userService = userService;
-        _uploadFileService = uploadFileService;
         _databaseContext = databaseContext;
     }
 
@@ -52,7 +51,7 @@ public class UsersController : Controller
     public async Task<IActionResult> Index()
     {
         // var entities = _mapper.Map<List<UserListViewModel>>(_userService.GetAllAsync().Result);
-        var entities = _databaseContext.Users.Include(p => p.Group).ToList();
+        var entities = await _databaseContext.Users.Include(p => p.Group).ToListAsync();
         await Task.Yield();
         return View(entities);
     }
@@ -103,9 +102,8 @@ public class UsersController : Controller
                 
             var entity = _mapper.Map<UserCreateViewModel, User>(model);
             entity.Id = Guid.NewGuid().ToString();
-            entity.Avatar =  model.File != null ? GetPathImage(model) : string.Empty;
+            entity.Avatar =  model.File != null ? Helpers.GetPathImage(_env, _mapper, _uploader, model) : string.Empty;
             var result = await _userManager.CreateAsync(entity, model.Password!);
-
             if (!result.Succeeded) return RedirectToAction("Index");
             await _userManager.AddToRoleAsync(entity, "user");
 
@@ -161,8 +159,8 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(UserEditViewModel model)
     {
-        model.Avatar = model.File != null ? GetPathImage(model) : string.Empty;
-        var user = _userManager.FindByNameAsync(model.UserName!).Result;
+        model.Avatar = model.File != null ? Helpers.GetPathImage(_env, _mapper, _uploader, model) : string.Empty;
+        var user = await _userManager.FindByNameAsync(model.UserName!);
         if (user == null) return NotFound();
         var editUser = _mapper.Map<User, UserEditViewModel>(user);
         var target = _mapper.Map<UserEditViewModel, User>(editUser);
@@ -215,20 +213,5 @@ public class UsersController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
-    }
-
-    private string GetPathImage(object argument)
-    {
-        UserAvator model = new();
-        var path = Path.Combine(_environment.ContentRootPath, "wwwroot/img/avators/");
-
-        if (argument is UserCreateViewModel)
-            model = _mapper.Map<UserCreateViewModel, UserAvator>((UserCreateViewModel)argument);
-        
-        if (argument is UserEditViewModel)
-            model = _mapper.Map<UserEditViewModel, UserAvator>((UserEditViewModel)argument);
-        
-        _uploadFileService.Upload(path, $"{model!.Email}.jpg", model.File!);
-        return $"/img/avators/{model.Email}.jpg";
     }
 }
