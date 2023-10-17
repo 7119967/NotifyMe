@@ -1,23 +1,24 @@
-version: '3.8'
+version: '3.9'
 name: notifyme-project
-
 services:
-    
     mssql-server:
         image: mcr.microsoft.com/mssql/server:latest
         container_name: mssql-server
         hostname: mssql-server
         restart: always
+        user: root
         environment:
-            - COMPOSE_PROJECT_NAME=notifyme-project
             - ACCEPT_EULA=Y
-            - SA_PASSWORD=qXz999W7M#
-            - MSSQL_PID=Developer
+            - MSSQL_SA_PASSWORD=qXz999W7M#
+            - MSSQL_PID=Express
             - MSSQL_DB_NAME=master
         ports:
             - "1433:1433"
         volumes:
             - mssql-data:/var/opt/mssql
+            - ./mssql/data:/var/opt/mssql/data
+            - ./mssql/logs:/var/opt/mssql/log
+            - ./mssql/secrets:/var/opt/mssql/secrets
             - /etc/timezone:/etc/timezone:ro
             - /etc/localtime:/etc/localtime:ro
         healthcheck:
@@ -25,10 +26,7 @@ services:
             interval: 30s
             timeout: 10s
             retries: 5
-        networks:
-            - notifyme-network
-      
-    
+
     rabbitmq:
         image: rabbitmq:management
         container_name: rabbitmq
@@ -36,25 +34,21 @@ services:
             - "5672:5672"  
             - "15672:15672" 
         environment:
-            - COMPOSE_PROJECT_NAME=notifyme-project
             - RABBITMQ_DEFAULT_USER=guest
             - RABBITMQ_DEFAULT_PASS=guest
         volumes:
+            - ./rabbitmq/data:/var/lib/rabbitmq
             - rabbitmq-data:/var/lib/rabbitmq
-        networks:
-            - notifyme-network
 
-    
     notifyme.api:
         image: ${DOCKER_REGISTRY-}notifymeapi
         build:
-          context: .
-          dockerfile: NotifyMe.API/Dockerfile
+            context: .
+            dockerfile: NotifyMe.API/Dockerfile
         container_name: notifyme.api
         hostname: notifyme.api
         restart: always
         environment:
-            - COMPOSE_PROJECT_NAME=notifyme-project
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
         volumes:
@@ -67,21 +61,18 @@ services:
             interval: 30s
             timeout: 15s
             retries: 5
-            start_period: 10s
+            start_period: 30s
         depends_on: 
             mssql-server:
                 condition: service_healthy
             rabbitmq:
                 condition: service_started
-        networks:
-            - notifyme-network
-
-volumes:
-  mssql-data:
-    # driver: local
-  rabbitmq-data:
-    # driver: local
 
 networks:
-    notifyme-network:
-        driver: bridge
+    default:
+        name: notifyme-network
+
+volumes:
+    mssql-data:
+#    mssql-logs:
+    rabbitmq-data:

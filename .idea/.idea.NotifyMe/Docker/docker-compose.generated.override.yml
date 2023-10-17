@@ -1,5 +1,5 @@
 # This is a generated file. Not intended for manual editing.
-version: "3.8"
+version: "3.9"
 services:
   notifyme.api:
     build:
@@ -22,8 +22,8 @@ services:
       RESHARPER_LOG_CONF: "/riderLogsConf/backend-log.xml"
     image: "notifymeapi:dev"
     ports:
-    - "127.0.0.1:57003:57100"
-    - "127.0.0.1:57203:57300"
+    - "127.0.0.1:57025:57100"
+    - "127.0.0.1:57225:57300"
     volumes:
     - "C:\\Users\\rashi\\AppData\\Roaming\\Microsoft\\UserSecrets:/root/.microsoft/usersecrets"
     - "C:\\Users\\rashi\\.nuget\\packages:/root/.nuget/fallbackpackages"
@@ -33,5 +33,5 @@ services:
       Linux64:/riderDebugger"
     - "C:\\Program Files\\JetBrains\\JetBrains Rider 231.8109.136/bin:/riderLogsConf"
     - "C:\\Users\\rashi\\AppData\\Local\\JetBrains\\Rider2023.2\\log\\DebuggerWorker\\\
-      JetBrains.Debugger.Worker.2023_10_15_23_52_23:/riderLogs:rw"
+      JetBrains.Debugger.Worker.2023_10_18_02_06_11:/riderLogs:rw"
     working_dir: "/app"

@@ -19,18 +19,122 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/mssql/data/.system/instance_id" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mssql/data/.system/system/lsa.hiv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mssql/data/.system/system/security.hiv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mssql/data/Entropy.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/.erlang.cookie" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3-feature_flags" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/cluster_nodes.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/node-type.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/nodes_running_at_shutdown" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_exchange.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_exchange.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_queue.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_route.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_runtime_parameters.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_runtime_parameters.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_serial" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_topic_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user_permission.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_vhost.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_vhost.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/schema.DAT" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610-feature_flags" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/cluster_nodes.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/node-type.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/nodes_running_at_shutdown" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_exchange.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_exchange.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_queue.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_route.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_runtime_parameters.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_runtime_parameters.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_serial" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_topic_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user_permission.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_vhost.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_vhost.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/schema.DAT" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618-feature_flags" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/cluster_nodes.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/node-type.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/nodes_running_at_shutdown" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/00000001.wal" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/meta.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/names.dets" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_exchange.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_exchange.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_queue.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_route.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_runtime_parameters.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_runtime_parameters.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_serial" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_topic_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user_permission.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user_permission.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_vhost.DCD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_vhost.DCL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/schema.DAT" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/ViewModels/RegisterViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/ViewModels/RegisterViewModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Core/Entities/User.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/Helpers.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UploadFileService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/UploadFileService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/AutoMapper/ServicesMappingProfile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.IoC.Configuration/DI/ServiceCollectionExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
