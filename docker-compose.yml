@@ -2,12 +2,14 @@ version: '3.8'
 name: notifyme-project
 
 services:
+    
     mssql-server:
         image: mcr.microsoft.com/mssql/server:latest
         container_name: mssql-server
         hostname: mssql-server
         restart: always
         environment:
+            - COMPOSE_PROJECT_NAME=notifyme-project
             - ACCEPT_EULA=Y
             - SA_PASSWORD=qXz999W7M#
             - MSSQL_PID=Developer
@@ -26,20 +28,23 @@ services:
         networks:
             - notifyme-network
       
+    
     rabbitmq:
         image: rabbitmq:management
         container_name: rabbitmq
         ports:
-          - "5672:5672"  
-          - "15672:15672" 
+            - "5672:5672"  
+            - "15672:15672" 
         environment:
-          RABBITMQ_DEFAULT_USER: guest
-          RABBITMQ_DEFAULT_PASS: guest
+            - COMPOSE_PROJECT_NAME=notifyme-project
+            - RABBITMQ_DEFAULT_USER=guest
+            - RABBITMQ_DEFAULT_PASS=guest
         volumes:
-          - rabbitmq-data:/var/lib/rabbitmq
+            - rabbitmq-data:/var/lib/rabbitmq
         networks:
             - notifyme-network
 
+    
     notifyme.api:
         image: ${DOCKER_REGISTRY-}notifymeapi
         build:
@@ -49,6 +54,7 @@ services:
         hostname: notifyme.api
         restart: always
         environment:
+            - COMPOSE_PROJECT_NAME=notifyme-project
             - ASPNETCORE_ENVIRONMENT=Production
             - ASPNETCORE_URLS=http://+:80
         volumes:
@@ -63,8 +69,10 @@ services:
             retries: 5
             start_period: 10s
         depends_on: 
-            - mssql-server
-            - rabbitmq
+            mssql-server:
+                condition: service_healthy
+            rabbitmq:
+                condition: service_started
         networks:
             - notifyme-network
 
