@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>522f68bb-5d98-4009-a304-307c61d2a9bf</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerComposeProjectPath>..\notifyme-project.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Models\**" />

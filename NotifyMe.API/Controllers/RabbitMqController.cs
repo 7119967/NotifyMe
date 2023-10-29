@@ -5,7 +5,7 @@ using NotifyMe.Core.Interfaces.Services;
 namespace NotifyMe.API.Controllers;
 
 [Authorize(Roles = "admin, user")]
-[Route("api/[controller]")]
+[Route("api/rabbitmq")]
 [ApiController]
 public class RabbitMqController : ControllerBase
 {
@@ -16,12 +16,11 @@ public class RabbitMqController : ControllerBase
         _rabbitMqPublisher = rabbitMqPublisher;
     }
 
-    [Route("[action]/{message}")]
-    [HttpGet]
+    // [Route("[action]/{message}")]
+    [HttpPost("message")]
     public IActionResult SendMessage(string message)
     {
         _rabbitMqPublisher.PublishMessage(message);
-
         return Ok("The message was sent");
     }
 }

@@ -17,18 +17,19 @@ public class ApiController : ControllerBase
         _changeService = changeService;
     }
 
-    [HttpGet("entity/fetch/list")]
-    public IActionResult List()
+    [HttpGet("list")]
+    public async Task<IActionResult> List()
     {
-        return Ok(_changeService.GetAllAsync().Result);
+        var entities = await GetListChangesAsync();
+        return Ok(entities);
     }
 
-    [HttpGet("entity/fetch/id/{id}")]
+    [HttpGet("id/{id}")]
     public async Task<IActionResult> GetById(string id)
     {
         try
         {
-            var entity = await _changeService.GetByIdAsync(id);
+            var entity = await GetChangeAsync(id);
             if (entity == null)
             {
                 return NotFound("The entity with the specified ID not found");
@@ -42,12 +43,12 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpPost("entity/create")]
+    [HttpPost("{entity}")]
     public async Task<IActionResult> Create(Change entity)
     {
         try
         {
-            var sequence = await _changeService.AsQueryable().ToListAsync();
+            var sequence = await GetListChangesAsync();
             var newId = Helpers.GetNewIdEntity(sequence);
             entity.Id = newId.ToString();
             await _changeService.CreateAsync(entity);
@@ -59,16 +60,13 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpPut("entity/update/{entity}")]
+    [HttpPut("{entity}")]
     public async Task<IActionResult> Update(Change entity)
     {
         try
         {
-            var entityEvent = await _changeService.GetByIdAsync(entity.Id);
-            if (entityEvent != null)
-            {
+            if (IsChangeExist(entity.Id))
                 return NotFound("The entity with the specified ID not found");
-            }
 
             if (ModelState.IsValid)
             {
@@ -83,16 +81,13 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpDelete("entity/remove/{entity}")]
+    [HttpDelete("{entity}")]
     public async Task<IActionResult> Delete(Change entity)
     {
         try
         {
-            var entityEvent = await _changeService.GetByIdAsync(entity.Id);
-            if (entityEvent != null)
-            {
+            if (IsChangeExist(entity.Id))
                 return NotFound("The entity with the specified ID not found");
-            }
 
             await _changeService.DeleteAsync(entity.Id);
             return Ok(entity);
@@ -103,23 +98,44 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpDelete("entity/remove/id/{id}")]
+    [HttpDelete("id/{id}")]
     public async Task<IActionResult> DeleteById(string id)
     {
         try
         {
-            var entityEvent = await _changeService.GetByIdAsync(id);
-            if (entityEvent != null)
-            {
+            if (IsChangeExist(id)) 
                 return NotFound("The entity with the specified ID not found");
-            }
 
             await _changeService.DeleteAsync(id);
-            return Ok(entityEvent);
+            return Ok("The entity with the specified ID was deleted");
         }
         catch (Exception e)
         {
             return BadRequest(e.Message);
         }
+    }
+
+    private Task<Change?> GetChangeAsync(string entityId)
+    {
+        return _changeService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }
+
+    private Task<List<Change>> GetListChangesAsync()
+    {
+        return _changeService!
+            .AsQueryable()
+            .ToListAsync();
+    }
+
+    private bool IsChangeExist(string id)
+    {
+        var entityEvent = GetChangeAsync(id);
+        if (entityEvent is not null)
+        {
+            return true;
+        }
+        return false;
     }
 }

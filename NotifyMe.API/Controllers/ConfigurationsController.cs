@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
-using NotifyMe.Core.Interfaces;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Context;
 using NotifyMe.Infrastructure.Services;
@@ -38,12 +39,7 @@ public class ConfigurationsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        var entities = _configurationService
-                .AsQueryable()
-                .Include(e => e.Group);
-        
-        // var model = _mapper.Map<List<ConfigurationListViewModel>>(entities);
-        await Task.Yield();
+        var entities = await GetConfigurationViaGroup();
         return View(entities);
     }
     
@@ -73,7 +69,7 @@ public class ConfigurationsController : Controller
         {
             if (model != null)
             {
-                var sequence = _configurationService.GetAllAsync().Result;
+                var sequence = await GetListConfigurations();
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
                 await _configurationService.CreateAsync(model);
@@ -91,28 +87,20 @@ public class ConfigurationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _configurationService
-                .AsQueryable()
-                .Include(e => e.Group)
-                .Include(e => e.Events)
-                .FirstOrDefault(e => e.Id == entityId)
-            ;
+        var entity = await GetConfigurationViaGroupAndEvent(entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        // var model = _mapper.Map<Configuration, ConfigurationDetailsViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);
     }
     
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetConfiguration(entityId);
         if (entity == null)
         {
             return NotFound();
@@ -129,16 +117,12 @@ public class ConfigurationsController : Controller
         var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
         ViewBag.Groups = groups;
 
-        // var model = _mapper.Map<Configuration, ConfigurationEditViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/EditPartialView", entity);
     }
     
     [HttpPost]
     public async Task<IActionResult> Edit(Configuration model)
     {
-        // var entity = _mapper.Map<ConfigurationEditViewModel, Configuration>(model);
         try
         {
             await _configurationService.UpdateAsync(model);
@@ -154,22 +138,19 @@ public class ConfigurationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetConfiguration(entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        // var model = _mapper.Map<Configuration, ConfigurationDeleteViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", entity);
     }
     
     [HttpPost]
     public async Task<IActionResult> Delete(Configuration model)
     {
-        var entity = _configurationService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = await GetConfiguration(model.Id);
         if (entity == null)
         {
             return NotFound();
@@ -185,5 +166,36 @@ public class ConfigurationsController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
+    }
+
+    private Task<Configuration?> GetConfiguration(string entityId)
+    {
+        return _configurationService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }
+
+    private Task<List<Configuration>> GetListConfigurations()
+    {
+        return _configurationService!
+            .AsQueryable()
+            .ToListAsync();
+    }
+
+    private Task<List<Configuration>> GetConfigurationViaGroup()
+    {
+        return _configurationService
+            .AsQueryable()
+            .Include(e => e.Group)
+            .ToListAsync();
+    }
+
+    private Task<Configuration?> GetConfigurationViaGroupAndEvent(string entityId)
+    {
+        return _configurationService!
+            .AsQueryable()
+            .Include(e => e.Group)
+            .Include(e => e.Events)
+            .FirstOrDefaultAsync(e => e.Id == entityId);
     }
 }

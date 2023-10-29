@@ -50,50 +50,38 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        // var entities = _mapper.Map<List<UserListViewModel>>(_userService.GetAllAsync().Result);
-        var entities = await _databaseContext.Users.Include(p => p.Group).ToListAsync();
-        await Task.Yield();
+        var entities = await GetUsersViaGroup();
         return View(entities);
     }
     
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
-        ViewBag.Groups = groups;
-        
-        //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
-        await Task.Yield();
+        ViewBag.Groups = GetGroups();
         return PartialView("PartialViews/CreatePartialView", new UserCreateViewModel());
     }
-    
+
+
     [Authorize]
     [HttpGet]
-    public IActionResult Search(string search)
+    public async Task<IActionResult> Search(string search)
     {
-        var searchUsers = _userService.GetAllAsync().Result.Where(t =>
-            t.UserName!.Contains(search) || 
-            t.FirstName!.Contains(search) || 
-            t.LastName!.Contains(search) || 
-            t.Email!.Contains(search) || 
-            t.PhoneNumber!.Contains(search) || 
-            t.Info!.Contains(search)).ToList();
-
+        var searchUsers = await GetSearchedUsers(search);
         var users = _mapper.Map<List<UserListViewModel>>(searchUsers);
-
         return RedirectToAction("Index", users);
     }
-    
+
+
     [Authorize]
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(UserCreateViewModel? model)
+    public async Task<IActionResult> Create(UserCreateViewModel model)
     {
         try
         {
             if (model == null) return RedirectToAction("Index");
-            var user = _userService.GetAllAsync().Result.FirstOrDefault(e => e.UserName == model.UserName);
+            var user = await GetUserByUserNameAsync(model.UserName!);
             if (user != null)
             {
                 BadRequest($"User {model.UserName} exists. Change the UserName");
@@ -102,7 +90,7 @@ public class UsersController : Controller
                 
             var entity = _mapper.Map<UserCreateViewModel, User>(model);
             entity.Id = Guid.NewGuid().ToString();
-            entity.Avatar =  model.File != null ? Helpers.GetPathImage(_env, _mapper, _uploader, model) : string.Empty;
+            entity.Avatar = GetAvatorPath(model);
             var result = await _userManager.CreateAsync(entity, model.Password!);
             if (!result.Succeeded) return RedirectToAction("Index");
             await _userManager.AddToRoleAsync(entity, "user");
@@ -120,19 +108,16 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetUserByIdAsync(entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
-        
-        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
-        ViewBag.Groups = groups;
+
+        ViewBag.Groups = GetGroups();
 
         var model = _mapper.Map<User, UserDetailsViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", model);
     }
 
@@ -140,18 +125,15 @@ public class UsersController : Controller
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetUserByIdAsync(entityId);
         if (entity == null)
         {
             return NotFound();
         }
-        
-        var groups = new SelectList(_databaseContext.Groups, "Id", "Name");
-        ViewBag.Groups = groups;
+
+        ViewBag.Groups = GetGroups();
 
         var model = _mapper.Map<User, UserEditViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/EditPartialView", model);
     }
 
@@ -159,7 +141,7 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<IActionResult> Edit(UserEditViewModel model)
     {
-        model.Avatar = model.File != null ? Helpers.GetPathImage(_env, _mapper, _uploader, model) : string.Empty;
+        model.Avatar = GetAvatorPath(model);
         var user = await _userManager.FindByNameAsync(model.UserName!);
         if (user == null) return NotFound();
         var editUser = _mapper.Map<User, UserEditViewModel>(user);
@@ -177,19 +159,20 @@ public class UsersController : Controller
             return BadRequest();
         }
     }
-    
+
+
+
     [Authorize]
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetUserByIdAsync(entityId);
         if (entity == null)
         {
             return NotFound();
         }
+
         var model = _mapper.Map<User, UserDeleteViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", model);
     }
     
@@ -197,7 +180,7 @@ public class UsersController : Controller
     [HttpPost]
     public async Task<IActionResult> Delete(UserDeleteViewModel model)
     {
-        var entity = _userService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = await GetUserByIdAsync(model.Id!);
         if (entity == null)
         {
             return NotFound();
@@ -212,6 +195,73 @@ public class UsersController : Controller
         {
             Console.WriteLine(e.Message);
             return BadRequest();
+        }
+    }
+
+    private SelectList GetGroups()
+    {
+        return new SelectList(_databaseContext.Groups, "Id", "Name");
+    }
+    
+    private Task<User?> GetUserByIdAsync(string entityId)
+    {
+        return _userService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }   
+    
+    private Task<User?> GetUserByUserNameAsync(string userName)
+    {
+        return _userService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.UserName == userName);
+    }
+
+    private Task<List<User>> GetListUsersAsync()
+    {
+        return _userService!
+            .AsQueryable()
+            .ToListAsync();
+    }
+
+    private Task<List<User>> GetUsersViaGroup()
+    {
+        return _userService!
+            .AsQueryable()
+            .Include(e => e.Group)
+            .ToListAsync();
+    }
+
+
+    private Task<List<User>> GetSearchedUsers(string search)
+    {
+        return _userService
+            .AsQueryable()
+            .Where(t =>
+                    t.UserName!.Contains(search) ||
+                    t.FirstName!.Contains(search) ||
+                    t.LastName!.Contains(search) ||
+                    t.Email!.Contains(search) ||
+                    t.PhoneNumber!.Contains(search) ||
+                    t.Info!.Contains(search))
+            .ToListAsync();
+    }
+
+    private string GetAvatorPath(object item)
+    {
+        switch (item)
+        {
+            case UserEditViewModel model:
+                return model.File != null ?
+                   Helpers.GetPathImage(_env, _mapper, _uploader, model) :
+                   string.Empty;
+            case UserCreateViewModel model:
+                return model.File != null ?
+                   Helpers.GetPathImage(_env, _mapper, _uploader, model) :
+                   string.Empty;
+            default:
+                return string.Empty;
+      
         }
     }
 }

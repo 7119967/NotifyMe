@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.Tests", "NotifyMe.Tests\NotifyMe.Tests.csproj", "{7748F357-E53F-4322-B5D7-697E3E831832}"
 EndProject
-Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{C22FBEF6-EC37-4E44-A088-D3E09546BA78}"
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "notifyme-project", "notifyme-project.dcproj", "{C22FBEF6-EC37-4E44-A088-D3E09546BA78}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotifyMe.IoC.Configuration", "NotifyMe.IoC.Configuration\NotifyMe.IoC.Configuration.csproj", "{D92A4B67-5A11-4094-ABD1-BD091136C112}"
 EndProject

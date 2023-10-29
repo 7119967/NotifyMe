@@ -3,7 +3,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using NotifyMe.Core.Entities;
@@ -16,39 +16,31 @@ namespace NotifyMe.Infrastructure.Services;
 
 public class RabbitMqConsumer: BackgroundService, IRabbitMqConsumer
 {
-    private readonly EmailService _emailService;
-    private readonly IConnection _connection;
     private readonly IModel _channel;
+    private readonly IConnection _connection;
     private readonly string _rabbitMqQueueName;
+    private readonly EmailService _emailService;
+    private readonly ILogger<RabbitMqConsumer> _logger;
     
     public RabbitMqConsumer(IConfiguration configuration, IServiceScopeFactory scopeFactory)
     {
         var scope = scopeFactory.CreateScope();
         var env = scope.ServiceProvider.GetRequiredService<IHostEnvironment>();
         _emailService = scope.ServiceProvider.GetRequiredService<EmailService>();
+        _logger = scope.ServiceProvider.GetRequiredService<ILogger<RabbitMqConsumer>>();
 
-        var config = configuration;
-        var rabbitMqHost = "";
-
-        if (env.IsProduction())
-        {
-            rabbitMqHost = config["RabbitMq:ServerHost"] ?? throw new NullReferenceException();
-        }
-        else 
-        {
-            rabbitMqHost = config["RabbitMq:LocalHost"] ?? throw new NullReferenceException();
-        }
-     
-        var rabbitMqUsername = config["RabbitMq:Username"] ?? throw new NullReferenceException();
-        var rabbitMqPassword = config["RabbitMq:Password"] ?? throw new NullReferenceException();
-        _rabbitMqQueueName = config["RabbitMq:QueueName"] ?? throw new NullReferenceException();
+        var rabbitMqHost = env.IsProduction() ? 
+            configuration["RabbitMq:ServerHost"] : 
+            configuration["RabbitMq:LocalHost"];
+        var rabbitMqUsername = configuration["RabbitMq:Username"];
+        var rabbitMqPassword = configuration["RabbitMq:Password"];
+        _rabbitMqQueueName = configuration["RabbitMq:QueueName"]!;
         
         var factory = new ConnectionFactory
         {
             HostName = rabbitMqHost,
             UserName = rabbitMqUsername,
             Password = rabbitMqPassword,
-            //VirtualHost = "rabbitmq",
             Port = 5672
         };
         
@@ -58,40 +50,39 @@ public class RabbitMqConsumer: BackgroundService, IRabbitMqConsumer
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        // while (!stoppingToken.IsCancellationRequested)
-        // {
-        //
-        //     await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
-        // }
-        
         await Task.Run(StartConsuming, stoppingToken);
     }
 
     public void StartConsuming()
     {
         var consumer = new EventingBasicConsumer(_channel);
-
         consumer.Received += (_, ea) =>
         {
             var body = ea.Body.ToArray();
             var message = Encoding.UTF8.GetString(body);
-            Console.WriteLine($"Received message: {message}");
+            _logger.LogDebug($"Received message: {message}");
             
             var newEvent = JsonConvert.DeserializeObject<Event>(message);
+            if (newEvent == null) return;
             var json = JsonConvert.SerializeObject(newEvent, Formatting.Indented);
-            Console.WriteLine(" [x] Received {0}", json);
+            _logger.LogDebug("[x] Received {0}", json);
             try
             {
-                if (newEvent != null)
-                {
-                    _emailService.SendEmail(newEvent.Id).Wait();
-                    _emailService.SendNotification(newEvent.Id);
-                }
+                // Task.Run(() => _emailService.SendEmail(newEvent.Id));
+                // Task.Run(() => _emailService.SendNotification(newEvent.Id));
+                // var thread = new Thread(() =>
+                // {
+                //     _emailService.SendEmail(newEvent.Id);
+                //     _emailService.SendNotification(newEvent.Id);
+                // });
+                // _logger.LogDebug($"Thread name: {thread.Name}, Thread id: {thread.ManagedThreadId}");
+                // thread.Start();
+                _emailService.SendEmail(newEvent.Id);
+                _emailService.SendNotification(newEvent.Id);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                throw;
+                _logger.LogDebug($"{ex.Message}");
             }
         };
 

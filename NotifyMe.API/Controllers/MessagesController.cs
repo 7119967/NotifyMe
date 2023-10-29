@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NotifyMe.Core.Entities;
+using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Interfaces.Services;
-using NotifyMe.Core.Models.Group;
+
+using Message = NotifyMe.Core.Entities.Message;
 
 namespace NotifyMe.API.Controllers;
 
@@ -15,47 +17,43 @@ public class MessagesController : Controller
     {
         _messageService = messageService;
     }
+
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _messageService.GetAllAsync().Result);
+        var entities = await GetListMessagesAsync();
         return View(entities);
     }
 
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _messageService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetMessageAsync(entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        //var model = _mapper.Map<Group, GroupDetailsViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);
     }
 
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _messageService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetMessageAsync( entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        //var model = _mapper.Map<Group, GroupDeleteViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", entity);
     }
 
     [HttpPost]
     public async Task<IActionResult> Delete(Message model)
     {
-        var entity = _messageService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = await GetMessageAsync(model.Id);
         if (entity == null)
         {
             return NotFound();
@@ -71,5 +69,19 @@ public class MessagesController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
+    }
+
+    private Task<Message?> GetMessageAsync(string entityId)
+    {
+        return _messageService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }
+
+    private Task<List<Message>> GetListMessagesAsync()
+    {
+        return _messageService!
+            .AsQueryable()
+            .ToListAsync();
     }
 }

@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 using NotifyMe.Core.Entities;
@@ -12,6 +13,7 @@ namespace NotifyMe.Infrastructure.Services;
 public class EventMonitor : BackgroundService
 {
     private readonly IEventService? _eventService;
+    private readonly ILogger<EventMonitor> _logger;
     private readonly IChangeService? _changeService;
     private readonly IServiceScopeFactory? _scopeFactory;
     private readonly IRabbitMqPublisher? _rabbitMqPublisher;
@@ -20,11 +22,11 @@ public class EventMonitor : BackgroundService
     public EventMonitor(IServiceScopeFactory scopeFactory)
     {
         _scopeFactory = scopeFactory;
-        
         var scope = scopeFactory.CreateScope();
-        _rabbitMqPublisher = scope.ServiceProvider.GetRequiredService<IRabbitMqPublisher>();
-        _changeService = scope.ServiceProvider.GetRequiredService<IChangeService>();
         _eventService = scope.ServiceProvider.GetRequiredService<IEventService>();
+        _logger = scope.ServiceProvider.GetRequiredService<ILogger<EventMonitor>>();
+        _changeService = scope.ServiceProvider.GetRequiredService<IChangeService>();
+        _rabbitMqPublisher = scope.ServiceProvider.GetRequiredService<IRabbitMqPublisher>();
         _configurationService = scope.ServiceProvider.GetRequiredService<IConfigurationService>();
     }
 
@@ -32,10 +34,10 @@ public class EventMonitor : BackgroundService
     {
         var processingActions = new Dictionary<ChangeType, Action<int, Configuration>>
         {
-            { ChangeType.Creation, InvokeProcessing },
-            { ChangeType.Deletion, InvokeProcessing },
-            { ChangeType.Update, InvokeProcessing },
-            { ChangeType.View, InvokeProcessing }
+            { ChangeType.Creation, InvokeProcessingAsync },
+            { ChangeType.Deletion, InvokeProcessingAsync },
+            { ChangeType.Update, InvokeProcessingAsync },
+            { ChangeType.View, InvokeProcessingAsync }
         };
 
         while (!stoppingToken.IsCancellationRequested)
@@ -43,8 +45,9 @@ public class EventMonitor : BackgroundService
             await Task.Delay(10000, stoppingToken);
             try
             {
-                var changes = await GetChangesAsListAsync(_changeService!);
+                var changes = await GetListChangesAsync(_changeService!);
                 if (changes == null) throw new ArgumentNullException(nameof(changes));
+                
                 var configurations = await GetConfigurationsAsListAsync(_configurationService!);
                 if (configurations == null) throw new ArgumentNullException(nameof(configurations));
 
@@ -52,7 +55,7 @@ public class EventMonitor : BackgroundService
                 {
                     if (processingActions.TryGetValue(configuration.ChangeType, out var action))
                     {
-                        action(GetCounterByChangeType(changes, configuration.ChangeType), configuration);
+                        action(await GetCounterByChangeTypeAsync(changes, configuration.ChangeType), configuration);
                     }
                     else
                     {
@@ -60,19 +63,27 @@ public class EventMonitor : BackgroundService
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                Console.WriteLine(e);
-                throw;
+                _logger.LogDebug($"{ex.Message}");
             }
         }
     }
 
-    private async Task ProcessingEvent(Configuration configuration, int counter)
+    private void InvokeProcessingAsync(int counter, Configuration configuration)
     {
-        var eventItem = await CreateEvent(configuration, counter);
-        eventItem = await UpdateRelatedEntities(configuration, eventItem);
-        JsonSerializerSettings settings = new JsonSerializerSettings
+        if (counter < configuration.Threshold) return;
+        // var thread = new Thread(() => ProcessingEventAsync(configuration, counter).Wait());
+        // _logger.LogDebug($"Thread name: {thread.Name}, Thread id: {thread.ManagedThreadId}");
+        // thread.Start();
+        ProcessingEventAsync(configuration, counter).Wait();
+    }
+    
+    private async Task ProcessingEventAsync(Configuration configuration, int counter)
+    {
+        var eventItem = await CreateEventAsync(configuration, counter);
+        eventItem = await UpdateRelatedEntitiesAsync(configuration, eventItem!);
+        var settings = new JsonSerializerSettings
         {
             ReferenceLoopHandling = ReferenceLoopHandling.Ignore
         };
@@ -81,15 +92,15 @@ public class EventMonitor : BackgroundService
         _rabbitMqPublisher?.PublishMessage(jsonString);
     }
 
-    private async Task<Event> UpdateRelatedEntities(Configuration configuration, Event eventItem)
+    private async Task<Event> UpdateRelatedEntitiesAsync(Configuration configuration, Event eventItem)
     {
-        await UpdateEventChanges(configuration, eventItem);
-        await UpdateEventConfiguration(configuration, eventItem);
+        await UpdateEventChangesAsync(configuration, eventItem);
+        await UpdateEventConfigurationAsync(configuration, eventItem);
 
         return eventItem;
     }
 
-    private async Task<Event> CreateEvent(Configuration configuration, int currentValue)
+    private async Task<Event?> CreateEventAsync(Configuration configuration, int currentValue)
     {
         var sequence = await _eventService!.GetAllAsync();
         var newId = Helpers.GetNewIdEntity(sequence);
@@ -97,8 +108,8 @@ public class EventMonitor : BackgroundService
         {
             Id = newId.ToString(),
             EventName = $"{configuration.ChangeType} exceeded threshold",
-            EventDescription =
-                $"{configuration.Message}. \nCurrent value: {currentValue}, Threshold: {configuration.Threshold}",
+            EventDescription = $"{configuration.Message}. \n" +
+                               $"Current value: {currentValue}, Threshold: {configuration.Threshold}",
             CurrentThreshold = currentValue,
         };
 
@@ -108,64 +119,54 @@ public class EventMonitor : BackgroundService
             var dbContext = scope?.ServiceProvider.GetRequiredService<IEventService>();
             var entity = dbContext?.Create(model);
             return entity!.Entity;
-            // var entity = _eventService!.Create(model);
-            // return entity.Entity;
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
-            throw;
+            _logger.LogDebug($"{ex.Message}");
+            return null;
         }
     }
-
-    private int CountChangesByType(IEnumerable<Change> changes, ChangeType type)
-    {
-        return changes.Count(t =>
-            t.ChangeType == type &&
-            t.Timestamp.Date == DateTime.Now.Date &&
-            string.IsNullOrEmpty(t.EventId));
-    }
-
-    private void InvokeProcessing(int counter, Configuration configuration)
-    {
-        if (counter < configuration.Threshold) return;
-        var thread = new Thread(() => ProcessingEvent(configuration, counter).Wait());
-        thread.Start();
-        //await Task.Run(() => ProcessingEvent(configuration, counter));
-    }
     
-    private int GetCounterByChangeType(IEnumerable<Change> changes, ChangeType type)
+    private static async Task<int> GetCounterByChangeTypeAsync(IEnumerable<Change> changes, ChangeType type)
     {
         int counter;
         
         switch (type)
         {
             case ChangeType.View:
-                counter = CountChangesByType(changes, ChangeType.View);
+                counter = await Task.Run(() => CountChangesByType(changes, ChangeType.View));
                 return counter;
             case ChangeType.Update:
-                counter = CountChangesByType(changes, ChangeType.Update);
+                counter = await Task.Run(() => CountChangesByType(changes, ChangeType.Update));
                 return counter;
             case ChangeType.Deletion:
-                counter = CountChangesByType(changes, ChangeType.Deletion);
+                counter = await Task.Run(() => CountChangesByType(changes, ChangeType.Deletion));
                 return counter;
             case ChangeType.Creation:
-                counter = CountChangesByType(changes, ChangeType.Creation);
+                counter = await Task.Run(() => CountChangesByType(changes, ChangeType.Creation));
                 return counter;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
     
-    private async Task UpdateEventChanges(Configuration configuration, Event eventItem)
+    private static int CountChangesByType(IEnumerable<Change> changes, ChangeType type)
+    {
+        return changes.Count(change =>
+            change.ChangeType == type &&
+            change.Timestamp.Date == DateTime.Now.Date &&
+            string.IsNullOrEmpty(change.EventId));
+    }
+    
+    private async Task UpdateEventChangesAsync(Configuration configuration, Event eventItem)
     {
         var currentDate = DateTime.Now.Date;
-        var changes = await _changeService!.GetAllAsync();
+        var changes = (await _changeService!.GetAllAsync()).Where(c => 
+            c.ChangeType == configuration.ChangeType &&
+            c.Timestamp.Date == currentDate &&
+            c.EventId == null);
 
-        foreach (var change in changes.Where(c => 
-                     c.ChangeType == configuration.ChangeType &&
-                     c.Timestamp.Date == currentDate &&
-                     c.EventId == null))
+        foreach (var change in changes)
         {
             change.EventId = eventItem.Id;
             change.Event = eventItem;
@@ -173,11 +174,11 @@ public class EventMonitor : BackgroundService
         }
     }
 
-    private async Task UpdateEventConfiguration(Configuration configuration, Event eventItem)
+    private async Task UpdateEventConfigurationAsync(Configuration configuration, Event eventItem)
     {
-        var existEvent = _eventService!
-            .AsEnumerable()
-            .FirstOrDefault(e => e.Id == eventItem.Id);
+        var existEvent = await _eventService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == eventItem.Id);
 
         if (existEvent != null)
         {
@@ -187,23 +188,19 @@ public class EventMonitor : BackgroundService
         }
     }
 
-    private async Task<List<Change>> GetChangesAsListAsync(IChangeService changeService)
+    private async Task<List<Change>> GetListChangesAsync(IChangeService changeService)
     {
-        var changes = await Task.Run(() => changeService.AsQueryable().ToList());
-
+        var changes = await changeService.AsQueryable().ToListAsync();
         if (changes.Any()) return changes;
-        
-        Console.WriteLine("There are no changes. Please, create at least one change or more");
+        _logger.LogDebug("There are no changes. Please, create at least one change or more");
         return changes;
     }
     
     private async Task<List<Configuration>> GetConfigurationsAsListAsync(IConfigurationService configurationService)
     {
-        var configurations = await Task.Run(() => configurationService.AsQueryable().ToList());
-
+        var configurations = await configurationService.AsQueryable().ToListAsync();
         if (configurations.Any()) return configurations;
-        
-        Console.WriteLine("There are no configurations. Please, create at least one configuration or more");
+        _logger.LogDebug("There are no configurations. Please, create at least one configuration or more");
         return configurations;
 
     }

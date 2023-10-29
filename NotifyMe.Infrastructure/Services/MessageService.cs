@@ -1,5 +1,7 @@
 ﻿using System.Linq.Expressions;
+
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Repositories;
 using NotifyMe.Core.Interfaces.Services;
@@ -15,14 +17,14 @@ public class MessageService: IMessageService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<ICollection<Message>> GetListEntitiesAsync(Expression<Func<Message, bool>> filter)
+    public Task<ICollection<Message>> GetListEntitiesAsync(Expression<Func<Message, bool>> filter)
     {
-        return await _unitOfWork.MessageRepository.GetAllAsync();
+        return _unitOfWork.MessageRepository.GetAllAsync();
     }
 
-    public async Task<ICollection<Message>> GetAllAsync()
+    public Task<ICollection<Message>> GetAllAsync()
     {
-        return await _unitOfWork.MessageRepository.GetAllAsync();
+        return _unitOfWork.MessageRepository.GetAllAsync();
     }
 
     public async Task<Message> GetEntityAsync(Expression<Func<Message, bool>> filter)
@@ -30,10 +32,10 @@ public class MessageService: IMessageService
         return await _unitOfWork.MessageRepository.GetEntityAsync(filter) ?? throw new Exception();
     }
 
-    public async Task<Message?> GetByIdAsync(string entityId)
+    public Task<Message?> GetByIdAsync(string entityId)
     {
         Expression<Func<Message, bool>> filter = i => i.Id == entityId;
-        return await _unitOfWork.MessageRepository.GetEntityAsync(filter);
+        return _unitOfWork.MessageRepository.GetEntityAsync(filter);
     }
 
     public async Task CreateAsync(Message entity)

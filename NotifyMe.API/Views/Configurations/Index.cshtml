@@ -6,9 +6,7 @@
 @{
     var user = await UserManager.GetUserAsync(User);
 }
-
-@model IIncludableQueryable<Configuration, Group>
-
+@model ICollection<Configuration>
 @{
     Layout = "_Layout";
     int count = 1;

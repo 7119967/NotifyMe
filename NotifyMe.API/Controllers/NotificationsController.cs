@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Interfaces.Services;
 using NotifyMe.Infrastructure.Services;
@@ -30,30 +32,27 @@ public class NotificationsController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // var model = _mapper.Map<List<NotificationListViewModel>>(entities);
-        await Task.Yield();
         var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
+        var notifications = await GetListNotificationsAsync();
+        var notificationUsers = await GetListNotificationUsersAsync();
+
         if (await _userManager.IsInRoleAsync(user!, "admin"))
         {
-            var entities = _notificationService!.AsEnumerable().ToList();
-            return View(entities);
+            return View(notifications);
         }
         
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-        var notifications = from m in _notificationService!.AsEnumerable().ToList()
-            join u in _notificationUserService!.AsEnumerable().ToList() on m.Id equals u.NotificationId
+        var result = from m in notifications
+            join u in notificationUsers on m.Id equals u.NotificationId
             where u.UserId == userId
             select m;
         
-        return View(notifications);
+        return View(result);
     }
     
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        // var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User)!);
-        await Task.CompletedTask;
         return PartialView("PartialViews/CreatePartialView", new Notification());
     }
     
@@ -65,10 +64,10 @@ public class NotificationsController : Controller
         {
             if (model != null)
             {
-                var sequence = _notificationService!.GetAllAsync().Result;
+                var sequence = await GetListNotificationsAsync();
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
-                await _notificationService.CreateAsync(model);
+                await _notificationService!.CreateAsync(model);
             }
             
             return RedirectToAction("Index");
@@ -83,38 +82,31 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetNotificationAsync(entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        // var model = _mapper.Map<Notification, NotificationDetailsViewModel>(entity);
-
-        await Task.Yield();
         return PartialView("PartialViews/DetailsPartialView", entity);
     }
     
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetNotificationAsync(entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        // var model = _mapper.Map<Notification, NotificationEditViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/EditPartialView", entity);
     }
     
     [HttpPost]
     public async Task<IActionResult> Edit(Notification model)
     {
-        // var entity = _mapper.Map<NotificationEditViewModel, Notification>(model);
         try
         {
             await _notificationService!.UpdateAsync(model);
@@ -130,22 +122,19 @@ public class NotificationsController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetNotificationAsync(entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
-        // var model = _mapper.Map<Notification, NotificationDeleteViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", entity);
     }
     
     [HttpPost]
     public async Task<IActionResult> Delete(Notification model)
     {
-        var entity = _notificationService!.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = await GetNotificationAsync(model.Id);
         if (entity == null)
         {
             return NotFound();
@@ -153,7 +142,7 @@ public class NotificationsController : Controller
 
         try
         {
-            await _notificationService.DeleteAsync(entity.Id);
+            await _notificationService!.DeleteAsync(entity.Id);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -161,5 +150,26 @@ public class NotificationsController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
+    }
+
+    private Task<Notification?> GetNotificationAsync(string entityId)
+    {
+        return _notificationService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }
+
+    private Task<List<Notification>> GetListNotificationsAsync()
+    {
+        return _notificationService!
+            .AsQueryable()
+            .ToListAsync();
+    }
+
+    private Task<List<NotificationUser>> GetListNotificationUsersAsync()
+    {
+        return _notificationUserService!
+            .AsQueryable()
+            .ToListAsync();
     }
 }

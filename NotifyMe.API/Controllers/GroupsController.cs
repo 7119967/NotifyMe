@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+
 using NotifyMe.Core.Entities;
 using NotifyMe.Core.Enums;
 using NotifyMe.Core.Interfaces.Services;
@@ -34,24 +35,19 @@ public class GroupsController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        var entities = await Task.Run(() => _groupService.GetAllAsync().Result);
+        var entities = await GetListGroups();
         var model = _mapper.Map<List<GroupListViewModel>>(entities);
-        await Task.Yield();
         return View(model);
     }
     
     [HttpGet]
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
-        var priorities = new SelectList(priorityTypeValues);
-        ViewBag.Priorities = priorities;
-        
-        //var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
-        await Task.Yield();
+        ViewBag.Priorities = GetPriorities();
         return PartialView("PartialViews/CreatePartialView", new GroupCreateViewModel());
     }
-    
+
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(GroupCreateViewModel? model)
@@ -60,7 +56,7 @@ public class GroupsController : Controller
         {
             if (model != null)
             {
-                var sequence = _groupService.GetAllAsync().Result.ToList();
+                var sequence = await GetListGroups();
                 var newId = Helpers.GetNewIdEntity(sequence);
                 model.Id = newId.ToString();
                 var entity = _mapper.Map<GroupCreateViewModel, Group>(model);
@@ -79,40 +75,28 @@ public class GroupsController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(string entityId)
     {
-        var entity = _databaseContext.Groups
-            .Include(g => g.Users)
-            .FirstOrDefault(e => e.Id == entityId);
-        
+        var entity = await GetGroup(entityId);
         if (entity is null)
         {
             NotFound();
             return RedirectToAction("Index");
         }
 
-        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
-        var priorities = new SelectList(priorityTypeValues);
-        ViewBag.Priorities = priorities;
-
-        await Task.Yield();
+        ViewBag.Priorities = GetPriorities();
         return PartialView("PartialViews/DetailsPartialView", entity);
     }
     
     [HttpGet]
     public async Task<IActionResult> Edit(string entityId)
     {
-        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetGroup(entityId);
         if (entity == null)
         {
             return NotFound();
         }
-        
-        var priorityTypeValues = Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
-        var priorities = new SelectList(priorityTypeValues);
-        ViewBag.Priorities = priorities;
-        
+
+        ViewBag.Priorities = GetPriorities();
         var model = _mapper.Map<Group, GroupEditViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/EditPartialView", model);
     }
     
@@ -135,22 +119,20 @@ public class GroupsController : Controller
     [HttpGet]
     public async Task<IActionResult> Delete(string entityId)
     {
-        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == entityId);
+        var entity = await GetGroup(entityId);
         if (entity == null)
         {
             return NotFound();
         }
 
         var model = _mapper.Map<Group, GroupDeleteViewModel>(entity);
-        
-        await Task.Yield();
         return PartialView("PartialViews/DeletePartialView", model);
     }
     
     [HttpPost]
     public async Task<IActionResult> Delete(GroupDeleteViewModel model)
     {
-        var entity = _groupService.GetAllAsync().Result.FirstOrDefault(e => e.Id == model.Id);
+        var entity = await GetGroup(model.Id!);
         if (entity == null)
         {
             return NotFound();
@@ -166,5 +148,29 @@ public class GroupsController : Controller
             Console.WriteLine(e.Message);
             return BadRequest();
         }
+    }
+
+    private Task<List<Group>> GetListGroups()
+    {
+        return _groupService!
+            .AsQueryable()
+            .ToListAsync();
+    }
+
+    private Task<Group?> GetGroup(string entityId)
+    {
+        return _groupService!
+            .AsQueryable()
+            .FirstOrDefaultAsync(e => e.Id == entityId);
+    }
+
+    private static SelectList GetPriorities()
+    {
+        return new SelectList(GetPriorityTypeValues());
+    }
+
+    private static IEnumerable<PriorityType> GetPriorityTypeValues()
+    {
+        return Enum.GetValues(typeof(PriorityType)).Cast<PriorityType>();
     }
 }

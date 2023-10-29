@@ -6,7 +6,8 @@
     <ProjectGuid>c22fbef6-ec37-4e44-a088-d3e09546ba78</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
-    <DockerServiceName>notifyme.api</DockerServiceName>
+    <!--<DockerServiceName>notifyme.api</DockerServiceName>-->
+	<DockerServiceName>notifyme-project</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">

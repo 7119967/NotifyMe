@@ -19,123 +19,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4b58496c-4b8d-47d7-bdd5-eb328fe1be6a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/mssql/data/.system/instance_id" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mssql/data/.system/system/lsa.hiv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mssql/data/.system/system/security.hiv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mssql/data/Entropy.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/.erlang.cookie" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3-feature_flags" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/cluster_nodes.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/coordination/rabbit@0e8e1e33cbb3/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/node-type.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/nodes_running_at_shutdown" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/quorum/rabbit@0e8e1e33cbb3/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_exchange.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_exchange.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_queue.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_durable_route.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_runtime_parameters.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_runtime_parameters.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_serial" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_topic_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_user_permission.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_vhost.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/rabbit_vhost.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@0e8e1e33cbb3/schema.DAT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610-feature_flags" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/cluster_nodes.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/coordination/rabbit@1baecef46610/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/node-type.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/nodes_running_at_shutdown" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/quorum/rabbit@1baecef46610/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_exchange.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_exchange.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_queue.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_durable_route.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_runtime_parameters.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_runtime_parameters.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_serial" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_topic_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_user_permission.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_vhost.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/rabbit_vhost.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@1baecef46610/schema.DAT" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618-feature_flags" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/cluster_nodes.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/coordination/rabbit@c9e1487d5618/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.config" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/.vhost" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_persistent/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/0.rdq" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/clean.dot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/file_summary.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/msg_store_transient/msg_store_index.ets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/msg_stores/vhosts/628WB79CIFDYO9LJI6DKMI09L/recovery.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/node-type.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/nodes_running_at_shutdown" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/00000001.wal" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/meta.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/quorum/rabbit@c9e1487d5618/names.dets" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_exchange.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_exchange.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_queue.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_durable_route.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_runtime_parameters.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_runtime_parameters.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_serial" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_topic_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user_permission.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_user_permission.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_vhost.DCD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/rabbit_vhost.DCL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/rabbitmq/data/mnesia/rabbit@c9e1487d5618/schema.DAT" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.NotifyMe/Docker/docker-compose.generated.override.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ApiController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/ConfigurationsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/EventsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/GroupsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/MessagesController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/NotificationsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/RabbitMqController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Controllers/UsersController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/NotifyMe.API.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Properties/launchSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Changes/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Configurations/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/Views/Events/Index.cshtml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.API/wwwroot/img/avators/7119967@mail.ru.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.API/wwwroot/img/avators/7119967@mail.ru.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/MessageService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqConsumer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqConsumer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqPublisher.cs" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.Infrastructure/Services/RabbitMqPublisher.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/NotifyMe.sln" beforeDir="false" afterPath="$PROJECT_DIR$/NotifyMe.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.dcproj" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/launchSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/launchSettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,6 +63,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4e67de1df4984c1cb908c4c0e1dbacf57b888/89/8e04495f/Enumerable.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/76dfe901c07040c4baa8619e21b27c0212878/93/3897344b/TagHelperExecutionContext.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2048d5b61a78bef52894eecf448e34a883cb22e1abb6711e0eb6d690a3b0/WebApplication.cs" root0="SKIP_HIGHLIGHTING" />
@@ -179,6 +91,9 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/eaf53ade803ac5b1d88b7222b58be5318268b6f95e420e21446447cf184e4a/ConnectionFactory.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ec32a7c0756085e84e31dd596bdad356ee6e673d493ab6fecbc2f34a16d2d42d/RoleManager.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/f9daeeaab8409865442b5e80e634dc64dae9a14892fe81e0f17b46f51b2c48f8/DbSet.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NotifyMe.API/appsettings.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EventMonitor.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -202,7 +117,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.new.ui&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
@@ -213,7 +128,7 @@
     ]
   }
 }</component>
-  <component name="RunManager" selected="Docker.docker-compose.yml: Compose Deployment">
+  <component name="RunManager" selected="Docker.notifyme-project">
     <configuration name="NotifyMe.API: IISProfile" type="DotNetMsBuildPublish" factoryName="Publish to IIS">
       <riderPublish configuration="Release" platform="Any CPU" publish_profile="IISProfile.pubxml" pubxml_path="$PROJECT_DIR$/NotifyMe.API/Properties/PublishProfiles/IISProfile.pubxml" uuid_high="1138947937009158615" uuid_low="-6366003266347700883" />
       <method v="2" />
@@ -289,7 +204,7 @@
       <EXTENSION ID="com.jetbrains.rider.docker.debug" isFastModeEnabled="true" isSslEnabled="false" />
       <method v="2" />
     </configuration>
-    <configuration name="docker-compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
+    <configuration name="notifyme-project" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
       <deployment type="docker-compose.yml">
         <settings>
           <option name="envFilePath" value="" />
@@ -308,7 +223,7 @@
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: http" />
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: https" />
       <item itemvalue=".NET Launch Settings Profile.NotifyMe.API: IIS Express" />
-      <item itemvalue="Docker.docker-compose.yml: Compose Deployment" />
+      <item itemvalue="Docker.notifyme-project" />
       <item itemvalue="Docker.NotifyMe.API/Dockerfile" />
       <item itemvalue="Publish to IIS.NotifyMe.API: IISProfile" />
     </list>
@@ -376,6 +291,12 @@
       <workItem from="1697261454766" duration="531000" />
       <workItem from="1697265613052" duration="23800000" />
       <workItem from="1697383748856" duration="6631000" />
+      <workItem from="1698170279774" duration="6092000" />
+      <workItem from="1698180279254" duration="470000" />
+      <workItem from="1698245180478" duration="9138000" />
+      <workItem from="1698336954593" duration="5734000" />
+      <workItem from="1698500982887" duration="9090000" />
+      <workItem from="1698575046970" duration="6650000" />
     </task>
     <servers />
   </component>
@@ -400,14 +321,14 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+        <line-breakpoint type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Views/Users/PartialViews/ActionsPartialView.cshtml</url>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Views\Users\PartialViews\ExpandPartialView.cshtml" initialLine="0" isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
           </properties>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+        <line-breakpoint type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Views/_ViewImports.cshtml</url>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Views\_ViewImports.cshtml" initialLine="0" isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
@@ -420,9 +341,9 @@
           </properties>
           <option name="timeStamp" value="41" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+        <line-breakpoint type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs</url>
-          <line>69</line>
+          <line>56</line>
           <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\ChangesController.cs" initialLine="69" containingFunctionPresentation="Method 'Create'">
             <startOffsets>
               <option value="2300" />
@@ -433,31 +354,70 @@
           </properties>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs</url>
-          <line>56</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\ChangesController.cs" initialLine="56" containingFunctionPresentation="Method 'Create'">
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>80</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="67" containingFunctionPresentation="Method 'CreateMailMessage'">
             <startOffsets>
-              <option value="1790" />
+              <option value="3273" />
             </startOffsets>
             <endOffsets>
-              <option value="1791" />
+              <option value="3274" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="45" />
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>49</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="49" containingFunctionPresentation="Method 'SendEmail'">
+            <startOffsets>
+              <option value="2152" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2153" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="51" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>99</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="82" containingFunctionPresentation="Method 'CreateMailMessage'">
+            <startOffsets>
+              <option value="4198" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4270" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="54" />
+        </line-breakpoint>
+        <line-breakpoint type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>108</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="91" containingFunctionPresentation="Method 'CreateMessage'">
+            <startOffsets>
+              <option value="4483" />
+            </startOffsets>
+            <endOffsets>
+              <option value="4544" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="55" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/NotifyMe.API/Controllers/ChangesController.cs</url>
-          <line>77</line>
-          <properties documentPath="C:\dev\NotifyMe\NotifyMe.API\Controllers\ChangesController.cs" initialLine="77" containingFunctionPresentation="Method 'Create'">
+          <url>file://$PROJECT_DIR$/NotifyMe.Infrastructure/Services/EmailService.cs</url>
+          <line>87</line>
+          <properties documentPath="C:\dev\NotifyMe\NotifyMe.Infrastructure\Services\EmailService.cs" initialLine="80" containingFunctionPresentation="Method 'CreateMailMessage'">
             <startOffsets>
-              <option value="2560" />
+              <option value="3694" />
             </startOffsets>
             <endOffsets>
-              <option value="2600" />
+              <option value="3728" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="46" />
+          <option name="timeStamp" value="59" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
