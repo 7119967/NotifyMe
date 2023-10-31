@@ -15,7 +15,6 @@ services:
         ports:
             - "1433:1433"
         volumes:
-            - mssql-data:/var/opt/mssql
             - ./mssql/data:/var/opt/mssql/data
             - ./mssql/logs:/var/opt/mssql/log
             - ./mssql/secrets:/var/opt/mssql/secrets
@@ -37,8 +36,8 @@ services:
             - RABBITMQ_DEFAULT_USER=guest
             - RABBITMQ_DEFAULT_PASS=guest
         volumes:
-            - ./rabbitmq/data:/var/lib/rabbitmq
-            - rabbitmq-data:/var/lib/rabbitmq
+            - ./rabbitmq/data:/var/lib/rabbitmq/mnesia
+        command: ["bash", "-c", "chmod 400 /var/lib/rabbitmq/.erlang.cookie; rabbitmq-server"]
 
     notifyme.api:
         image: ${DOCKER_REGISTRY-}notifymeapi
@@ -74,8 +73,8 @@ networks:
 
 volumes:
     mssql-data:
-        name: mssql-data
+        name: mssql
         external: true
     rabbitmq-data:
-        name: rabbitmq-data
+        name: rabbitmq
         external: true

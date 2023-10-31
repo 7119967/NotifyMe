@@ -17,7 +17,7 @@ public class ApiController : ControllerBase
         _changeService = changeService;
     }
 
-    [HttpGet("list")]
+    [HttpGet("")]
     public async Task<IActionResult> List()
     {
         var entities = await GetListChangesAsync();
@@ -43,7 +43,7 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpPost("{entity}")]
+    [HttpPost("")]
     public async Task<IActionResult> Create(Change entity)
     {
         try
@@ -60,7 +60,7 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpPut("{entity}")]
+    [HttpPut("")]
     public async Task<IActionResult> Update(Change entity)
     {
         try
@@ -81,7 +81,7 @@ public class ApiController : ControllerBase
         }
     }
 
-    [HttpDelete("{entity}")]
+    [HttpDelete("")]
     public async Task<IActionResult> Delete(Change entity)
     {
         try
@@ -117,25 +117,20 @@ public class ApiController : ControllerBase
 
     private Task<Change?> GetChangeAsync(string entityId)
     {
-        return _changeService!
+        return _changeService
             .AsQueryable()
             .FirstOrDefaultAsync(e => e.Id == entityId);
     }
 
     private Task<List<Change>> GetListChangesAsync()
     {
-        return _changeService!
+        return _changeService
             .AsQueryable()
             .ToListAsync();
     }
 
     private bool IsChangeExist(string id)
     {
-        var entityEvent = GetChangeAsync(id);
-        if (entityEvent is not null)
-        {
-            return true;
-        }
-        return false;
+        return GetChangeAsync(id) is null ? false: true;
     }
 }
