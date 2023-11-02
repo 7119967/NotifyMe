@@ -171,39 +171,39 @@ public class EmailService
         }
     }
     
-    private async Task<Event?> GetEventAsync(string eventId)
+    private Task<Event?> GetEventAsync(string eventId)
     {
-        return await _eventService!
+        return _eventService!
             .AsQueryable()
             .FirstOrDefaultAsync(e => e.Id == eventId);
     }    
     
-    private async Task<Event?> GetEventViaConfigurationAsync(string eventId)
+    private Task<Event?> GetEventViaConfigurationAsync(string eventId)
     {
-        return await _eventService!
+        return _eventService!
             .AsQueryable()
             .Include(e => e.Configuration)
             .FirstOrDefaultAsync(e => e.Id == eventId);
     }
     
-    private async Task<Group?> GetGroupViaUserAsync(Configuration item)
+    private Task<Group?> GetGroupViaUserAsync(Configuration item)
     {
-        return await _groupService!
+        return _groupService!
             .AsQueryable()
             .Include(g => g.Users)
             .FirstOrDefaultAsync(g => g.Id == item.Id);
     }
 
-    private async Task<Message?> GetExistingMessageAsync(Message item)
+    private Task<Message?> GetExistingMessageAsync(Message item)
     {
-        return await _messageService!
+        return _messageService!
             .AsQueryable()
             .FirstOrDefaultAsync(m => m.Id == item.Id);
     }
     
-    private async Task<Configuration?> GetConfigurationAsync(Event item)
+    private Task<Configuration?> GetConfigurationAsync(Event item)
     {
-        return await _configurationService!
+        return _configurationService!
             .AsQueryable()
             .FirstOrDefaultAsync(c => c.Id == item.ConfigurationId);
     }

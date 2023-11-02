@@ -152,10 +152,10 @@ public class EventMonitor : BackgroundService
     
     private static int CountChangesByType(IEnumerable<Change> changes, ChangeType type)
     {
-        return changes.Count(change =>
-            change.ChangeType == type &&
-            change.Timestamp.Date == DateTime.Now.Date &&
-            string.IsNullOrEmpty(change.EventId));
+        return changes.Count(c =>
+            c.ChangeType == type &&
+            c.Timestamp.Date == DateTime.Now.Date &&
+            string.IsNullOrEmpty(c.EventId));
     }
     
     private async Task UpdateEventChangesAsync(Configuration configuration, Event eventItem)
