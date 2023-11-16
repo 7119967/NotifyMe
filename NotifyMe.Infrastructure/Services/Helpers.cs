@@ -32,17 +32,17 @@ public static class Helpers
         };
     }
     
-    public static string GetPathImage(IHostEnvironment env, IMapper mapper, UploadFileService uploader, object argument)
+    public static string GetPathImage(IHostEnvironment env, IMapper mapper, UploadFileService uploader, object entity)
     {
         UserAvator model;
         var path = Path.Combine(env.ContentRootPath, "wwwroot/img/avators/");
         
-        if (argument is UserCreateViewModel)
-            model = mapper.Map<UserCreateViewModel, UserAvator>((UserCreateViewModel)argument);
-        else if (argument is UserEditViewModel)
-            model = mapper.Map<UserEditViewModel, UserAvator>((UserEditViewModel)argument);     
+        if (entity is UserCreateViewModel)
+            model = mapper.Map<UserCreateViewModel, UserAvator>((UserCreateViewModel)entity);
+        else if (entity is UserEditViewModel)
+            model = mapper.Map<UserEditViewModel, UserAvator>((UserEditViewModel)entity);     
         else
-            model = mapper.Map<User, UserAvator>((User)argument);
+            model = mapper.Map<User, UserAvator>((User)entity);
         
         Task.Run(async () => await uploader.Upload(path, $"{model!.Email}.jpg", model.File!));
         return $"/img/avators/{model.Email}.jpg";
